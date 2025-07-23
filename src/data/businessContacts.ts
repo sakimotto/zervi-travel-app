@@ -1,0 +1,98 @@
+import { BusinessContact } from '../types';
+import { v4 as uuidv4 } from 'uuid';
+
+export const sampleBusinessContacts: BusinessContact[] = [
+  {
+    id: uuidv4(),
+    name: 'David Chen',
+    title: 'International Sales Director',
+    company: 'Shenzhen Tech Innovations Ltd.',
+    email: 'david.chen@sztech.com.cn',
+    phone: '+86 755 1234 5678',
+    wechat: 'davidchen_sz',
+    linkedin: 'linkedin.com/in/davidchen-sz',
+    address: 'Futian CBD, Shenzhen',
+    city: 'Shenzhen',
+    industry: 'Technology',
+    relationship: 'Client',
+    importance: 'High',
+    lastContact: '2024-01-18',
+    notes: 'Key decision maker for electronics procurement. Prefers WeChat communication.'
+  },
+  {
+    id: uuidv4(),
+    name: 'Sarah Wang',
+    title: 'Procurement Manager',
+    company: 'Global Trading Corp',
+    email: 'sarah.wang@globaltrading.com',
+    phone: '+86 21 9876 5432',
+    wechat: 'sarahw_trading',
+    address: 'Lujiazui Financial District, Shanghai',
+    city: 'Shanghai',
+    industry: 'Import/Export',
+    relationship: 'Partner',
+    importance: 'High',
+    lastContact: '2024-01-15',
+    notes: 'Handles large volume orders. Very detail-oriented with documentation.'
+  },
+  {
+    id: uuidv4(),
+    name: 'Michael Zhang',
+    title: 'Factory Manager',
+    company: 'Guangzhou Manufacturing Hub',
+    email: 'm.zhang@gzmfg.cn',
+    phone: '+86 20 5555 7777',
+    address: 'Industrial Zone, Panyu District, Guangzhou',
+    city: 'Guangzhou',
+    industry: 'Manufacturing',
+    relationship: 'Supplier',
+    importance: 'Medium',
+    lastContact: '2024-01-10',
+    notes: 'Manages production schedules. Best to contact in the morning.'
+  },
+  {
+    id: uuidv4(),
+    name: 'Lisa Liu',
+    title: 'Business Development Manager',
+    company: 'China Trade Promotion Council',
+    email: 'lisa.liu@ctpc.org.cn',
+    phone: '+86 10 8888 9999',
+    address: 'Chaoyang District, Beijing',
+    city: 'Beijing',
+    industry: 'Government',
+    relationship: 'Government',
+    importance: 'High',
+    lastContact: '2024-01-20',
+    notes: 'Helps with trade regulations and government relations. Very knowledgeable about export procedures.'
+  },
+  {
+    id: uuidv4(),
+    name: 'Tom Wu',
+    title: 'Logistics Coordinator',
+    company: 'Express Shipping Solutions',
+    email: 'tom.wu@expressship.cn',
+    phone: '+86 574 3333 4444',
+    address: 'Port Area, Ningbo',
+    city: 'Ningbo',
+    industry: 'Logistics',
+    relationship: 'Service Provider',
+    importance: 'Medium',
+    lastContact: '2024-01-12',
+    notes: 'Handles all shipping arrangements. Very reliable for urgent shipments.'
+  },
+  {
+    id: uuidv4(),
+    name: 'Amy Zhou',
+    title: 'Quality Control Manager',
+    company: 'Independent QC Services',
+    email: 'amy.zhou@qcservices.com',
+    phone: '+86 755 7777 8888',
+    address: 'Nanshan District, Shenzhen',
+    city: 'Shenzhen',
+    industry: 'Quality Control',
+    relationship: 'Service Provider',
+    importance: 'High',
+    lastContact: '2024-01-16',
+    notes: 'Provides third-party quality inspections. Very thorough and professional.'
+  }
+];
