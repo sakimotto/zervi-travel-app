@@ -47,42 +47,42 @@ const generateWordContent = (
     content += '='.repeat(50) + '\n\n';
 
     const sortedItinerary = [...itinerary].sort((a, b) => 
-      new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
     );
 
     sortedItinerary.forEach((item, index) => {
       content += `${index + 1}. ${item.title}\n`;
       content += `   Type: ${item.type}\n`;
-      content += `   Date: ${format(parseISO(item.startDate), 'MMMM dd, yyyy')}`;
-      if (item.endDate) {
-        content += ` - ${format(parseISO(item.endDate), 'MMMM dd, yyyy')}`;
+      content += `   Date: ${format(parseISO(item.start_date), 'MMMM dd, yyyy')}`;
+      if (item.end_date) {
+        content += ` - ${format(parseISO(item.end_date), 'MMMM dd, yyyy')}`;
       }
       content += '\n';
       content += `   Location: ${item.location}\n`;
-      content += `   Assigned To: ${item.assignedTo}\n`;
+      content += `   Assigned To: ${item.assigned_to}\n`;
       content += `   Status: ${item.confirmed ? 'Confirmed' : 'Unconfirmed'}\n`;
       content += `   Description: ${item.description}\n`;
 
       // Add type-specific details
-      if (item.type === 'Flight' && item.flightNumber) {
-        content += `   Flight: ${item.airline} ${item.flightNumber}\n`;
-        if (item.departureTime && item.arrivalTime) {
-          content += `   Times: ${item.departureTime} - ${item.arrivalTime}\n`;
+      if (item.type === 'Flight' && item.type_specific_data?.flightNumber) {
+        content += `   Flight: ${item.type_specific_data?.airline} ${item.type_specific_data?.flightNumber}\n`;
+        if (item.type_specific_data?.departureTime && item.type_specific_data?.arrivalTime) {
+          content += `   Times: ${item.type_specific_data?.departureTime} - ${item.type_specific_data?.arrivalTime}\n`;
         }
       }
 
-      if (item.type === 'Hotel' && item.hotelName) {
-        content += `   Hotel: ${item.hotelName}\n`;
-        if (item.roomType) content += `   Room: ${item.roomType}\n`;
-        if (item.checkInTime && item.checkOutTime) {
-          content += `   Check-in: ${item.checkInTime}, Check-out: ${item.checkOutTime}\n`;
+      if (item.type === 'Hotel' && item.type_specific_data?.hotelName) {
+        content += `   Hotel: ${item.type_specific_data?.hotelName}\n`;
+        if (item.type_specific_data?.roomType) content += `   Room: ${item.type_specific_data?.roomType}\n`;
+        if (item.type_specific_data?.checkInTime && item.type_specific_data?.checkOutTime) {
+          content += `   Check-in: ${item.type_specific_data?.checkInTime}, Check-out: ${item.type_specific_data?.checkOutTime}\n`;
         }
       }
 
-      if (item.type === 'BusinessVisit' && item.contactName) {
-        content += `   Contact: ${item.contactName}\n`;
-        if (item.companyName) content += `   Company: ${item.companyName}\n`;
-        if (item.contactPhone) content += `   Phone: ${item.contactPhone}\n`;
+      if (item.type === 'BusinessVisit' && item.type_specific_data?.contactName) {
+        content += `   Contact: ${item.type_specific_data?.contactName}\n`;
+        if (item.type_specific_data?.companyName) content += `   Company: ${item.type_specific_data?.companyName}\n`;
+        if (item.type_specific_data?.contactPhone) content += `   Phone: ${item.type_specific_data?.contactPhone}\n`;
       }
 
       if (item.notes) {
@@ -202,11 +202,11 @@ const generateWordContent = (
       content += `   Date: ${format(parseISO(expense.date), 'MMMM dd, yyyy')}\n`;
       content += `   Category: ${expense.category}\n`;
       content += `   Amount: ${expense.amount} ${expense.currency}\n`;
-      content += `   Payment: ${expense.paymentMethod}\n`;
-      content += `   Traveler: ${expense.assignedTo}\n`;
+      content += `   Payment: ${expense.payment_method}\n`;
+      content += `   Traveler: ${expense.assigned_to}\n`;
       content += `   Status: ${expense.approved ? 'Approved' : 'Pending'}\n`;
       content += `   Reimbursable: ${expense.reimbursable ? 'Yes' : 'No'}\n`;
-      content += `   Purpose: ${expense.businessPurpose}\n`;
+      content += `   Purpose: ${expense.business_purpose}\n`;
       content += '\n';
     });
   }
