@@ -347,7 +347,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="airline"
-                    value={formData.type_specific_data?.airline || ''}
+                    value={formData.airline || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Air China, Cathay Pacific"
@@ -360,7 +360,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="flightNumber"
-                    value={formData.type_specific_data?.flightNumber || ''}
+                    value={formData.flightNumber || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., CA988"
@@ -373,7 +373,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="time"
                     name="departureTime"
-                    value={formData.type_specific_data?.departureTime || ''}
+                    value={formData.departureTime || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -385,7 +385,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="time"
                     name="arrivalTime"
-                    value={formData.type_specific_data?.arrivalTime || ''}
+                    value={formData.arrivalTime || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -407,7 +407,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="hotelName"
-                    value={formData.type_specific_data?.hotelName || ''}
+                    value={formData.hotelName || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Grand Hyatt Beijing"
@@ -420,7 +420,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="roomType"
-                    value={formData.type_specific_data?.roomType || ''}
+                    value={formData.roomType || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Deluxe Twin, Business Suite"
@@ -433,7 +433,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="time"
                     name="checkInTime"
-                    value={formData.type_specific_data?.checkInTime || ''}
+                    value={formData.checkInTime || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -445,7 +445,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="time"
                     name="checkOutTime"
-                    value={formData.type_specific_data?.checkOutTime || ''}
+                    value={formData.checkOutTime || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -467,7 +467,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="contactName"
-                    value={formData.type_specific_data?.contactName || ''}
+                    value={formData.contactName || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="Name of your contact person"
@@ -480,7 +480,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="companyName"
-                    value={formData.type_specific_data?.companyName || ''}
+                    value={formData.companyName || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="Name of the company"
@@ -493,7 +493,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="contactPhone"
-                    value={formData.type_specific_data?.contactPhone || ''}
+                    value={formData.contactPhone || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="Phone number with country code"
