@@ -19,6 +19,8 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
   editAppointment, 
   suppliers, 
   contacts, 
+  selectedDate 
+}) => {
   const [formData, setFormData] = useState<Appointment>({
     id: '',
     title: '',
