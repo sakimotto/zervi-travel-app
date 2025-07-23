@@ -34,7 +34,7 @@ const ItinerarySection: React.FC = () => {
   
   const [showAddModal, setShowAddModal] = useState(false);
   const [filterType, setFilterType] = useState<ItineraryItemType | 'All'>('All');
-  const [filterTraveler, setFilterTraveler] = useState<Traveler | 'All'>('All');
+  const [filterTraveler, setFilterTraveler] = useState<string>('All');
   const [editingItem, setEditingItem] = useState<ItineraryItem | null>(null);
   const [showConfirmReset, setShowConfirmReset] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
