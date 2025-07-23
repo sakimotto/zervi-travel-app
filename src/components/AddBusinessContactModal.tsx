@@ -31,6 +31,11 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
     relationship: 'Other',
     importance: 'Medium',
     linked_supplier_id: '',
+    website: '',
+    alibaba_store: '',
+    shopee_store: '',
+    amazon_store: '',
+    other_ecommerce: '',
   });
 
   useEffect(() => {
@@ -56,6 +61,11 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
         relationship: 'Other',
         importance: 'Medium',
         linked_supplier_id: '',
+        website: '',
+        alibaba_store: '',
+        shopee_store: '',
+        amazon_store: '',
+        other_ecommerce: '',
       });
     }
   }, [editContact]);
@@ -254,6 +264,80 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
             </div>
           </div>
 
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Company Website
+            </label>
+            <input
+              type="url"
+              name="website"
+              value={formData.website || ''}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              placeholder="https://www.company.com"
+            />
+          </div>
+
+          <div className="mb-6">
+            <h4 className="text-md font-medium text-gray-900 mb-3">E-commerce Platforms</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Alibaba Store
+                </label>
+                <input
+                  type="url"
+                  name="alibaba_store"
+                  value={formData.alibaba_store || ''}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="https://company.en.alibaba.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Shopee Store
+                </label>
+                <input
+                  type="url"
+                  name="shopee_store"
+                  value={formData.shopee_store || ''}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="https://shopee.com/shop/storename"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Amazon Store
+                </label>
+                <input
+                  type="url"
+                  name="amazon_store"
+                  value={formData.amazon_store || ''}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="https://amazon.com/stores/storename"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Other E-commerce
+                </label>
+                <input
+                  type="url"
+                  name="other_ecommerce"
+                  value={formData.other_ecommerce || ''}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="Other platform URLs"
+                />
+              </div>
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -101,6 +101,11 @@ export type BusinessContact = {
   relationship: 'Client' | 'Supplier' | 'Partner' | 'Government' | 'Service Provider' | 'Other';
   importance: 'High' | 'Medium' | 'Low';
   linked_supplier_id?: string;
+  website?: string;
+  alibaba_store?: string;
+  shopee_store?: string;
+  amazon_store?: string;
+  other_ecommerce?: string;
   created_at?: string;
   updated_at?: string;
 };

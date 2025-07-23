@@ -18,6 +18,8 @@ export const sampleBusinessContacts: BusinessContact[] = [
     relationship: 'Client',
     importance: 'High',
     last_contact: '2024-01-18',
+    website: 'https://www.sztech.com.cn',
+    alibaba_store: 'https://sztech.en.alibaba.com',
     notes: 'Key decision maker for electronics procurement. Prefers WeChat communication.'
   },
   {
@@ -35,6 +37,8 @@ export const sampleBusinessContacts: BusinessContact[] = [
     relationship: 'Partner',
     importance: 'High',
     last_contact: '2024-01-15',
+    website: 'https://www.globaltrading.com',
+    shopee_store: 'https://shopee.com/globaltrading',
     notes: 'Handles large volume orders. Very detail-oriented with documentation.'
   },
   {
@@ -50,6 +54,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     relationship: 'Supplier',
     importance: 'Medium',
     last_contact: '2024-01-10',
+    website: 'https://www.gzmfg.cn',
     notes: 'Manages production schedules. Best to contact in the morning.'
   },
   {
@@ -65,6 +70,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     relationship: 'Government',
     importance: 'High',
     last_contact: '2024-01-20',
+    website: 'https://www.ctpc.org.cn',
     notes: 'Helps with trade regulations and government relations. Very knowledgeable about export procedures.'
   },
   {
@@ -80,6 +86,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     relationship: 'Service Provider',
     importance: 'Medium',
     last_contact: '2024-01-12',
+    website: 'https://www.expressship.cn',
     notes: 'Handles all shipping arrangements. Very reliable for urgent shipments.'
   },
   {
@@ -95,6 +102,8 @@ export const sampleBusinessContacts: BusinessContact[] = [
     relationship: 'Service Provider',
     importance: 'High',
     last_contact: '2024-01-16',
+    website: 'https://www.qcservices.com',
+    amazon_store: 'https://amazon.com/stores/qcservices',
     notes: 'Provides third-party quality inspections. Very thorough and professional.'
   }
 ];

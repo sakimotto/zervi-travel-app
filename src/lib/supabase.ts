@@ -149,6 +149,11 @@ export type Database = {
           relationship: string;
           importance: string;
           linked_supplier_id: string | null;
+          website: string;
+          alibaba_store: string;
+          shopee_store: string;
+          amazon_store: string;
+          other_ecommerce: string;
           created_at: string;
           updated_at: string;
         };
@@ -170,6 +175,11 @@ export type Database = {
           relationship?: string;
           importance?: string;
           linked_supplier_id?: string;
+          website?: string;
+          alibaba_store?: string;
+          shopee_store?: string;
+          amazon_store?: string;
+          other_ecommerce?: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -191,6 +201,11 @@ export type Database = {
           relationship?: string;
           importance?: string;
           linked_supplier_id?: string;
+          website?: string;
+          alibaba_store?: string;
+          shopee_store?: string;
+          amazon_store?: string;
+          other_ecommerce?: string;
           updated_at?: string;
         };
       };

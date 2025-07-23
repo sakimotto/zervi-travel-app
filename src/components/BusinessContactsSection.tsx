@@ -391,6 +391,46 @@ const BusinessContactsSection: React.FC = () => {
                     </div>
                   )}
 
+                  {contact.website && (
+                    <div className="text-sm text-gray-600">
+                      <span className="font-medium">Website:</span> 
+                      <a href={contact.website} target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-primary ml-1">
+                        {contact.website.replace(/^https?:\/\//, '')}
+                      </a>
+                    </div>
+                  )}
+
+                  {(contact.alibaba_store || contact.shopee_store || contact.amazon_store || contact.other_ecommerce) && (
+                    <div className="text-sm text-gray-600">
+                      <span className="font-medium">E-commerce:</span>
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {contact.alibaba_store && (
+                          <a href={contact.alibaba_store} target="_blank" rel="noopener noreferrer" 
+                             className="px-2 py-1 bg-orange-100 text-orange-800 rounded text-xs hover:bg-orange-200">
+                            Alibaba
+                          </a>
+                        )}
+                        {contact.shopee_store && (
+                          <a href={contact.shopee_store} target="_blank" rel="noopener noreferrer" 
+                             className="px-2 py-1 bg-orange-100 text-orange-800 rounded text-xs hover:bg-orange-200">
+                            Shopee
+                          </a>
+                        )}
+                        {contact.amazon_store && (
+                          <a href={contact.amazon_store} target="_blank" rel="noopener noreferrer" 
+                             className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs hover:bg-blue-200">
+                            Amazon
+                          </a>
+                        )}
+                        {contact.other_ecommerce && (
+                          <a href={contact.other_ecommerce} target="_blank" rel="noopener noreferrer" 
+                             className="px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs hover:bg-gray-200">
+                            Other
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
                   {contact.notes && (
                     <div className="border-t pt-3 mt-3">
                       <p className="text-sm text-gray-600 italic">{contact.notes}</p>
