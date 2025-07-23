@@ -205,7 +205,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
         </div>
 
         {/* Main Dashboard Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4 mb-8">
           {/* Left Column - Calendar */}
           <div className="lg:col-span-1">
             {/* Travel Alerts */}
@@ -252,22 +252,20 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
             />
           </div>
 
-          {/* Middle Right - Appointments */}
+          {/* Right Column - Appointments & Smart Features Combined */}
           <div className="lg:col-span-1">
-            <AppointmentsList 
-              appointments={appointments}
-              onAppointmentsChange={() => {}} // No longer needed with Supabase
-              suppliers={suppliers}
-              contacts={contacts}
-              selectedDate={selectedDate}
-              itinerary={itinerary}
-            />
-          </div>
-
-          {/* Right Column - Smart Features */}
-          <div className="lg:col-span-1 space-y-6">
+            <div className="space-y-4">
+              <AppointmentsList 
+                appointments={appointments}
+                onAppointmentsChange={() => {}} // No longer needed with Supabase
+                suppliers={suppliers}
+                contacts={contacts}
+                selectedDate={selectedDate}
+                itinerary={itinerary}
+              />
+              
             {/* Smart Travel Logistics */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Navigation className="mr-2 h-5 w-5 text-primary" />
                 Smart Logistics
@@ -321,7 +319,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
             </div>
 
             {/* Upcoming Travel */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <MapPin className="mr-2 h-5 w-5 text-primary" />
                 Upcoming Travel
@@ -349,13 +347,14 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
                 <p className="text-gray-500 text-sm">No upcoming travel scheduled</p>
               )}
             </div>
+            </div>
           </div>
         </div>
 
         {/* Additional Dashboard Features */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4 mb-8">
           {/* Recent Activity Feed */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
             <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Clock className="mr-2 h-5 w-5 text-primary" />
               Recent Activity
@@ -412,8 +411,8 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          {/* Quick Actions & Weather Combined */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
             <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
             <div className="space-y-3">
               <button 
@@ -452,10 +451,9 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
                 Plan Travel
               </button>
             </div>
-          </div>
-
-          {/* Weather Widget */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            
+            {/* Weather Widget */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
             <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <MapPin className="mr-2 h-5 w-5 text-primary" />
               Travel Weather
@@ -477,13 +475,14 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
                 <p className="text-xs text-gray-500">Light Rain</p>
               </div>
             </div>
+            </div>
           </div>
         </div>
 
         {/* Business Insights Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4 mb-8">
           {/* Top Suppliers */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
             <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Building2 className="mr-2 h-5 w-5 text-primary" />
               Top Suppliers
@@ -521,7 +520,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
           </div>
 
           {/* Expense Breakdown */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
             <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <DollarSign className="mr-2 h-5 w-5 text-primary" />
               Expense Breakdown
