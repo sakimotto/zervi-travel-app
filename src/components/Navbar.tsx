@@ -73,9 +73,6 @@ const Navbar: React.FC = () => {
               <NavLink to="/itinerary" icon={<ListTodo size={16} />} text="Itinerary" />
               <NavLink to="/calendar" icon={<Calendar size={16} />} text="Calendar" />
               <NavLink to="/expenses" icon={<DollarSign size={16} />} text="Expenses" />
-              <NavLink to="/tips" icon={<Lightbulb size={16} />} text="Tips" />
-              <NavLink to="/phrases" icon={<MessageCircle size={16} />} text="Phrases" />
-              <NavLink to="/about" icon={<Info size={16} />} text="About" />
               <UserMenu />
             </div>
             
@@ -102,9 +99,6 @@ const Navbar: React.FC = () => {
               <NavLink to="/itinerary" icon={<ListTodo size={18} />} text="Itinerary" onClick={closeMenu} />
               <NavLink to="/calendar" icon={<CalendarIcon size={18} />} text="Calendar" onClick={closeMenu} />
               <NavLink to="/expenses" icon={<DollarSign size={18} />} text="Expenses" onClick={closeMenu} />
-              <NavLink to="/tips" icon={<Lightbulb size={18} />} text="Travel Tips" onClick={closeMenu} />
-              <NavLink to="/phrases" icon={<MessageCircle size={18} />} text="Useful Phrases" onClick={closeMenu} />
-              <NavLink to="/about" icon={<Info size={18} />} text="About" onClick={closeMenu} />
             </div>
           </div>
         )}
