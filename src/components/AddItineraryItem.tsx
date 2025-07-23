@@ -27,12 +27,16 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
 
   useEffect(() => {
     if (editItem) {
-      // When editing, flatten type_specific_data fields for form
-      const flattenedItem = {
+      console.log('Loading edit item:', editItem);
+      
+      // Flatten type_specific_data fields to form level
+      const flattenedItem: any = {
         ...editItem,
-        // Flatten type-specific data to top level for form
-        ...editItem.type_specific_data
+        // Flatten type_specific_data to top level
+        ...(editItem.type_specific_data || {})
       };
+      
+      console.log('Flattened item for form:', flattenedItem);
       setFormData(flattenedItem);
     } else {
       // Initialize with today's date
@@ -68,27 +72,23 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Prepare the base item data
-    const baseData = {
+    // Prepare data exactly matching database schema
+    const itemData: any = {
       id: formData.id || uuidv4(),
       type: formData.type,
       title: formData.title,
       description: formData.description,
       start_date: formData.start_date,
-      end_date: formData.end_date || undefined,
+      end_date: formData.end_date || null,
       location: formData.location,
       assigned_to: formData.assigned_to,
       confirmed: formData.confirmed,
-      notes: formData.notes || undefined
+      notes: formData.notes || null
     };
 
-    // Add start_time and end_time only if they have values
-    if (formData.start_time && formData.start_time.trim() !== '') {
-      baseData.start_time = formData.start_time;
-    }
-    if (formData.end_time && formData.end_time.trim() !== '') {
-      baseData.end_time = formData.end_time;
-    }
+    // Add time fields - use null for empty values
+    itemData.start_time = formData.start_time || null;
+    itemData.end_time = formData.end_time || null;
 
     // Collect type-specific data
     const typeSpecificData: any = {};
@@ -140,15 +140,12 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
     if (formData.safetyRequirements) typeSpecificData.safetyRequirements = formData.safetyRequirements;
     if (formData.tourGuideRequired !== undefined) typeSpecificData.tourGuideRequired = formData.tourGuideRequired;
     
-    // Only add type_specific_data if there's actual data
-    const finalData = { ...baseData };
-    if (Object.keys(typeSpecificData).length > 0) {
-      finalData.type_specific_data = typeSpecificData;
-    }
+    // Always include type_specific_data (empty object if no data)
+    itemData.type_specific_data = typeSpecificData;
     
-    console.log('Saving itinerary item:', finalData);
+    console.log('Saving itinerary item:', itemData);
 
-    onSave(finalData);
+    onSave(itemData);
   };
 
   return (
@@ -347,7 +344,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="airline"
-                    value={formData.airline || ''}
+                    value={formData.type_specific_data?.airline || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Air China, Cathay Pacific"
@@ -360,10 +357,241 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="flightNumber"
-                    value={formData.flightNumber || ''}
+                    value={formData.type_specific_data?.flightNumber || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., CA988"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Departure Time
+                  </label>
+                  <input
+                    type="time"
+                    name="departureTime"
+                    value={formData.type_specific_data?.departureTime || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Arrival Time
+                  </label>
+                  <input
+                    type="time"
+                    name="arrivalTime"
+                    value={formData.type_specific_data?.arrivalTime || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {formData.type === 'Hotel' && (
+            <div className="p-4 bg-indigo-50 rounded-lg mb-6">
+              <h4 className="text-md font-semibold text-indigo-800 mb-4 flex items-center">
+                <Hotel size={18} className="mr-2" /> Hotel Details
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Hotel Name
+                  </label>
+                  <input
+                    type="text"
+                    name="hotelName"
+                    value={formData.type_specific_data?.hotelName || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="E.g., Grand Hyatt Beijing"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Room Type
+                  </label>
+                  <input
+                    type="text"
+                    name="roomType"
+                    value={formData.type_specific_data?.roomType || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="E.g., Deluxe Twin, Business Suite"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Check-in Time
+                  </label>
+                  <input
+                    type="time"
+                    name="checkInTime"
+                    value={formData.type_specific_data?.checkInTime || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Check-out Time
+                  </label>
+                  <input
+                    type="time"
+                    name="checkOutTime"
+                    value={formData.type_specific_data?.checkOutTime || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {formData.type === 'BusinessVisit' && (
+            <div className="p-4 bg-purple-50 rounded-lg mb-6">
+              <h4 className="text-md font-semibold text-purple-800 mb-4 flex items-center">
+                <Building size={18} className="mr-2" /> Business Contact Details
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Contact Name
+                  </label>
+                  <input
+                    type="text"
+                    name="contactName"
+                    value={formData.type_specific_data?.contactName || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="Name of your contact person"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Company Name
+                  </label>
+                  <input
+                    type="text"
+                    name="companyName"
+                    value={formData.type_specific_data?.companyName || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="Name of the company"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Contact Phone
+                  </label>
+                  <input
+                    type="text"
+                    name="contactPhone"
+                    value={formData.type_specific_data?.contactPhone || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="Phone number with country code"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {formData.type === 'Sightseeing' && (
+            <div className="p-4 bg-green-50 rounded-lg mb-6">
+              <h4 className="text-md font-semibold text-green-800 mb-4 flex items-center">
+                <LandPlot size={18} className="mr-2" /> Sightseeing Details
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Entrance Fee
+                  </label>
+                  <input
+                    type="text"
+                    name="entranceFee"
+                    value={formData.entranceFee || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="E.g., 100 CNY, Free"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Opening Hours
+                  </label>
+                  <input
+                    type="text"
+                    name="openingHours"
+                    value={formData.openingHours || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="E.g., 9:00-17:00"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Tour Duration
+                  </label>
+                  <input
+                    type="text"
+                    name="tourDuration"
+                    value={formData.tourDuration || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="E.g., 2 hours"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Tour Guide
+                  </label>
+                  <input
+                    type="text"
+                    name="tourGuide"
+                    value={formData.tourGuide || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="E.g., Local guide name or 'Self-guided'"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {formData.type === 'Train' && (
+            <div className="p-4 bg-amber-50 rounded-lg mb-6">
+              <h4 className="text-md font-semibold text-amber-800 mb-4 flex items-center">
+                <Train size={18} className="mr-2" /> Fast Train Details
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Train Number
+                  </label>
+                  <input
+                    type="text"
+                    name="trainNumber"
+                    value={formData.trainNumber || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="E.g., G101, D301"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Class
+                  </label>
+                  <input
+                    type="text"
+                    name="trainClass"
+                    value={formData.trainClass || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="E.g., First Class, Second Class"
                   />
                 </div>
                 <div>
@@ -390,237 +618,6 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
                 </div>
-              </div>
-            </div>
-          )}
-
-          {formData.type === 'Hotel' && (
-            <div className="p-4 bg-indigo-50 rounded-lg mb-6">
-              <h4 className="text-md font-semibold text-indigo-800 mb-4 flex items-center">
-                <Hotel size={18} className="mr-2" /> Hotel Details
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Hotel Name
-                  </label>
-                  <input
-                    type="text"
-                    name="hotelName"
-                    value={formData.hotelName || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="E.g., Grand Hyatt Beijing"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Room Type
-                  </label>
-                  <input
-                    type="text"
-                    name="roomType"
-                    value={formData.roomType || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="E.g., Deluxe Twin, Business Suite"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Check-in Time
-                  </label>
-                  <input
-                    type="time"
-                    name="checkInTime"
-                    value={formData.checkInTime || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Check-out Time
-                  </label>
-                  <input
-                    type="time"
-                    name="checkOutTime"
-                    value={formData.checkOutTime || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {formData.type === 'BusinessVisit' && (
-            <div className="p-4 bg-purple-50 rounded-lg mb-6">
-              <h4 className="text-md font-semibold text-purple-800 mb-4 flex items-center">
-                <Building size={18} className="mr-2" /> Business Contact Details
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Name
-                  </label>
-                  <input
-                    type="text"
-                    name="contactName"
-                    value={formData.contactName || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="Name of your contact person"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Company Name
-                  </label>
-                  <input
-                    type="text"
-                    name="companyName"
-                    value={formData.companyName || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="Name of the company"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Phone
-                  </label>
-                  <input
-                    type="text"
-                    name="contactPhone"
-                    value={formData.contactPhone || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="Phone number with country code"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {formData.type === 'Sightseeing' && (
-            <div className="p-4 bg-green-50 rounded-lg mb-6">
-              <h4 className="text-md font-semibold text-green-800 mb-4 flex items-center">
-                <LandPlot size={18} className="mr-2" /> Sightseeing Details
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Entrance Fee
-                  </label>
-                  <input
-                    type="text"
-                    name="entranceFee"
-                    value={formData.type_specific_data?.entranceFee || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="E.g., 100 CNY, Free"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Opening Hours
-                  </label>
-                  <input
-                    type="text"
-                    name="openingHours"
-                    value={formData.type_specific_data?.openingHours || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="E.g., 9:00-17:00"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Tour Duration
-                  </label>
-                  <input
-                    type="text"
-                    name="tourDuration"
-                    value={formData.type_specific_data?.tourDuration || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="E.g., 2 hours"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Tour Guide
-                  </label>
-                  <input
-                    type="text"
-                    name="tourGuide"
-                    value={formData.type_specific_data?.tourGuide || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="E.g., Local guide name or 'Self-guided'"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {formData.type === 'Train' && (
-            <div className="p-4 bg-amber-50 rounded-lg mb-6">
-              <h4 className="text-md font-semibold text-amber-800 mb-4 flex items-center">
-                <Train size={18} className="mr-2" /> Fast Train Details
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Train Number
-                  </label>
-                  <input
-                    type="text"
-                    name="trainNumber"
-                    value={formData.type_specific_data?.trainNumber || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="E.g., G101, D301"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Class
-                  </label>
-                  <input
-                    type="text"
-                    name="trainClass"
-                    value={formData.type_specific_data?.trainClass || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="E.g., First Class, Second Class"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Departure Time
-                  </label>
-                  <input
-                    type="time"
-                    name="departureTime"
-                    value={formData.type_specific_data?.departureTime || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Arrival Time
-                  </label>
-                  <input
-                    type="time"
-                    name="arrivalTime"
-                    value={formData.type_specific_data?.arrivalTime || ''}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Platform
@@ -628,7 +625,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="platform"
-                    value={formData.type_specific_data?.platform || ''}
+                    value={formData.platform || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Platform 5"
@@ -651,7 +648,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="busNumber"
-                    value={formData.type_specific_data?.busNumber || ''}
+                    value={formData.busNumber || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., 301, Express 5"
@@ -664,7 +661,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="busCompany"
-                    value={formData.type_specific_data?.busCompany || ''}
+                    value={formData.busCompany || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., China Express Bus"
@@ -677,7 +674,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="time"
                     name="departureTime"
-                    value={formData.type_specific_data?.departureTime || ''}
+                    value={formData.departureTime || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -689,7 +686,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="time"
                     name="arrivalTime"
-                    value={formData.type_specific_data?.arrivalTime || ''}
+                    value={formData.arrivalTime || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -701,7 +698,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="busStop"
-                    value={formData.type_specific_data?.busStop || ''}
+                    value={formData.busStop || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., North Bus Terminal"
@@ -724,7 +721,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="meetingRoom"
-                    value={formData.type_specific_data?.meetingRoom || ''}
+                    value={formData.meetingRoom || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Conference Room A"
@@ -736,7 +733,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   </label>
                   <select
                     name="meetingType"
-                    value={formData.type_specific_data?.meetingType || 'In-Person'}
+                    value={formData.meetingType || 'In-Person'}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   >
@@ -751,7 +748,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   </label>
                   <textarea
                     name="agenda"
-                    value={formData.type_specific_data?.agenda || ''}
+                    value={formData.agenda || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     rows={2}
@@ -775,7 +772,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="conferenceHall"
-                    value={formData.type_specific_data?.conferenceHall || ''}
+                    value={formData.conferenceHall || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Main Auditorium"
@@ -786,7 +783,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                     <input
                       type="checkbox"
                       name="registrationRequired"
-                      checked={formData.type_specific_data?.registrationRequired || false}
+                      checked={formData.registrationRequired || false}
                       onChange={handleCheckboxChange}
                       className="h-4 w-4 text-secondary border-gray-300 rounded mr-2"
                     />
@@ -810,7 +807,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="factoryType"
-                    value={formData.type_specific_data?.factoryType || ''}
+                    value={formData.factoryType || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Electronics Manufacturing"
@@ -823,7 +820,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                   <input
                     type="text"
                     name="safetyRequirements"
-                    value={formData.type_specific_data?.safetyRequirements || ''}
+                    value={formData.safetyRequirements || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     placeholder="E.g., Safety shoes, hard hat required"
@@ -834,7 +831,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                     <input
                       type="checkbox"
                       name="tourGuideRequired"
-                      checked={formData.type_specific_data?.tourGuideRequired || false}
+                      checked={formData.tourGuideRequired || false}
                       onChange={handleCheckboxChange}
                       className="h-4 w-4 text-secondary border-gray-300 rounded mr-2"
                     />

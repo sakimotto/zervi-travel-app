@@ -61,15 +61,20 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
   // Update record
   const update = async (id: string, updates: Tables[T]['Update']) => {
     try {
-      // Clean up the updates to match database schema
-      const cleanUpdates = { ...updates };
+      console.log(`Updating ${tableName} with ID ${id}:`, updates);
       
-      // Remove any undefined values that might cause issues
-      Object.keys(cleanUpdates).forEach(key => {
-        if (cleanUpdates[key] === undefined) {
-          delete cleanUpdates[key];
+      // Clean up the updates - convert undefined to null, remove empty strings
+      const cleanUpdates: any = {};
+      Object.keys(updates).forEach(key => {
+        const value = updates[key];
+        if (value === undefined || value === '') {
+          cleanUpdates[key] = null;
+        } else {
+          cleanUpdates[key] = value;
         }
       });
+
+      console.log(`Cleaned updates for ${tableName}:`, cleanUpdates);
 
       const { data: result, error } = await supabase
         .from(tableName)
@@ -78,12 +83,18 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error(`Supabase update error for ${tableName}:`, error);
+        throw error;
+      }
+      
+      console.log(`Successfully updated ${tableName}:`, result);
       setData(prev => prev.map(item => item.id === id ? result : item));
       return result;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred';
       console.error(`Error updating ${tableName}:`, err);
+      setError(errorMessage);
       throw err;
     }
   };
