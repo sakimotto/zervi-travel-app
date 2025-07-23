@@ -32,9 +32,19 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
   // Insert new record
   const insert = async (record: Tables[T]['Insert']) => {
     try {
+      // Clean up the record to match database schema
+      const cleanRecord = { ...record };
+      
+      // Remove any undefined or null values that might cause issues
+      Object.keys(cleanRecord).forEach(key => {
+        if (cleanRecord[key] === undefined || cleanRecord[key] === null || cleanRecord[key] === '') {
+          delete cleanRecord[key];
+        }
+      });
+
       const { data: result, error } = await supabase
         .from(tableName)
-        .insert(record)
+        .insert(cleanRecord)
         .select()
         .single();
 
@@ -51,9 +61,19 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
   // Update record
   const update = async (id: string, updates: Tables[T]['Update']) => {
     try {
+      // Clean up the updates to match database schema
+      const cleanUpdates = { ...updates };
+      
+      // Remove any undefined values that might cause issues
+      Object.keys(cleanUpdates).forEach(key => {
+        if (cleanUpdates[key] === undefined) {
+          delete cleanUpdates[key];
+        }
+      });
+
       const { data: result, error } = await supabase
         .from(tableName)
-        .update(updates)
+        .update(cleanUpdates)
         .eq('id', id)
         .select()
         .single();
