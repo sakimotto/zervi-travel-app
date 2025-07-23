@@ -9,7 +9,7 @@ import {
   LandPlot, Train, Bus, List, LayoutList, Calendar as CalendarIcon, Save, X, Users
 } from 'lucide-react';
 import AddItineraryItem from './AddItineraryItem';
-import PrintButton from './PrintButton';
+import ItineraryExportButton from './ItineraryExportButton';
 import ItinerarySummary from './ItinerarySummary';
 import { useItineraryItems } from '../hooks/useSupabase';
 import { 
@@ -21,6 +21,7 @@ import {
 import { saveAs } from 'file-saver';
 import { getDestinationsFromLocalStorage } from '../utils/localStorage';
 import { exportToWord } from '../utils/wordExport';
+import { useSuppliers, useBusinessContacts, useExpenses } from '../hooks/useSupabase';
 
 const ItinerarySection: React.FC = () => {
   // Use Supabase backend for all data operations
@@ -40,6 +41,11 @@ const ItinerarySection: React.FC = () => {
   const [importError, setImportError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'full' | 'summary'>('full');
   const [showSaveDefaultConfirm, setShowSaveDefaultConfirm] = useState(false);
+
+  // Get related data for comprehensive export
+  const { data: suppliers } = useSuppliers();
+  const { data: contacts } = useBusinessContacts();
+  const { data: expenses } = useExpenses();
 
   // Get dynamic traveler list
   const [travelerOptions, setTravelerOptions] = useState<string[]>(['All']);
@@ -377,8 +383,11 @@ const ItinerarySection: React.FC = () => {
                 />
               </label>
               
-              <PrintButton 
-                itinerary={sortedItinerary} 
+              <ItineraryExportButton 
+                itinerary={sortedItinerary}
+                suppliers={suppliers}
+                contacts={contacts}
+                expenses={expenses}
                 className="px-2 py-1.5 text-sm"
               />
               
