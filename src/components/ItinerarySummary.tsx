@@ -170,6 +170,13 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
                                     {item.departureTime || item.checkInTime}
                                   </div>
                                 )}
+                                {(item.start_time || item.end_time) && (
+                                  <span className="flex items-center gap-1">
+                                    <Clock size={14} />
+                                    {item.start_time}
+                                    {item.start_time && item.end_time && ` - ${item.end_time}`}
+                                  </span>
+                                )}
                                 <button
                                   onClick={() => onEditItem(item)}
                                   className="mt-2 text-blue-500 hover:text-blue-700 text-sm"

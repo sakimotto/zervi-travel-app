@@ -223,6 +223,35 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
             </div>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Start Time
+              </label>
+              <input
+                type="time"
+                name="start_time"
+                value={formData.start_time || ''}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="e.g., 09:00"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                End Time (if applicable)
+              </label>
+              <input
+                type="time"
+                name="end_time"
+                value={formData.end_time || ''}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="e.g., 17:00"
+              />
+            </div>
+          </div>
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Notes (optional)

@@ -217,6 +217,8 @@ export type Database = {
           description: string;
           start_date: string;
           end_date: string | null;
+          start_time: string | null;
+          end_time: string | null;
           location: string;
           assigned_to: string;
           confirmed: boolean;
@@ -232,6 +234,8 @@ export type Database = {
           description: string;
           start_date: string;
           end_date?: string;
+          start_time?: string;
+          end_time?: string;
           location: string;
           assigned_to: string;
           confirmed?: boolean;
@@ -247,6 +251,8 @@ export type Database = {
           description?: string;
           start_date?: string;
           end_date?: string;
+          start_time?: string;
+          end_time?: string;
           location?: string;
           assigned_to?: string;
           confirmed?: boolean;

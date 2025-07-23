@@ -98,6 +98,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
         date: item.start_date,
         endDate: item.end_date,
         time: item.type_specific_data?.departureTime || item.type_specific_data?.checkInTime,
+        time: item.start_time || item.type_specific_data?.departureTime || item.type_specific_data?.checkInTime,
         color: getItineraryColor(item.type),
         icon: getItineraryIcon(item.type),
         confirmed: item.confirmed,
