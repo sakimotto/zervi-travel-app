@@ -175,8 +175,8 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ onClose, onSave, edit
                 Payment Method *
               </label>
               <select
-                name="paymentMethod"
-                value={formData.paymentMethod}
+                name="payment_method"
+                value={formData.payment_method}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 required
@@ -203,8 +203,8 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ onClose, onSave, edit
               Business Purpose *
             </label>
             <textarea
-              name="businessPurpose"
-              value={formData.businessPurpose}
+              name="business_purpose"
+              value={formData.business_purpose}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               rows={2}

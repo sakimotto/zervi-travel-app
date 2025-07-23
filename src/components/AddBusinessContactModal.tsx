@@ -282,8 +282,8 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
               </label>
               <input
                 type="date"
-                name="lastContact"
-                value={formData.lastContact}
+                name="last_contact"
+                value={formData.last_contact}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               />

@@ -160,8 +160,8 @@ const AddTodoModal: React.FC<AddTodoModalProps> = ({ onClose, onSave, editTodo, 
 
             <div>
               <TravelerSelector
-                value={formData.assignedTo}
-                onChange={(value) => setFormData(prev => ({ ...prev, assignedTo: value }))}
+                value={formData.assigned_to}
+                onChange={(value) => setFormData(prev => ({ ...prev, assigned_to: value }))}
                 required
               />
             </div>

@@ -192,7 +192,6 @@ const TodoList: React.FC<TodoListProps> = ({
                   {todo.category}
                 </span>
 
-                <span className="text-gray-500">{todo.assignedTo}</span>
                 <span className="text-gray-500">{todo.assigned_to}</span>
               </div>
             </div>

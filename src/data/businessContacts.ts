@@ -16,7 +16,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     industry: 'Technology',
     relationship: 'Client',
     importance: 'High',
-    lastContact: '2024-01-18',
+    last_contact: '2024-01-18',
     notes: 'Key decision maker for electronics procurement. Prefers WeChat communication.'
   },
   {
@@ -32,7 +32,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     industry: 'Import/Export',
     relationship: 'Partner',
     importance: 'High',
-    lastContact: '2024-01-15',
+    last_contact: '2024-01-15',
     notes: 'Handles large volume orders. Very detail-oriented with documentation.'
   },
   {
@@ -47,7 +47,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     industry: 'Manufacturing',
     relationship: 'Supplier',
     importance: 'Medium',
-    lastContact: '2024-01-10',
+    last_contact: '2024-01-10',
     notes: 'Manages production schedules. Best to contact in the morning.'
   },
   {
@@ -62,7 +62,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     industry: 'Government',
     relationship: 'Government',
     importance: 'High',
-    lastContact: '2024-01-20',
+    last_contact: '2024-01-20',
     notes: 'Helps with trade regulations and government relations. Very knowledgeable about export procedures.'
   },
   {
@@ -77,7 +77,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     industry: 'Logistics',
     relationship: 'Service Provider',
     importance: 'Medium',
-    lastContact: '2024-01-12',
+    last_contact: '2024-01-12',
     notes: 'Handles all shipping arrangements. Very reliable for urgent shipments.'
   },
   {
@@ -92,7 +92,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     industry: 'Quality Control',
     relationship: 'Service Provider',
     importance: 'High',
-    lastContact: '2024-01-16',
+    last_contact: '2024-01-16',
     notes: 'Provides third-party quality inspections. Very thorough and professional.'
   }
 ];

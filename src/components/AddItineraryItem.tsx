@@ -142,8 +142,8 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
 
             <div>
               <TravelerSelector
-                value={formData.assignedTo}
-                onChange={(value) => setFormData(prev => ({ ...prev, assignedTo: value }))}
+                value={formData.assigned_to}
+                onChange={(value) => setFormData(prev => ({ ...prev, assigned_to: value }))}
                 required
               />
             </div>
@@ -186,8 +186,8 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
               </label>
               <input
                 type="date"
-                name="startDate"
-                value={formData.startDate}
+                name="start_date"
+                value={formData.start_date}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 required
@@ -200,8 +200,8 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
               </label>
               <input
                 type="date"
-                name="endDate"
-                value={formData.endDate || ''}
+                name="end_date"
+                value={formData.end_date || ''}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               />

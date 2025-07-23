@@ -5,10 +5,12 @@ export type Destination = {
   image: string;
   region: string;
   activities: string[];
-  bestTimeToVisit: string;
-  businessDistrict?: string;
-  majorIndustries?: string[];
-  transportationHubs?: string[];
+  best_time_to_visit: string;
+  business_district?: string;
+  major_industries?: string[];
+  transportation_hubs?: string[];
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type TravelTip = {
@@ -44,13 +46,15 @@ export type ItineraryItem = {
   type: ItineraryItemType;
   title: string;
   description: string;
-  startDate: string;
-  endDate?: string;
+  start_date: string;
+  end_date?: string;
   location: string;
-  assignedTo: Traveler;
+  assigned_to: string;
   confirmed: boolean;
   notes?: string;
   type_specific_data?: any;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type Supplier = {
@@ -92,7 +96,7 @@ export type BusinessContact = {
   city: string;
   industry: string;
   notes?: string;
-  lastContact?: string;
+  last_contact?: string;
   relationship: 'Client' | 'Supplier' | 'Partner' | 'Government' | 'Service Provider' | 'Other';
   importance: 'High' | 'Medium' | 'Low';
   created_at?: string;
@@ -106,10 +110,10 @@ export type Expense = {
   description: string;
   amount: number;
   currency: 'CNY' | 'USD' | 'EUR';
-  paymentMethod: 'Cash' | 'Credit Card' | 'WeChat Pay' | 'Alipay' | 'Bank Transfer';
+  payment_method: 'Cash' | 'Credit Card' | 'WeChat Pay' | 'Alipay' | 'Bank Transfer';
   receipt?: string;
-  businessPurpose: string;
-  assignedTo: Traveler;
+  business_purpose: string;
+  assigned_to: string;
   reimbursable: boolean;
   approved?: boolean;
   created_at?: string;
@@ -122,10 +126,10 @@ export type TodoItem = {
   description?: string;
   completed: boolean;
   priority: 'High' | 'Medium' | 'Low';
-  dueDate?: string;
+  due_date?: string;
   category: 'Business' | 'Travel' | 'Personal' | 'Supplier' | 'Meeting';
-  assignedTo: Traveler;
-  created_at: string;
+  assigned_to: string;
+  created_at?: string;
   updated_at?: string;
 };
 

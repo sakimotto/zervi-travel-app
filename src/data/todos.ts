@@ -25,10 +25,10 @@ export const sampleTodos: TodoItem[] = [
     description: 'Design and print 500 business cards with Chinese translation',
     completed: false,
     priority: 'High',
-    dueDate: getTomorrow(),
+    due_date: getTomorrow(),
     category: 'Business',
-    assignedTo: 'Both',
-    created_at: new Date().toISOString(),
+    assigned_to: 'Both',
+    created_at: new Date().toISOString()
   },
   {
     id: uuidv4(),
@@ -36,10 +36,10 @@ export const sampleTodos: TodoItem[] = [
     description: 'Call Grand Hyatt Shanghai to confirm reservation and room preferences',
     completed: true,
     priority: 'High',
-    dueDate: getToday(),
+    due_date: getToday(),
     category: 'Travel',
-    assignedTo: 'Yok',
-    created_at: new Date().toISOString(),
+    assigned_to: 'Yok',
+    created_at: new Date().toISOString()
   },
   {
     id: uuidv4(),
@@ -47,10 +47,10 @@ export const sampleTodos: TodoItem[] = [
     description: 'Verify ISO certifications for top 3 electronics suppliers',
     completed: false,
     priority: 'Medium',
-    dueDate: getNextWeek(),
+    due_date: getNextWeek(),
     category: 'Supplier',
-    assignedTo: 'Archie',
-    created_at: new Date().toISOString(),
+    assigned_to: 'Archie',
+    created_at: new Date().toISOString()
   },
   {
     id: uuidv4(),
@@ -58,10 +58,10 @@ export const sampleTodos: TodoItem[] = [
     description: 'Essential for business communication in China',
     completed: false,
     priority: 'High',
-    dueDate: getTomorrow(),
+    due_date: getTomorrow(),
     category: 'Business',
-    assignedTo: 'Both',
-    created_at: new Date().toISOString(),
+    assigned_to: 'Both',
+    created_at: new Date().toISOString()
   },
   {
     id: uuidv4(),
@@ -69,9 +69,9 @@ export const sampleTodos: TodoItem[] = [
     description: 'Pack samples for supplier presentations and quality discussions',
     completed: false,
     priority: 'Medium',
-    dueDate: getNextWeek(),
+    due_date: getNextWeek(),
     category: 'Business',
-    assignedTo: 'Archie',
-    created_at: new Date().toISOString(),
+    assigned_to: 'Archie',
+    created_at: new Date().toISOString()
   },
 ];

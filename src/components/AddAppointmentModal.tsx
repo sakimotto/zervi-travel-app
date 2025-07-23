@@ -225,7 +225,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
               </label>
               <input
                 type="date"
-                name="start_date"
+               name="start_date"
                 value={formData.start_date}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -239,7 +239,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
               </label>
               <input
                 type="time"
-                name="start_time"
+               name="start_time"
                 value={formData.start_time}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -253,7 +253,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
               </label>
               <input
                 type="time"
-                name="end_time"
+               name="end_time"
                 value={formData.end_time || ''}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
