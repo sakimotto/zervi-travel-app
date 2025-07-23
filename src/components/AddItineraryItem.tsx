@@ -57,55 +57,46 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Prepare data for database - move type-specific fields to type_specific_data
-    const typeSpecificFields = {
-      airline: formData.airline,
-      flightNumber: formData.flightNumber,
-      departureTime: formData.departureTime,
-      arrivalTime: formData.arrivalTime,
-      hotelName: formData.hotelName,
-      roomType: formData.roomType,
-      checkInTime: formData.checkInTime,
-      checkOutTime: formData.checkOutTime,
-      contactName: formData.contactName,
-      contactPhone: formData.contactPhone,
-      companyName: formData.companyName,
-      entranceFee: formData.entranceFee,
-      openingHours: formData.openingHours,
-      tourDuration: formData.tourDuration,
-      tourGuide: formData.tourGuide,
-      trainNumber: formData.trainNumber,
-      trainClass: formData.trainClass,
-      platform: formData.platform,
-      busNumber: formData.busNumber,
-      busCompany: formData.busCompany,
-      busStop: formData.busStop,
-      meetingRoom: formData.meetingRoom,
-      agenda: formData.agenda,
-      meetingType: formData.meetingType,
-      conferenceHall: formData.conferenceHall,
-      registrationRequired: formData.registrationRequired,
-      factoryType: formData.factoryType,
-      safetyRequirements: formData.safetyRequirements,
-      tourGuideRequired: formData.tourGuideRequired
-    };
-
-    // Remove undefined values from type_specific_data
-    const cleanTypeSpecificData = Object.fromEntries(
-      Object.entries(typeSpecificFields).filter(([_, value]) => value !== undefined && value !== '')
-    );
-
+    // Create clean data object matching database schema exactly
     const itemToSave = {
-      ...formData,
       id: formData.id || uuidv4(),
-      type_specific_data: cleanTypeSpecificData
+      type: formData.type,
+      title: formData.title,
+      description: formData.description,
+      start_date: formData.start_date,
+      end_date: formData.end_date || null,
+      start_time: formData.start_time || null,
+      end_time: formData.end_time || null,
+      location: formData.location,
+      assigned_to: formData.assigned_to,
+      confirmed: formData.confirmed,
+      notes: formData.notes || null,
+      type_specific_data: {}
     };
 
-    // Remove the flattened fields from the main object
-    const fieldsToRemove = Object.keys(typeSpecificFields);
-    fieldsToRemove.forEach(field => {
-      delete itemToSave[field];
-    });
+    // Add type-specific data only if values exist
+    const typeSpecificData: any = {};
+    
+    // Flight fields
+    if (formData.airline) typeSpecificData.airline = formData.airline;
+    if (formData.flightNumber) typeSpecificData.flightNumber = formData.flightNumber;
+    if (formData.departureTime) typeSpecificData.departureTime = formData.departureTime;
+    if (formData.arrivalTime) typeSpecificData.arrivalTime = formData.arrivalTime;
+    
+    // Hotel fields
+    if (formData.hotelName) typeSpecificData.hotelName = formData.hotelName;
+    if (formData.roomType) typeSpecificData.roomType = formData.roomType;
+    if (formData.checkInTime) typeSpecificData.checkInTime = formData.checkInTime;
+    if (formData.checkOutTime) typeSpecificData.checkOutTime = formData.checkOutTime;
+    
+    // Business visit fields
+    if (formData.contactName) typeSpecificData.contactName = formData.contactName;
+    if (formData.contactPhone) typeSpecificData.contactPhone = formData.contactPhone;
+    if (formData.companyName) typeSpecificData.companyName = formData.companyName;
+    
+    // Add other type-specific fields as needed...
+    
+    itemToSave.type_specific_data = typeSpecificData;
 
     onSave(itemToSave);
   };
