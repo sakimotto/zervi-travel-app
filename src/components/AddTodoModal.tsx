@@ -130,8 +130,8 @@ const AddTodoModal: React.FC<AddTodoModalProps> = ({ onClose, onSave, editTodo, 
               </label>
               <input
                 type="date"
-                name="dueDate"
-                value={formData.dueDate}
+                name="due_date"
+                value={formData.due_date}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               />

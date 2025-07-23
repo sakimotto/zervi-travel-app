@@ -54,30 +54,18 @@ const TodoList: React.FC<TodoListProps> = ({
   const handleSaveTodo = async (todo: TodoItem) => {
     if (editingTodo) {
       try {
-        // Convert frontend fields to database fields
-        const dbTodo = {
-          ...todo,
-          assigned_to: todo.assignedTo,
-          due_date: todo.dueDate
-        };
-        await update(todo.id, dbTodo);
+        await update(appointment.id, appointment);
       } catch (error) {
-        console.error('Error updating todo:', error);
-        alert('Failed to update task. Please try again.');
+        console.error('Error updating appointment:', error);
+        alert('Failed to update appointment. Please try again.');
       }
       setEditingTodo(null);
     } else {
       try {
-        // Convert frontend fields to database fields
-        const dbTodo = {
-          ...todo,
-          assigned_to: todo.assignedTo,
-          due_date: todo.dueDate
-        };
-        await insert(dbTodo);
+        await insert(appointment);
       } catch (error) {
-        console.error('Error creating todo:', error);
-        alert('Failed to create task. Please try again.');
+        console.error('Error creating appointment:', error);
+        alert('Failed to create appointment. Please try again.');
       }
     }
     setShowAddModal(false);
