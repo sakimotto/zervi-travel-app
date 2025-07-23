@@ -22,9 +22,9 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
     industry: '',
     products: [''],
     certifications: [''],
-    minimumOrder: '',
-    paymentTerms: '',
-    leadTime: '',
+    minimum_order: '',
+    payment_terms: '',
+    lead_time: '',
     notes: '',
     website: '',
     established: '',
@@ -56,9 +56,9 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
         industry: '',
         products: [''],
         certifications: [''],
-        minimumOrder: '',
-        paymentTerms: '',
-        leadTime: '',
+        minimum_order: '',
+        payment_terms: '',
+        lead_time: '',
         notes: '',
         website: '',
         established: '',
@@ -332,8 +332,8 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
               </label>
               <input
                 type="text"
-                name="minimumOrder"
-                value={formData.minimumOrder}
+                name="minimum_order"
+                value={formData.minimum_order}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 placeholder="E.g., 1000 units"
@@ -346,8 +346,8 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
               </label>
               <input
                 type="text"
-                name="leadTime"
-                value={formData.leadTime}
+                name="lead_time"
+                value={formData.lead_time}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 placeholder="E.g., 15-20 days"
@@ -377,8 +377,8 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
             </label>
             <input
               type="text"
-              name="paymentTerms"
-              value={formData.paymentTerms}
+              name="payment_terms"
+              value={formData.payment_terms}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               placeholder="E.g., 30% deposit, 70% before shipment"

@@ -69,9 +69,9 @@ export type Supplier = {
   industry: string;
   products: string[];
   certifications: string[];
-  minimum_order?: string;
-  payment_terms?: string;
-  lead_time?: string;
+  minimum_order: string;
+  payment_terms: string;
+  lead_time: string;
   notes?: string;
   website?: string;
   established?: string;
