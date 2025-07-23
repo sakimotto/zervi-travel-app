@@ -247,9 +247,7 @@ const ItinerarySection: React.FC = () => {
 
   const filteredItinerary = displayItinerary.filter(item => {
     const matchesType = filterType === 'All' || item.type === filterType;
-    const matchesTraveler = filterTraveler === 'All' || 
-                           item.assignedTo === filterTraveler || 
-                           (filterTraveler === 'Both' && item.assignedTo === 'Both');
+    const matchesTraveler = filterTraveler === 'All' || item.assigned_to === filterTraveler;
     return matchesType && matchesTraveler;
   });
 
