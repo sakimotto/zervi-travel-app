@@ -5,7 +5,7 @@ import { Search, Plus, User, Mail, Phone, MapPin, Edit, Trash2, Download, Upload
 import AddBusinessContactModal from './AddBusinessContactModal';
 import { saveAs } from 'file-saver';
 import { exportToWord } from '../utils/wordExport';
-import { useBusinessContacts } from '../hooks/useSupabase';
+import { useBusinessContacts, useSuppliers } from '../hooks/useSupabase';
 
 const BusinessContactsSection: React.FC = () => {
   // Use Supabase backend for all data operations
