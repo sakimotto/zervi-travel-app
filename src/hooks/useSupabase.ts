@@ -42,6 +42,12 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
         }
       });
 
+      // For itinerary_items, filter out time fields that don't exist in database yet
+      if (tableName === 'itinerary_items') {
+        delete cleanRecord.start_time;
+        delete cleanRecord.end_time;
+      }
+
       const { data: result, error } = await supabase
         .from(tableName)
         .insert(cleanRecord)
@@ -73,6 +79,12 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
           cleanUpdates[key] = value;
         }
       });
+
+      // For itinerary_items, filter out time fields that don't exist in database yet
+      if (tableName === 'itinerary_items') {
+        delete cleanUpdates.start_time;
+        delete cleanUpdates.end_time;
+      }
 
       console.log(`Cleaned updates for ${tableName}:`, cleanUpdates);
 

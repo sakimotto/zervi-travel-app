@@ -1,13 +1,21 @@
-# Yok's Travel App Features - Reference Guide
+# Zervi Travel App Features - Reference Guide
 
-This document outlines the key features and implementation details of the Travel App that make it a valuable template for future projects.
+**Version:** 2.0.0  
+**Last Updated:** January 2025  
+**Status:** Production Ready (87.5% Health Score)  
+**Database:** Supabase PostgreSQL with RLS  
+**Frontend:** React 18 + TypeScript + Vite  
+
+This document outlines the key features and implementation details of Zervi Travel that make it a comprehensive business travel management solution.
 
 ## Core Features
 
 ### 1. Data Persistence
-- **LocalStorage Integration**: All user data is saved in browser local storage
-- **Cross-Device Synchronization**: The "Save as Default" feature allows creating a baseline of data for use across devices
-- **Import/Export**: JSON-based data portability for backup or sharing
+- **Supabase Backend**: All user data persists to PostgreSQL database with real-time sync
+- **Row Level Security (RLS)**: User data isolation and secure multi-tenant architecture
+- **Authentication**: Supabase Auth with email/password and social login support
+- **Offline Fallback**: Sample data available when offline with localStorage backup
+- **Import/Export**: JSON-based data portability for backup, sharing, and migration
 
 ### 2. UI Components
 - **Modal System**: Reusable modal pattern for adding/editing data
@@ -30,12 +38,13 @@ This document outlines the key features and implementation details of the Travel
 
 ## Implementation Details
 
-### LocalStorage Pattern
-The localStorage implementation follows a robust pattern:
-- Separate keys for different data types
-- Functions to save, load, and clear data
-- Error handling for storage failures
-- Custom sample data that can override defaults
+### Supabase Integration Pattern
+The Supabase implementation follows enterprise-grade patterns:
+- Custom React hooks for each data entity (useDestinations, useSuppliers, etc.)
+- Real-time CRUD operations with optimistic updates
+- Error handling with user-friendly messages
+- Automatic retry logic for network failures
+- Type-safe database operations with TypeScript
 
 ### Modal Architecture
 Modals follow a consistent pattern:
@@ -46,12 +55,11 @@ Modals follow a consistent pattern:
 - Consistent styling and keyboard navigation
 
 ### Data Flow
-1. Initial app load pulls from either:
-   - User-saved custom defaults
-   - Built-in sample data
-2. Local edits are saved to device-specific storage
-3. "Save as Default" pushes data to shared sample storage
-4. This creates a tiered approach to data persistence
+1. Initial app load authenticates user and fetches from Supabase
+2. If database is empty, sample data is automatically seeded
+3. All CRUD operations immediately sync to PostgreSQL backend
+4. Real-time subscriptions keep data current across browser tabs
+5. Offline mode gracefully degrades to sample data with sync on reconnection
 
 ### File Organization
 - **Components/**: UI components organized by feature

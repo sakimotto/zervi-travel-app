@@ -35,7 +35,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
 
   const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
   const filteredAppointments = appointments.filter(apt => apt.start_date === selectedDateStr);
-  const selectedDateItinerary = itinerary.filter(item => item.startDate === selectedDateStr);
+  const selectedDateItinerary = itinerary.filter(item => item.start_date === selectedDateStr);
 
   const getItineraryIcon = (type: string) => {
     switch (type) {
@@ -62,18 +62,29 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
   const handleSaveAppointment = async (appointment: Appointment) => {
     if (editingAppointment) {
       try {
-        await update(appointment.id, appointment);
+        const updatedAppointment = await update(appointment.id, appointment);
+        // Update the local appointments list
+        const updatedAppointments = appointments.map(apt => 
+          apt.id === appointment.id ? updatedAppointment : apt
+        );
+        onAppointmentsChange(updatedAppointments);
       } catch (error) {
         console.error('Error updating appointment:', error);
-        alert('Failed to update appointment. Please try again.');
+        console.error('Error details:', error.message || error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        alert(`Failed to update appointment: ${errorMessage}`);
+        return; // Don't close modal on error
       }
       setEditingAppointment(null);
     } else {
       try {
-        await insert(appointment);
+        const newAppointment = await insert(appointment);
+        // Add the new appointment to the local list
+        onAppointmentsChange([...appointments, newAppointment]);
       } catch (error) {
         console.error('Error creating appointment:', error);
         alert('Failed to create appointment. Please try again.');
+        return; // Don't close modal on error
       }
     }
     setShowAddModal(false);
@@ -123,7 +134,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
           <div className="space-y-3">
             {/* Travel/Itinerary Items */}
             {selectedDateItinerary
-              .sort((a, b) => (a.departureTime || a.checkInTime || '00:00').localeCompare(b.departureTime || b.checkInTime || '00:00'))
+              .sort((a, b) => (a.type_specific_data?.departure_time || a.type_specific_data?.check_in_time || '00:00').localeCompare(b.type_specific_data?.departure_time || b.type_specific_data?.check_in_time || '00:00'))
               .map(item => (
               <div key={`itinerary-${item.id}`} className="border border-green-200 rounded-lg p-4 bg-green-50">
                 <div className="flex items-start justify-between mb-2">
@@ -136,10 +147,10 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
                       </span>
                     </div>
                     <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
-                      {(item.departureTime || item.checkInTime) && (
+                      {(item.type_specific_data?.departure_time || item.type_specific_data?.check_in_time) && (
                         <span className="flex items-center gap-1">
                           <Clock size={14} />
-                          {item.departureTime || item.checkInTime}
+                          {item.type_specific_data?.departure_time || item.type_specific_data?.check_in_time}
                         </span>
                       )}
                       <span className={`px-2 py-1 text-xs rounded-full ${
@@ -177,7 +188,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
                     </span>
                     {appointment.assigned_to && (
                       <span className="flex items-center gap-1">
-                        <User size={14} />
+                        <Users size={14} />
                         {appointment.assigned_to}
                       </span>
                     )}

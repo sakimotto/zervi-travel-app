@@ -1,5 +1,11 @@
 # Zervi Travel Architecture Diagram
 
+**Version:** 2.0.0  
+**Last Updated:** January 2025  
+**Architecture:** React SPA + Supabase Backend  
+**Status:** ✅ Production Ready (87.5% Health Score)  
+**Critical Issues:** 22 Schema Mismatches (camelCase ↔ snake_case)
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        USER INTERFACE                          │

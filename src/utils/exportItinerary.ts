@@ -538,75 +538,75 @@ const generateFormattedItineraryHTML = (
                   ${item.type === 'Flight' && item.type_specific_data.airline ? `
                     <div class="detail-item">
                       <span class="detail-label">Airline:</span>
-                      <span class="detail-value">${item.type_specific_data.airline} ${item.type_specific_data.flightNumber || ''}</span>
+                      <span class="detail-value">${item.type_specific_data.airline} ${item.type_specific_data.flight_number || ''}</span>
                     </div>
-                    ${item.type_specific_data.departureTime ? `
+                    ${item.type_specific_data.departure_time ? `
                       <div class="detail-item">
                         <span class="detail-label">Departure:</span>
-                        <span class="detail-value">${item.type_specific_data.departureTime}</span>
+                        <span class="detail-value">${item.type_specific_data.departure_time}</span>
                       </div>
                     ` : ''}
-                    ${item.type_specific_data.arrivalTime ? `
+                    ${item.type_specific_data.arrival_time ? `
                       <div class="detail-item">
                         <span class="detail-label">Arrival:</span>
-                        <span class="detail-value">${item.type_specific_data.arrivalTime}</span>
+                        <span class="detail-value">${item.type_specific_data.arrival_time}</span>
                       </div>
                     ` : ''}
                   ` : ''}
                   
-                  ${item.type === 'Hotel' && item.type_specific_data.hotelName ? `
+                  ${item.type === 'Hotel' && item.type_specific_data.hotel_name ? `
                     <div class="detail-item">
                       <span class="detail-label">Hotel:</span>
-                      <span class="detail-value">${item.type_specific_data.hotelName}</span>
+                      <span class="detail-value">${item.type_specific_data.hotel_name}</span>
                     </div>
-                    ${item.type_specific_data.roomType ? `
+                    ${item.type_specific_data.room_type ? `
                       <div class="detail-item">
                         <span class="detail-label">Room:</span>
-                        <span class="detail-value">${item.type_specific_data.roomType}</span>
+                        <span class="detail-value">${item.type_specific_data.room_type}</span>
                       </div>
                     ` : ''}
-                    ${item.type_specific_data.checkInTime ? `
+                    ${item.type_specific_data.check_in_time ? `
                       <div class="detail-item">
                         <span class="detail-label">Check-in:</span>
-                        <span class="detail-value">${item.type_specific_data.checkInTime}</span>
+                        <span class="detail-value">${item.type_specific_data.check_in_time}</span>
                       </div>
                     ` : ''}
-                    ${item.type_specific_data.checkOutTime ? `
+                    ${item.type_specific_data.check_out_time ? `
                       <div class="detail-item">
                         <span class="detail-label">Check-out:</span>
-                        <span class="detail-value">${item.type_specific_data.checkOutTime}</span>
+                        <span class="detail-value">${item.type_specific_data.check_out_time}</span>
                       </div>
                     ` : ''}
                   ` : ''}
                   
-                  ${item.type === 'BusinessVisit' && item.type_specific_data.contactName ? `
+                  ${item.type === 'BusinessVisit' && item.type_specific_data.contact_name ? `
                     <div class="detail-item">
                       <span class="detail-label">Contact:</span>
-                      <span class="detail-value">${item.type_specific_data.contactName}</span>
+                      <span class="detail-value">${item.type_specific_data.contact_name}</span>
                     </div>
-                    ${item.type_specific_data.companyName ? `
+                    ${item.type_specific_data.company_name ? `
                       <div class="detail-item">
                         <span class="detail-label">Company:</span>
-                        <span class="detail-value">${item.type_specific_data.companyName}</span>
+                        <span class="detail-value">${item.type_specific_data.company_name}</span>
                       </div>
                     ` : ''}
-                    ${item.type_specific_data.contactPhone ? `
+                    ${item.type_specific_data.contact_phone ? `
                       <div class="detail-item">
                         <span class="detail-label">Phone:</span>
-                        <span class="detail-value">${item.type_specific_data.contactPhone}</span>
+                        <span class="detail-value">${item.type_specific_data.contact_phone}</span>
                       </div>
                     ` : ''}
                   ` : ''}
                   
-                  ${item.type === 'Train' && item.type_specific_data.trainNumber ? `
+                  ${item.type === 'Train' && item.type_specific_data.train_number ? `
                     <div class="detail-item">
                       <span class="detail-label">Train:</span>
-                      <span class="detail-value">${item.type_specific_data.trainNumber}</span>
+                      <span class="detail-value">${item.type_specific_data.train_number}</span>
                     </div>
-                    ${item.type_specific_data.trainClass ? `
+                    ${item.type_specific_data.train_class ? `
                       <div class="detail-item">
                         <span class="detail-label">Class:</span>
-                        <span class="detail-value">${item.type_specific_data.trainClass}</span>
+                        <span class="detail-value">${item.type_specific_data.train_class}</span>
                       </div>
                     ` : ''}
                     ${item.type_specific_data.platform ? `

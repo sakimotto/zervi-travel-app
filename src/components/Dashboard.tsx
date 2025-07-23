@@ -287,8 +287,8 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
                       }</p>
                       <p>🚗 Leave hotel: {
                         (() => {
-                          if (!flight.type_specific_data?.departureTime) return 'TBD';
-                          const [hours, minutes] = flight.type_specific_data.departureTime.split(':');
+                          if (!flight.type_specific_data?.departure_time) return 'TBD';
+                          const [hours, minutes] = flight.type_specific_data.departure_time.split(':');
                           const departureTime = new Date();
                           departureTime.setHours(parseInt(hours), parseInt(minutes));
                           const leaveTime = new Date(departureTime.getTime() - (flight.title.toLowerCase().includes('international') ? 4 : 3) * 60 * 60 * 1000);

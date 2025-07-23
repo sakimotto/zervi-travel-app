@@ -97,8 +97,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
         subType: item.type,
         date: item.start_date,
         endDate: item.end_date,
-        time: item.type_specific_data?.departureTime || item.type_specific_data?.checkInTime,
-        time: item.start_time || item.type_specific_data?.departureTime || item.type_specific_data?.checkInTime,
+        time: item.start_time || item.type_specific_data?.departure_time || item.type_specific_data?.check_in_time,
         color: getItineraryColor(item.type),
         icon: getItineraryIcon(item.type),
         confirmed: item.confirmed,
@@ -195,6 +194,63 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
     setCurrentDate(new Date());
   };
 
+  // Helper function to get multi-day events that span across the calendar
+  const getMultiDayEvents = (days: Date[]) => {
+    const multiDayEvents: Array<{
+      event: CalendarEvent;
+      startCol: number;
+      endCol: number;
+      row: number;
+    }> = [];
+
+    const processedEvents = new Set<string>();
+
+    filteredEvents.forEach(event => {
+      if (event.endDate && !processedEvents.has(event.id)) {
+        const startDate = parseISO(event.date);
+        const endDate = parseISO(event.endDate);
+        
+        // Find start and end positions in the calendar grid
+        const startIndex = days.findIndex(day => isSameDay(day, startDate));
+        const endIndex = days.findIndex(day => isSameDay(day, endDate));
+        
+        if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+          const startCol = startIndex % 7;
+          const endCol = endIndex % 7;
+          const startRow = Math.floor(startIndex / 7);
+          const endRow = Math.floor(endIndex / 7);
+          
+          // Handle events that span multiple weeks
+          if (startRow === endRow) {
+            // Same row - simple case
+            multiDayEvents.push({
+              event,
+              startCol,
+              endCol,
+              row: startRow
+            });
+          } else {
+            // Multiple rows - create segments for each row
+            for (let row = startRow; row <= endRow; row++) {
+              const segmentStartCol = row === startRow ? startCol : 0;
+              const segmentEndCol = row === endRow ? endCol : 6;
+              
+              multiDayEvents.push({
+                event,
+                startCol: segmentStartCol,
+                endCol: segmentEndCol,
+                row
+              });
+            }
+          }
+          processedEvents.add(event.id);
+        }
+      }
+    });
+
+    return multiDayEvents;
+  };
+
   // Render different view modes
   const renderMonthView = () => {
     const monthStart = startOfMonth(currentDate);
@@ -202,6 +258,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
     const calendarStart = startOfWeek(monthStart);
     const calendarEnd = endOfWeek(monthEnd);
     const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
+    const multiDayEvents = getMultiDayEvents(days);
+    const weeks = [];
+    
+    // Group days into weeks
+    for (let i = 0; i < days.length; i += 7) {
+      weeks.push(days.slice(i, i + 7));
+    }
 
     return (
       <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full">
@@ -213,53 +276,87 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
           ))}
         </div>
         
-        <div className="grid grid-cols-7">
-          {days.map(day => {
-            const dayEvents = getEventsForDate(day);
-            const isCurrentMonth = isSameMonth(day, currentDate);
-            const isCurrentDay = isToday(day);
-
+        <div className="relative">
+          {/* Multi-day event bars */}
+          {multiDayEvents.map((multiEvent, index) => {
+            const { event, startCol, endCol, row } = multiEvent;
+            const width = ((endCol - startCol + 1) / 7) * 100;
+            const left = (startCol / 7) * 100;
+            const top = row * 120 + 30; // Adjust based on cell height
+            
             return (
-              <div 
-                key={day.toISOString()} 
-                className={`min-h-[80px] sm:min-h-[120px] p-1 sm:p-2 border-r border-b last:border-r-0 ${
-                  !isCurrentMonth ? 'bg-gray-50' : ''
-                } ${isCurrentDay ? 'bg-blue-50' : ''}`}
+              <div
+                key={`${event.id}-${row}-${index}`}
+                onClick={() => setSelectedEvent(event)}
+                className={`absolute z-10 ${event.color} rounded-md px-2 py-1 cursor-pointer hover:opacity-80 shadow-sm`}
+                style={{
+                  left: `${left}%`,
+                  width: `${width}%`,
+                  top: `${top}px`,
+                  height: '20px'
+                }}
+                title={`${event.title} (${format(parseISO(event.date), 'MMM d')} - ${format(parseISO(event.endDate!), 'MMM d')})`}
               >
-                <div className={`text-xs sm:text-sm font-medium mb-1 sm:mb-2 ${
-                  !isCurrentMonth ? 'text-gray-400' : isCurrentDay ? 'text-blue-600' : 'text-gray-700'
-                }`}>
-                  {format(day, 'd')}
-                </div>
-                
-                <div className="space-y-0.5 sm:space-y-1">
-                  {dayEvents.slice(0, 3).map(event => (
-                    <div
-                      key={event.id}
-                      onClick={() => setSelectedEvent(event)}
-                      className={`text-xs px-1 sm:px-2 py-0.5 sm:py-1 rounded cursor-pointer ${event.color} truncate flex items-center gap-0.5 sm:gap-1 hover:opacity-80`}
-                      title={`${event.title} ${event.time ? `at ${event.time}` : ''}`}
-                    >
-                      <span className="hidden sm:inline">{event.icon}</span>
-                      <span className="truncate text-xs">{event.title}</span>
-                    </div>
-                  ))}
-                  {dayEvents.length > 3 && (
-                    <div 
-                      className="text-xs text-gray-500 px-1 sm:px-2 cursor-pointer hover:text-gray-700"
-                      onClick={() => {
-                        // Show all events for this day
-                        setCurrentDate(day);
-                        setViewMode('day');
-                      }}
-                    >
-                      +{dayEvents.length - 3} more
-                    </div>
+                <div className="flex items-center gap-1 text-xs truncate">
+                  <span className="hidden sm:inline">{event.icon}</span>
+                  <span className="truncate">{event.title}</span>
+                  {event.subType === 'Hotel' && (
+                    <span className="text-xs opacity-75">({Math.ceil((parseISO(event.endDate!) - parseISO(event.date)) / (1000 * 60 * 60 * 24))} nights)</span>
                   )}
                 </div>
               </div>
             );
           })}
+          
+          {/* Regular calendar grid */}
+          <div className="grid grid-cols-7">
+            {days.map(day => {
+              const dayEvents = getEventsForDate(day).filter(event => !event.endDate || isSameDay(parseISO(event.date), day));
+              const isCurrentMonth = isSameMonth(day, currentDate);
+              const isCurrentDay = isToday(day);
+
+              return (
+                <div 
+                  key={day.toISOString()} 
+                  className={`min-h-[80px] sm:min-h-[120px] p-1 sm:p-2 border-r border-b last:border-r-0 relative ${
+                    !isCurrentMonth ? 'bg-gray-50' : ''
+                  } ${isCurrentDay ? 'bg-blue-50' : ''}`}
+                >
+                  <div className={`text-xs sm:text-sm font-medium mb-1 sm:mb-2 ${
+                    !isCurrentMonth ? 'text-gray-400' : isCurrentDay ? 'text-blue-600' : 'text-gray-700'
+                  }`}>
+                    {format(day, 'd')}
+                  </div>
+                  
+                  {/* Single day events */}
+                  <div className="space-y-0.5 sm:space-y-1 mt-6">
+                    {dayEvents.slice(0, 2).map(event => (
+                      <div
+                        key={event.id}
+                        onClick={() => setSelectedEvent(event)}
+                        className={`text-xs px-1 sm:px-2 py-0.5 sm:py-1 rounded cursor-pointer ${event.color} truncate flex items-center gap-0.5 sm:gap-1 hover:opacity-80`}
+                        title={`${event.title} ${event.time ? `at ${event.time}` : ''}`}
+                      >
+                        <span className="hidden sm:inline">{event.icon}</span>
+                        <span className="truncate text-xs">{event.title}</span>
+                      </div>
+                    ))}
+                    {dayEvents.length > 2 && (
+                      <div 
+                        className="text-xs text-gray-500 px-1 sm:px-2 cursor-pointer hover:text-gray-700"
+                        onClick={() => {
+                          setCurrentDate(day);
+                          setViewMode('day');
+                        }}
+                      >
+                        +{dayEvents.length - 2} more
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     );
@@ -557,7 +654,21 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
                 
                 <div className="space-y-2 text-sm">
                   <div>
-                    <span className="font-medium">Date:</span> {format(parseISO(selectedEvent.date), 'MMMM d, yyyy')}
+                    <span className="font-medium">
+                      {selectedEvent.endDate ? 'Duration:' : 'Date:'}
+                    </span> 
+                    {selectedEvent.endDate ? (
+                      <span>
+                        {format(parseISO(selectedEvent.date), 'MMM d, yyyy')} - {format(parseISO(selectedEvent.endDate), 'MMM d, yyyy')}
+                        {selectedEvent.subType === 'Hotel' && (
+                          <span className="text-gray-600 ml-2">
+                            ({Math.ceil((parseISO(selectedEvent.endDate) - parseISO(selectedEvent.date)) / (1000 * 60 * 60 * 24))} nights)
+                          </span>
+                        )}
+                      </span>
+                    ) : (
+                      format(parseISO(selectedEvent.date), 'MMMM d, yyyy')
+                    )}
                   </div>
                   {selectedEvent.time && (
                     <div>

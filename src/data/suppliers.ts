@@ -1,9 +1,8 @@
 import { Supplier } from '../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const sampleSuppliers: Supplier[] = [
   {
-    id: uuidv4(),
+    id: 'supplier-1',
     company_name: 'Shenzhen Electronics Manufacturing Co., Ltd.',
     contact_person: 'Li Wei',
     email: 'li.wei@szelec.com.cn',
@@ -26,7 +25,7 @@ export const sampleSuppliers: Supplier[] = [
     notes: 'Reliable supplier for consumer electronics. Good quality control and competitive pricing.'
   },
   {
-    id: uuidv4(),
+    id: 'supplier-2',
     company_name: 'Guangzhou Textile Solutions Ltd.',
     contact_person: 'Zhang Ming',
     email: 'zhang.ming@gztextile.com',
@@ -49,7 +48,7 @@ export const sampleSuppliers: Supplier[] = [
     notes: 'Long-established textile manufacturer with sustainable practices.'
   },
   {
-    id: uuidv4(),
+    id: 'supplier-3',
     company_name: 'Beijing Precision Machinery Works',
     contact_person: 'Wang Xiaoli',
     email: 'wang.xl@bjmachinery.cn',
@@ -72,7 +71,7 @@ export const sampleSuppliers: Supplier[] = [
     notes: 'High-quality machinery manufacturer with strong R&D capabilities.'
   },
   {
-    id: uuidv4(),
+    id: 'supplier-4',
     company_name: 'Shanghai Chemical Industries Group',
     contact_person: 'Chen Hui',
     email: 'chen.hui@shchem.com.cn',
@@ -95,7 +94,7 @@ export const sampleSuppliers: Supplier[] = [
     notes: 'Reliable chemical supplier with strong quality assurance.'
   },
   {
-    id: uuidv4(),
+    id: 'supplier-5',
     company_name: 'Ningbo Packaging Solutions Co.',
     contact_person: 'Liu Jian',
     email: 'liu.jian@nbpack.com',

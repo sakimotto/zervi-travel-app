@@ -1,9 +1,8 @@
 import { BusinessContact } from '../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const sampleBusinessContacts: BusinessContact[] = [
   {
-    id: uuidv4(),
+    id: 'contact-1',
     name: 'David Chen',
     nickname: 'Dave',
     title: 'International Sales Director',
@@ -23,7 +22,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     notes: 'Key decision maker for electronics procurement. Prefers WeChat communication.'
   },
   {
-    id: uuidv4(),
+    id: 'contact-5',
     name: 'Sarah Wang',
     nickname: 'Sarah',
     title: 'Procurement Manager',
@@ -42,7 +41,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     notes: 'Handles large volume orders. Very detail-oriented with documentation.'
   },
   {
-    id: uuidv4(),
+    id: 'contact-2',
     name: 'Michael Zhang',
     title: 'Factory Manager',
     company: 'Guangzhou Manufacturing Hub',
@@ -58,7 +57,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     notes: 'Manages production schedules. Best to contact in the morning.'
   },
   {
-    id: uuidv4(),
+    id: 'contact-3',
     name: 'Lisa Liu',
     title: 'Business Development Manager',
     company: 'China Trade Promotion Council',
@@ -74,7 +73,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     notes: 'Helps with trade regulations and government relations. Very knowledgeable about export procedures.'
   },
   {
-    id: uuidv4(),
+    id: 'contact-6',
     name: 'Tom Wu',
     title: 'Logistics Coordinator',
     company: 'Express Shipping Solutions',
@@ -90,7 +89,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
     notes: 'Handles all shipping arrangements. Very reliable for urgent shipments.'
   },
   {
-    id: uuidv4(),
+    id: 'contact-4',
     name: 'Amy Zhou',
     title: 'Quality Control Manager',
     company: 'Independent QC Services',
@@ -104,6 +103,25 @@ export const sampleBusinessContacts: BusinessContact[] = [
     last_contact: '2024-01-16',
     website: 'https://www.qcservices.com',
     amazon_store: 'https://amazon.com/stores/qcservices',
+    linked_supplier_id: 'supplier-5',
     notes: 'Provides third-party quality inspections. Very thorough and professional.'
+  },
+  {
+    id: 'contact-7',
+    name: 'Kevin Liu',
+    title: 'Sales Representative',
+    company: 'Ningbo Packaging Solutions Co.',
+    email: 'kevin.liu@nbpack.com',
+    phone: '+86 574 8765 4322',
+    wechat: 'kevinliu_nbpack',
+    address: '99 Export Processing Zone, Beilun District',
+    city: 'Ningbo',
+    industry: 'Packaging & Printing',
+    relationship: 'Supplier',
+    importance: 'Medium',
+    last_contact: '2024-01-14',
+    website: 'https://www.nbpack.com',
+    linked_supplier_id: 'supplier-5',
+    notes: 'Direct sales contact at Ningbo Packaging. Handles quotations and order processing.'
   }
 ];

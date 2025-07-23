@@ -61,10 +61,10 @@ const defaultItinerary: ItineraryItem[] = [
     confirmed: true,
     notes: 'Remember to arrive 3 hours early',
     type_specific_data: {
-      flightNumber: 'CA988',
+      flight_number: 'CA988',
       airline: 'Air China',
-      departureTime: '13:40',
-      arrivalTime: '18:20',
+      departure_time: '13:40',
+      arrival_time: '18:20',
     },
   },
   {
@@ -80,10 +80,10 @@ const defaultItinerary: ItineraryItem[] = [
     assigned_to: 'Both',
     confirmed: true,
     type_specific_data: {
-      hotelName: 'Beijing International Hotel',
-      roomType: 'Double Suite',
-      checkInTime: '15:00',
-      checkOutTime: '12:00',
+      hotel_name: 'Beijing International Hotel',
+      room_type: 'Double Suite',
+      check_in_time: '15:00',
+      check_out_time: '12:00',
     },
   },
   {
@@ -113,10 +113,10 @@ const defaultItinerary: ItineraryItem[] = [
     confirmed: true,
     notes: 'Tickets are e-tickets, show passport at station',
     type_specific_data: {
-      trainNumber: 'G13',
-      trainClass: 'First Class',
-      departureTime: '08:00',
-      arrivalTime: '12:30',
+      train_number: 'G13',
+      train_class: 'First Class',
+      departure_time: '08:00',
+      arrival_time: '12:30',
       platform: '5',
     },
   },
@@ -132,9 +132,9 @@ const defaultItinerary: ItineraryItem[] = [
     assigned_to: 'Archie',
     confirmed: false,
     type_specific_data: {
-      contactName: 'Li Wei',
-      contactPhone: '+86 10 12345678',
-      companyName: 'Sunshine Tech Co., Ltd.',
+      contact_name: 'Li Wei',
+      contact_phone: '+86 10 12345678',
+      company_name: 'Sunshine Tech Co., Ltd.',
     },
   },
   {
@@ -150,9 +150,9 @@ const defaultItinerary: ItineraryItem[] = [
     confirmed: true,
     notes: 'Great photo opportunity of the Pudong skyline',
     type_specific_data: {
-      entranceFee: 'Free',
-      openingHours: 'All day',
-      tourDuration: '3 hours',
+      entrance_fee: 'Free',
+      opening_hours: 'All day',
+      tour_duration: '3 hours',
     },
   },
   {
@@ -168,11 +168,11 @@ const defaultItinerary: ItineraryItem[] = [
     confirmed: true,
     notes: 'Hop-on, hop-off service, ticket valid all day',
     type_specific_data: {
-      busNumber: '77',
-      busCompany: 'Shanghai Tourist Bus Co.',
-      departureTime: '14:00',
-      arrivalTime: '17:00',
-      busStop: 'People\'s Square Main Station',
+      bus_number: '77',
+      bus_company: 'Shanghai Tourist Bus Co.',
+      departure_time: '14:00',
+      arrival_time: '17:00',
+      bus_stop: 'People\'s Square Main Station',
     },
   },
   {
@@ -187,10 +187,10 @@ const defaultItinerary: ItineraryItem[] = [
     assigned_to: 'Both',
     confirmed: true,
     type_specific_data: {
-      trainNumber: 'G22',
-      trainClass: 'Business Class',
-      departureTime: '09:30',
-      arrivalTime: '14:00',
+      train_number: 'G22',
+      train_class: 'Business Class',
+      departure_time: '09:30',
+      arrival_time: '14:00',
       platform: '8',
     },
   },
@@ -221,10 +221,10 @@ const defaultItinerary: ItineraryItem[] = [
     confirmed: true,
     notes: 'Check-in luggage with product samples',
     type_specific_data: {
-      flightNumber: 'CZ3104',
+      flight_number: 'CZ3104',
       airline: 'China Southern',
-      departureTime: '09:15',
-      arrivalTime: '12:00',
+      departure_time: '09:15',
+      arrival_time: '12:00',
     },
   },
   {
@@ -240,10 +240,10 @@ const defaultItinerary: ItineraryItem[] = [
     confirmed: true,
     notes: 'Hotel offers free shuttle to Canton Fair Complex',
     type_specific_data: {
-      hotelName: 'LN Garden Hotel Guangzhou',
-      roomType: 'Business Suite',
-      checkInTime: '14:00',
-      checkOutTime: '12:00',
+      hotel_name: 'LN Garden Hotel Guangzhou',
+      room_type: 'Business Suite',
+      check_in_time: '14:00',
+      check_out_time: '12:00',
     },
   },
   {
@@ -272,9 +272,9 @@ const defaultItinerary: ItineraryItem[] = [
     confirmed: false,
     notes: 'Discuss potential partnership and product orders',
     type_specific_data: {
-      contactName: 'Zhang Wei',
-      contactPhone: '+86 20 87654321',
-      companyName: 'GZ Trading Co.',
+      contact_name: 'Zhang Wei',
+      contact_phone: '+86 20 87654321',
+      company_name: 'GZ Trading Co.',
     },
   }
 ];

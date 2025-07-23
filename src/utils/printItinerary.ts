@@ -197,19 +197,19 @@ export const generatePrintableItinerary = (itinerary: ItineraryItem[]): string =
       `;
       
       // Type-specific details
-      if (item.type === 'Flight' && item.flightNumber) {
+      if (item.type === 'Flight' && item.type_specific_data?.flight_number) {
         html += `
           <div class="specific-details">
             <div class="detail-label">Flight Details</div>
             <div class="item-details">
               <div>
                 <div class="detail-label">Airline & Flight</div>
-                <div class="detail-value">${item.airline} ${item.flightNumber}</div>
+                <div class="detail-value">${item.type_specific_data?.airline} ${item.type_specific_data?.flight_number}</div>
               </div>
               <div>
                 <div class="detail-label">Times</div>
                 <div class="detail-value">
-                  Departs: ${item.departureTime || 'N/A'} • Arrives: ${item.arrivalTime || 'N/A'}
+                  Departs: ${item.type_specific_data?.departure_time || 'N/A'} • Arrives: ${item.type_specific_data?.arrival_time || 'N/A'}
                 </div>
               </div>
             </div>
@@ -217,19 +217,19 @@ export const generatePrintableItinerary = (itinerary: ItineraryItem[]): string =
         `;
       }
       
-      if (item.type === 'Hotel' && item.hotelName) {
+      if (item.type === 'Hotel' && item.type_specific_data?.hotel_name) {
         html += `
           <div class="specific-details">
             <div class="detail-label">Hotel Details</div>
             <div class="item-details">
               <div>
                 <div class="detail-label">Hotel & Room</div>
-                <div class="detail-value">${item.hotelName}: ${item.roomType || 'N/A'}</div>
+                <div class="detail-value">${item.type_specific_data?.hotel_name}: ${item.type_specific_data?.room_type || 'N/A'}</div>
               </div>
               <div>
                 <div class="detail-label">Times</div>
                 <div class="detail-value">
-                  Check-in: ${item.checkInTime || 'N/A'} • Check-out: ${item.checkOutTime || 'N/A'}
+                  Check-in: ${item.type_specific_data?.check_in_time || 'N/A'} • Check-out: ${item.type_specific_data?.check_out_time || 'N/A'}
                 </div>
               </div>
             </div>
@@ -237,23 +237,23 @@ export const generatePrintableItinerary = (itinerary: ItineraryItem[]): string =
         `;
       }
       
-      if (item.type === 'BusinessVisit' && item.contactName) {
+      if (item.type === 'BusinessVisit' && item.type_specific_data?.contact_name) {
         html += `
           <div class="specific-details">
             <div class="detail-label">Contact Details</div>
             <div class="item-details">
               <div>
                 <div class="detail-label">Contact Person</div>
-                <div class="detail-value">${item.contactName}</div>
+                <div class="detail-value">${item.type_specific_data?.contact_name}</div>
               </div>
               <div>
                 <div class="detail-label">Company</div>
-                <div class="detail-value">${item.companyName || 'N/A'}</div>
+                <div class="detail-value">${item.type_specific_data?.company_name || 'N/A'}</div>
               </div>
-              ${item.contactPhone ? `
+              ${item.type_specific_data?.contact_phone ? `
                 <div>
                   <div class="detail-label">Phone</div>
-                  <div class="detail-value">${item.contactPhone}</div>
+                  <div class="detail-value">${item.type_specific_data?.contact_phone}</div>
                 </div>
               ` : ''}
             </div>
@@ -266,28 +266,28 @@ export const generatePrintableItinerary = (itinerary: ItineraryItem[]): string =
           <div class="specific-details">
             <div class="detail-label">Sightseeing Details</div>
             <div class="item-details">
-              ${item.entranceFee ? `
+              ${item.type_specific_data?.entrance_fee ? `
                 <div>
                   <div class="detail-label">Entrance Fee</div>
-                  <div class="detail-value">${item.entranceFee}</div>
+                  <div class="detail-value">${item.type_specific_data?.entrance_fee}</div>
                 </div>
               ` : ''}
-              ${item.openingHours ? `
+              ${item.type_specific_data?.opening_hours ? `
                 <div>
                   <div class="detail-label">Opening Hours</div>
-                  <div class="detail-value">${item.openingHours}</div>
+                  <div class="detail-value">${item.type_specific_data?.opening_hours}</div>
                 </div>
               ` : ''}
-              ${item.tourDuration ? `
+              ${item.type_specific_data?.tour_duration ? `
                 <div>
                   <div class="detail-label">Tour Duration</div>
-                  <div class="detail-value">${item.tourDuration}</div>
+                  <div class="detail-value">${item.type_specific_data?.tour_duration}</div>
                 </div>
               ` : ''}
-              ${item.tourGuide ? `
+              ${item.type_specific_data?.tour_guide ? `
                 <div>
                   <div class="detail-label">Tour Guide</div>
-                  <div class="detail-value">${item.tourGuide}</div>
+                  <div class="detail-value">${item.type_specific_data?.tour_guide}</div>
                 </div>
               ` : ''}
             </div>
@@ -295,31 +295,31 @@ export const generatePrintableItinerary = (itinerary: ItineraryItem[]): string =
         `;
       }
 
-      if (item.type === 'Train' && item.trainNumber) {
+      if (item.type === 'Train' && item.type_specific_data?.train_number) {
         html += `
           <div class="specific-details">
             <div class="detail-label">Fast Train Details</div>
             <div class="item-details">
               <div>
                 <div class="detail-label">Train Number</div>
-                <div class="detail-value">${item.trainNumber}</div>
+                <div class="detail-value">${item.type_specific_data?.train_number}</div>
               </div>
-              ${item.trainClass ? `
+              ${item.type_specific_data?.train_class ? `
                 <div>
                   <div class="detail-label">Class</div>
-                  <div class="detail-value">${item.trainClass}</div>
+                  <div class="detail-value">${item.type_specific_data?.train_class}</div>
                 </div>
               ` : ''}
               <div>
                 <div class="detail-label">Times</div>
                 <div class="detail-value">
-                  Departs: ${item.departureTime || 'N/A'} • Arrives: ${item.arrivalTime || 'N/A'}
+                  Departs: ${item.type_specific_data?.departure_time || 'N/A'} • Arrives: ${item.type_specific_data?.arrival_time || 'N/A'}
                 </div>
               </div>
-              ${item.platform ? `
+              ${item.type_specific_data?.platform ? `
                 <div>
                   <div class="detail-label">Platform</div>
-                  <div class="detail-value">${item.platform}</div>
+                  <div class="detail-value">${item.type_specific_data?.platform}</div>
                 </div>
               ` : ''}
             </div>
@@ -327,31 +327,31 @@ export const generatePrintableItinerary = (itinerary: ItineraryItem[]): string =
         `;
       }
 
-      if (item.type === 'Bus' && item.busNumber) {
+      if (item.type === 'Bus' && item.type_specific_data?.bus_number) {
         html += `
           <div class="specific-details">
             <div class="detail-label">Bus Details</div>
             <div class="item-details">
               <div>
                 <div class="detail-label">Bus Number</div>
-                <div class="detail-value">${item.busNumber}</div>
+                <div class="detail-value">${item.type_specific_data?.bus_number}</div>
               </div>
-              ${item.busCompany ? `
+              ${item.type_specific_data?.bus_company ? `
                 <div>
                   <div class="detail-label">Bus Company</div>
-                  <div class="detail-value">${item.busCompany}</div>
+                  <div class="detail-value">${item.type_specific_data?.bus_company}</div>
                 </div>
               ` : ''}
               <div>
                 <div class="detail-label">Times</div>
                 <div class="detail-value">
-                  Departs: ${item.departureTime || 'N/A'} • Arrives: ${item.arrivalTime || 'N/A'}
+                  Departs: ${item.type_specific_data?.departure_time || 'N/A'} • Arrives: ${item.type_specific_data?.arrival_time || 'N/A'}
                 </div>
               </div>
-              ${item.busStop ? `
+              ${item.type_specific_data?.bus_stop ? `
                 <div>
                   <div class="detail-label">Bus Stop/Station</div>
-                  <div class="detail-value">${item.busStop}</div>
+                  <div class="detail-value">${item.type_specific_data?.bus_stop}</div>
                 </div>
               ` : ''}
             </div>

@@ -1,5 +1,11 @@
 # Zervi Travel - Comprehensive Testing Playbook
 
+**Version:** 2.0.0  
+**Last Updated:** January 2025  
+**Test Status:** ✅ Navigation (100%) | ❌ CRUD Operations (Failed due to schema mismatches)  
+**Database:** Supabase PostgreSQL with RLS  
+**Critical Issue:** 22 field mismatches preventing data persistence
+
 ## 🎯 **Testing Objectives**
 - Verify all navigation works correctly
 - Ensure all CRUD operations persist to Supabase backend

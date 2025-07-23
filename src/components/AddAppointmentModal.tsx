@@ -27,6 +27,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
     title: '',
     description: '',
     start_date: '',
+    end_date: '',
     start_time: '',
     end_time: '',
     location: '',
@@ -51,6 +52,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
         title: '',
         description: '',
         start_date: dateStr,
+        end_date: dateStr,
         start_time: '09:00',
         end_time: '10:00',
         location: '',
@@ -132,11 +134,20 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
     
     const filteredAttendees = attendees.filter(attendee => attendee.trim() !== '');
     
-    onSave({
+    // Ensure all required fields have proper values
+    const appointmentData = {
       ...formData,
       id: formData.id || uuidv4(),
       attendees: filteredAttendees,
-    });
+      description: formData.description || '',
+      location: formData.location || '',
+      notes: formData.notes || '',
+      reminder: formData.reminder || 15,
+      end_date: formData.end_date || formData.start_date,
+    };
+    
+    console.log('Submitting appointment data:', appointmentData);
+    onSave(appointmentData);
   };
 
   return (
@@ -221,10 +232,10 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Date *
+                Start Date *
               </label>
               <input
                 type="date"
@@ -236,6 +247,21 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                End Date
+              </label>
+              <input
+                type="date"
+               name="end_date"
+                value={formData.end_date || formData.start_date}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Start Time *

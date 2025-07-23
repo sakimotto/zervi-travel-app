@@ -69,28 +69,28 @@ const TravelChatbot: React.FC<TravelChatbotProps> = ({
         type: item.type,
         title: item.title,
         description: item.description,
-        startDate: item.startDate,
-        endDate: item.endDate,
+        start_date: item.start_date,
+        end_date: item.end_date,
         location: item.location,
-        assignedTo: item.assignedTo,
+        assigned_to: item.assigned_to,
         confirmed: item.confirmed,
         // Include type-specific details
         ...(item.type === 'Flight' && {
-          airline: item.airline,
-          flightNumber: item.flightNumber,
-          departureTime: item.departureTime,
-          arrivalTime: item.arrivalTime
+          airline: item.type_specific_data?.airline,
+          flight_number: item.type_specific_data?.flight_number,
+          departure_time: item.type_specific_data?.departure_time,
+          arrival_time: item.type_specific_data?.arrival_time
         }),
         ...(item.type === 'Hotel' && {
-          hotelName: item.hotelName,
-          roomType: item.roomType,
-          checkInTime: item.checkInTime,
-          checkOutTime: item.checkOutTime
+          hotel_name: item.type_specific_data?.hotel_name,
+          room_type: item.type_specific_data?.room_type,
+          check_in_time: item.type_specific_data?.check_in_time,
+          check_out_time: item.type_specific_data?.check_out_time
         }),
         ...(item.type === 'BusinessVisit' && {
-          contactName: item.contactName,
-          companyName: item.companyName,
-          contactPhone: item.contactPhone
+          contact_name: item.type_specific_data?.contact_name,
+          company_name: item.type_specific_data?.company_name,
+          contact_phone: item.type_specific_data?.contact_phone
         }),
         notes: item.notes
       })),
