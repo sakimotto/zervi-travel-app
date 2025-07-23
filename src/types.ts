@@ -55,8 +55,8 @@ export type ItineraryItem = {
 
 export type Supplier = {
   id: string;
-  companyName: string;
-  contactPerson: string;
+  company_name: string;
+  contact_person: string;
   email: string;
   phone: string;
   address: string;
@@ -73,7 +73,7 @@ export type Supplier = {
   established?: string;
   employees?: string;
   rating?: number;
-  lastContact?: string;
+  last_contact?: string;
   status: 'Active' | 'Potential' | 'Inactive';
   created_at?: string;
   updated_at?: string;

@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 export const sampleSuppliers: Supplier[] = [
   {
     id: uuidv4(),
-    companyName: 'Shenzhen Electronics Manufacturing Co., Ltd.',
-    contactPerson: 'Li Wei',
+    company_name: 'Shenzhen Electronics Manufacturing Co., Ltd.',
+    contact_person: 'Li Wei',
     email: 'li.wei@szelec.com.cn',
     phone: '+86 755 8888 9999',
     address: 'Building A, Industrial Park, Nanshan District',
@@ -21,14 +21,14 @@ export const sampleSuppliers: Supplier[] = [
     established: '2008',
     employees: '500-1000',
     rating: 4.5,
-    lastContact: '2024-01-15',
+    last_contact: '2024-01-15',
     status: 'Active',
     notes: 'Reliable supplier for consumer electronics. Good quality control and competitive pricing.'
   },
   {
     id: uuidv4(),
-    companyName: 'Guangzhou Textile Solutions Ltd.',
-    contactPerson: 'Zhang Ming',
+    company_name: 'Guangzhou Textile Solutions Ltd.',
+    contact_person: 'Zhang Ming',
     email: 'zhang.ming@gztextile.com',
     phone: '+86 20 3456 7890',
     address: '88 Textile Road, Haizhu District',
@@ -44,14 +44,14 @@ export const sampleSuppliers: Supplier[] = [
     established: '1995',
     employees: '200-500',
     rating: 4.2,
-    lastContact: '2024-01-10',
+    last_contact: '2024-01-10',
     status: 'Active',
     notes: 'Long-established textile manufacturer with sustainable practices.'
   },
   {
     id: uuidv4(),
-    companyName: 'Beijing Precision Machinery Works',
-    contactPerson: 'Wang Xiaoli',
+    company_name: 'Beijing Precision Machinery Works',
+    contact_person: 'Wang Xiaoli',
     email: 'wang.xl@bjmachinery.cn',
     phone: '+86 10 6789 0123',
     address: 'No. 168 Industrial Avenue, Chaoyang District',
@@ -67,14 +67,14 @@ export const sampleSuppliers: Supplier[] = [
     established: '1987',
     employees: '1000+',
     rating: 4.7,
-    lastContact: '2024-01-20',
+    last_contact: '2024-01-20',
     status: 'Active',
     notes: 'High-quality machinery manufacturer with strong R&D capabilities.'
   },
   {
     id: uuidv4(),
-    companyName: 'Shanghai Chemical Industries Group',
-    contactPerson: 'Chen Hui',
+    company_name: 'Shanghai Chemical Industries Group',
+    contact_person: 'Chen Hui',
     email: 'chen.hui@shchem.com.cn',
     phone: '+86 21 5555 6666',
     address: 'Chemical Industrial Zone, Pudong New Area',
@@ -90,14 +90,14 @@ export const sampleSuppliers: Supplier[] = [
     established: '1992',
     employees: '500-1000',
     rating: 4.3,
-    lastContact: '2024-01-08',
+    last_contact: '2024-01-08',
     status: 'Active',
     notes: 'Reliable chemical supplier with strong quality assurance.'
   },
   {
     id: uuidv4(),
-    companyName: 'Ningbo Packaging Solutions Co.',
-    contactPerson: 'Liu Jian',
+    company_name: 'Ningbo Packaging Solutions Co.',
+    contact_person: 'Liu Jian',
     email: 'liu.jian@nbpack.com',
     phone: '+86 574 8765 4321',
     address: '99 Export Processing Zone, Beilun District',
@@ -113,7 +113,7 @@ export const sampleSuppliers: Supplier[] = [
     established: '2003',
     employees: '100-200',
     rating: 4.1,
-    lastContact: '2024-01-12',
+    last_contact: '2024-01-12',
     status: 'Potential',
     notes: 'Good packaging solutions, currently evaluating for new product line.'
   }

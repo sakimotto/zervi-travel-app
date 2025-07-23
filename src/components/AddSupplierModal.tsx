@@ -12,8 +12,8 @@ interface AddSupplierModalProps {
 const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, editSupplier }) => {
   const [formData, setFormData] = useState<Supplier>({
     id: '',
-    companyName: '',
-    contactPerson: '',
+    company_name: '',
+    contact_person: '',
     email: '',
     phone: '',
     address: '',
@@ -30,7 +30,7 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
     established: '',
     employees: '',
     rating: 0,
-    lastContact: '',
+    last_contact: '',
     status: 'Potential',
   });
 
@@ -46,8 +46,8 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
       const today = new Date().toISOString().split('T')[0];
       setFormData({
         id: uuidv4(),
-        companyName: '',
-        contactPerson: '',
+        company_name: '',
+        contact_person: '',
         email: '',
         phone: '',
         address: '',
@@ -64,7 +64,7 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
         established: '',
         employees: '',
         rating: 0,
-        lastContact: today,
+        last_contact: today,
         status: 'Potential',
       });
       setProducts(['']);
@@ -151,8 +151,8 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
               </label>
               <input
                 type="text"
-                name="companyName"
-                value={formData.companyName}
+                name="company_name"
+                value={formData.company_name}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 required
@@ -165,8 +165,8 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
               </label>
               <input
                 type="text"
-                name="contactPerson"
-                value={formData.contactPerson}
+                name="contact_person"
+                value={formData.contact_person}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 required
@@ -452,8 +452,8 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
               </label>
               <input
                 type="date"
-                name="lastContact"
-                value={formData.lastContact}
+                name="last_contact"
+                value={formData.last_contact}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               />

@@ -99,8 +99,8 @@ const generateWordContent = (
     content += '='.repeat(50) + '\n\n';
 
     suppliers.forEach((supplier, index) => {
-      content += `${index + 1}. ${supplier.companyName}\n`;
-      content += `   Contact: ${supplier.contactPerson}\n`;
+      content += `${index + 1}. ${supplier.company_name}\n`;
+      content += `   Contact: ${supplier.contact_person}\n`;
       content += `   Email: ${supplier.email}\n`;
       content += `   Phone: ${supplier.phone}\n`;
       content += `   Location: ${supplier.city}, ${supplier.province}\n`;
@@ -111,12 +111,12 @@ const generateWordContent = (
         content += `   Products: ${supplier.products.join(', ')}\n`;
       }
       
-      if (supplier.minimumOrder) {
-        content += `   Min Order: ${supplier.minimumOrder}\n`;
+      if (supplier.minimum_order) {
+        content += `   Min Order: ${supplier.minimum_order}\n`;
       }
       
-      if (supplier.leadTime) {
-        content += `   Lead Time: ${supplier.leadTime}\n`;
+      if (supplier.lead_time) {
+        content += `   Lead Time: ${supplier.lead_time}\n`;
       }
       
       if (supplier.rating) {

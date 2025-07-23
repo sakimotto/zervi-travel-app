@@ -50,8 +50,8 @@ const SuppliersSection: React.FC = () => {
   }, [loading, suppliers.length]);
 
   const filteredSuppliers = displaySuppliers.filter(supplier => {
-    const matchesSearch = supplier.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         supplier.contact_person.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = supplier.company_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         supplier.contact_person?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          supplier.products.some(product => product.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesIndustry = selectedIndustry === 'All' || supplier.industry === selectedIndustry;
     const matchesStatus = selectedStatus === 'All' || supplier.status === selectedStatus;
