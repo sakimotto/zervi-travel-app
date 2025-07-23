@@ -27,6 +27,9 @@ const BusinessContactsSection: React.FC = () => {
 
   const relationships = ['All', 'Client', 'Supplier', 'Partner', 'Government', 'Service Provider', 'Other'];
   const importanceLevels = ['All', 'High', 'Medium', 'Low'];
+  
+  // Get suppliers for linking
+  const { data: displaySuppliers } = useSuppliers();
 
   // Load sample data into Supabase if database is empty
   useEffect(() => {
@@ -324,6 +327,9 @@ const BusinessContactsSection: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">{contact.name}</h3>
+                      {contact.nickname && (
+                        <p className="text-sm text-gray-500 italic">"{contact.nickname}"</p>
+                      )}
                       <p className="text-sm text-gray-600">{contact.title}</p>
                     </div>
                   </div>
@@ -388,6 +394,18 @@ const BusinessContactsSection: React.FC = () => {
                   {contact.notes && (
                     <div className="border-t pt-3 mt-3">
                       <p className="text-sm text-gray-600 italic">{contact.notes}</p>
+                    </div>
+                  )}
+
+                  {contact.linked_supplier_id && (
+                    <div className="border-t pt-3 mt-3">
+                      <p className="text-sm text-gray-500">
+                        <span className="font-medium">Linked Supplier:</span> 
+                        {(() => {
+                          const linkedSupplier = displaySuppliers.find(s => s.id === contact.linked_supplier_id);
+                          return linkedSupplier ? linkedSupplier.company_name : 'Unknown Supplier';
+                        })()}
+                      </p>
                     </div>
                   )}
                 </div>

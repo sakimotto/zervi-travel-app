@@ -5,6 +5,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
   {
     id: uuidv4(),
     name: 'David Chen',
+    nickname: 'Dave',
     title: 'International Sales Director',
     company: 'Shenzhen Tech Innovations Ltd.',
     email: 'david.chen@sztech.com.cn',
@@ -22,6 +23,7 @@ export const sampleBusinessContacts: BusinessContact[] = [
   {
     id: uuidv4(),
     name: 'Sarah Wang',
+    nickname: 'Sarah',
     title: 'Procurement Manager',
     company: 'Global Trading Corp',
     email: 'sarah.wang@globaltrading.com',

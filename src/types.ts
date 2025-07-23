@@ -86,6 +86,7 @@ export type Supplier = {
 export type BusinessContact = {
   id: string;
   name: string;
+  nickname?: string;
   title: string;
   company: string;
   email: string;
@@ -99,6 +100,7 @@ export type BusinessContact = {
   last_contact?: string;
   relationship: 'Client' | 'Supplier' | 'Partner' | 'Government' | 'Service Provider' | 'Other';
   importance: 'High' | 'Medium' | 'Low';
+  linked_supplier_id?: string;
   created_at?: string;
   updated_at?: string;
 };

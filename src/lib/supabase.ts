@@ -134,6 +134,7 @@ export type Database = {
         Row: {
           id: string;
           name: string;
+          nickname: string;
           title: string;
           company: string;
           email: string;
@@ -147,12 +148,14 @@ export type Database = {
           last_contact: string | null;
           relationship: string;
           importance: string;
+          linked_supplier_id: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id?: string;
           name: string;
+          nickname?: string;
           title: string;
           company: string;
           email: string;
@@ -166,12 +169,14 @@ export type Database = {
           last_contact?: string;
           relationship?: string;
           importance?: string;
+          linked_supplier_id?: string;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
+          nickname?: string;
           title?: string;
           company?: string;
           email?: string;
@@ -185,6 +190,7 @@ export type Database = {
           last_contact?: string;
           relationship?: string;
           importance?: string;
+          linked_supplier_id?: string;
           updated_at?: string;
         };
       };

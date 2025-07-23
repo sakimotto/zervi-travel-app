@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { BusinessContact } from '../types';
+import { BusinessContact, Supplier } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import { X } from 'lucide-react';
+import { useSuppliers } from '../hooks/useSupabase';
 
 interface AddBusinessContactModalProps {
   onClose: () => void;
@@ -10,9 +11,12 @@ interface AddBusinessContactModalProps {
 }
 
 const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClose, onSave, editContact }) => {
+  const { data: suppliers } = useSuppliers();
+  
   const [formData, setFormData] = useState<BusinessContact>({
     id: '',
     name: '',
+    nickname: '',
     title: '',
     company: '',
     email: '',
@@ -26,6 +30,7 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
     last_contact: '',
     relationship: 'Other',
     importance: 'Medium',
+    linked_supplier_id: '',
   });
 
   useEffect(() => {
@@ -36,6 +41,7 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
       setFormData({
         id: uuidv4(),
         name: '',
+        nickname: '',
         title: '',
         company: '',
         email: '',
@@ -49,6 +55,7 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
         last_contact: today,
         relationship: 'Other',
         importance: 'Medium',
+        linked_supplier_id: '',
       });
     }
   }, [editContact]);
@@ -106,6 +113,22 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nickname
+              </label>
+              <input
+                type="text"
+                name="nickname"
+                value={formData.nickname || ''}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="Preferred name or nickname"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
                 Job Title *
               </label>
               <input
@@ -117,9 +140,7 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
                 required
               />
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Company *
@@ -133,7 +154,9 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
                 required
               />
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Industry
@@ -146,6 +169,28 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 placeholder="E.g., Manufacturing, Technology"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Link to Supplier (Optional)
+              </label>
+              <select
+                name="linked_supplier_id"
+                value={formData.linked_supplier_id || ''}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              >
+                <option value="">No supplier link</option>
+                {suppliers.map(supplier => (
+                  <option key={supplier.id} value={supplier.id}>
+                    {supplier.company_name}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Link this contact to a supplier company
+              </p>
             </div>
           </div>
 
