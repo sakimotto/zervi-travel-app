@@ -162,50 +162,50 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Today's Tasks</p>
-                <p className="text-xl font-bold text-primary">{todaysTodos.length}</p>
+                <p className="text-xs md:text-sm text-gray-600">Today's Tasks</p>
+                <p className="text-lg md:text-xl font-bold text-primary">{todaysTodos.length}</p>
               </div>
-              <CheckSquare className="h-8 w-8 text-blue-500" />
+              <CheckSquare className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
             </div>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Today's Meetings</p>
-                <p className="text-xl font-bold text-primary">{todaysAppointments.length}</p>
+                <p className="text-xs md:text-sm text-gray-600">Today's Meetings</p>
+                <p className="text-lg md:text-xl font-bold text-primary">{todaysAppointments.length}</p>
               </div>
-              <Clock className="h-8 w-8 text-green-500" />
+              <Clock className="h-6 w-6 md:h-8 md:w-8 text-green-500" />
             </div>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active Suppliers</p>
-                <p className="text-xl font-bold text-primary">{activeSuppliers}</p>
+                <p className="text-xs md:text-sm text-gray-600">Active Suppliers</p>
+                <p className="text-lg md:text-xl font-bold text-primary">{activeSuppliers}</p>
               </div>
-              <Building2 className="h-8 w-8 text-purple-500" />
+              <Building2 className="h-6 w-6 md:h-8 md:w-8 text-purple-500" />
             </div>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Expenses</p>
-                <p className="text-xl font-bold text-primary">${totalExpenses.toFixed(0)}</p>
+                <p className="text-xs md:text-sm text-gray-600">Total Expenses</p>
+                <p className="text-lg md:text-xl font-bold text-primary">${totalExpenses.toFixed(0)}</p>
               </div>
-              <DollarSign className="h-8 w-8 text-yellow-500" />
+              <DollarSign className="h-6 w-6 md:h-8 md:w-8 text-yellow-500" />
             </div>
           </div>
         </div>
 
         {/* Main Dashboard Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-6 mb-8">
           {/* Left Column - Calendar */}
           <div className="lg:col-span-1">
             {/* Travel Alerts */}
@@ -353,10 +353,10 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
         </div>
 
         {/* Additional Dashboard Features */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 mb-8">
           {/* Recent Activity Feed */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Clock className="mr-2 h-5 w-5 text-primary" />
               Recent Activity
             </h3>
@@ -414,7 +414,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
 
           {/* Quick Actions */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
             <div className="space-y-3">
               <button 
                 onClick={() => window.location.href = '#/suppliers'}
@@ -456,7 +456,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
 
           {/* Weather Widget */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <MapPin className="mr-2 h-5 w-5 text-primary" />
               Travel Weather
             </h3>
@@ -481,10 +481,10 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
         </div>
 
         {/* Business Insights Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 mb-8">
           {/* Top Suppliers */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Building2 className="mr-2 h-5 w-5 text-primary" />
               Top Suppliers
             </h3>
@@ -522,7 +522,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
 
           {/* Expense Breakdown */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <DollarSign className="mr-2 h-5 w-5 text-primary" />
               Expense Breakdown
             </h3>
@@ -565,29 +565,29 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
 
         {/* Travel Tips & Reminders */}
         <div className="bg-gradient-to-r from-primary to-secondary text-white rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4">🇨🇳 China Business Travel Intelligence</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <h3 className="text-lg md:text-xl font-semibold mb-4">🇨🇳 China Business Travel Intelligence</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-white bg-opacity-10 rounded-lg p-4">
               <h4 className="font-semibold mb-2">💳 Payment Methods</h4>
-              <p className="text-sm text-white text-opacity-90">
+              <p className="text-xs md:text-sm text-white text-opacity-90">
                 WeChat Pay and Alipay are essential. Download apps before arrival and bring cash as backup.
               </p>
             </div>
             <div className="bg-white bg-opacity-10 rounded-lg p-4">
               <h4 className="font-semibold mb-2">📱 Essential Apps</h4>
-              <p className="text-sm text-white text-opacity-90">
+              <p className="text-xs md:text-sm text-white text-opacity-90">
                 WeChat, Didi (ride-hailing), Baidu Maps, and Google Translate for smooth navigation.
               </p>
             </div>
             <div className="bg-white bg-opacity-10 rounded-lg p-4">
               <h4 className="font-semibold mb-2">🤝 Business Etiquette</h4>
-              <p className="text-sm text-white text-opacity-90">
+              <p className="text-xs md:text-sm text-white text-opacity-90">
                 Exchange business cards with both hands, arrive early for meetings, and bring gifts.
               </p>
             </div>
             <div className="bg-white bg-opacity-10 rounded-lg p-4">
               <h4 className="font-semibold mb-2">✈️ Travel Timing</h4>
-              <p className="text-sm text-white text-opacity-90">
+              <p className="text-xs md:text-sm text-white text-opacity-90">
                 International flights: 3+ hours early. Domestic: 2 hours. High-speed trains: 30 minutes.
               </p>
             </div>
