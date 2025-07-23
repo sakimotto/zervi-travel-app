@@ -205,9 +205,9 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
         </div>
 
         {/* Main Dashboard Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* Left Column - Calendar and Upcoming */}
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+          {/* Left Column - Calendar */}
+          <div className="lg:col-span-1">
             {/* Travel Alerts */}
             {travelAlerts.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -233,13 +233,39 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
               </div>
             )}
 
-            <MiniCalendar 
-              selectedDate={selectedDate}
-              onDateSelect={setSelectedDate}
+            <div className="space-y-6">
+              <MiniCalendar 
+                selectedDate={selectedDate}
+                onDateSelect={setSelectedDate}
+                appointments={appointments}
+                itinerary={itinerary}
+              />
+            </div>
+          </div>
+
+          {/* Middle Left - Todo List */}
+          <div className="lg:col-span-1">
+            <TodoList 
+              todos={todos}
+              onTodosChange={() => {}} // No longer needed with Supabase
+              suppliers={suppliers}
+            />
+          </div>
+
+          {/* Middle Right - Appointments */}
+          <div className="lg:col-span-1">
+            <AppointmentsList 
               appointments={appointments}
+              onAppointmentsChange={() => {}} // No longer needed with Supabase
+              suppliers={suppliers}
+              contacts={contacts}
+              selectedDate={selectedDate}
               itinerary={itinerary}
             />
-            
+          </div>
+
+          {/* Right Column - Smart Features */}
+          <div className="lg:col-span-1 space-y-6">
             {/* Smart Travel Logistics */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -323,65 +349,13 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
                 <p className="text-gray-500 text-sm">No upcoming travel scheduled</p>
               )}
             </div>
-
-            {/* Today's Schedule */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Calendar className="mr-2 h-5 w-5 text-primary" />
-                Today's Schedule
-              </h3>
-              <div className="space-y-2">
-                {todaysAppointments.map(apt => (
-                  <div key={apt.id} className="flex items-center p-2 bg-blue-50 rounded">
-                    <Clock className="mr-2 h-4 w-4 text-blue-500" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">{apt.title}</p>
-                      <p className="text-xs text-gray-600">{apt.start_time}</p>
-                    </div>
-                  </div>
-                ))}
-                {todaysItinerary.map(item => (
-                  <div key={item.id} className="flex items-center p-2 bg-green-50 rounded">
-                    <MapPin className="mr-2 h-4 w-4 text-green-500" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">{item.title}</p>
-                      <p className="text-xs text-gray-600">{item.type}</p>
-                    </div>
-                  </div>
-                ))}
-                {todaysAppointments.length === 0 && todaysItinerary.length === 0 && (
-                  <p className="text-gray-500 text-sm">No events scheduled for today</p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Middle Column - Todo List */}
-          <div>
-            <TodoList 
-              todos={todos}
-              onTodosChange={() => {}} // No longer needed with Supabase
-              suppliers={suppliers}
-            />
-          </div>
-
-          {/* Right Column - Appointments */}
-          <div>
-            <AppointmentsList 
-              appointments={appointments}
-              onAppointmentsChange={() => {}} // No longer needed with Supabase
-              suppliers={suppliers}
-              contacts={contacts}
-              selectedDate={selectedDate}
-              itinerary={itinerary}
-            />
           </div>
         </div>
 
         {/* Additional Dashboard Features */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Recent Activity Feed */}
-          <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Clock className="mr-2 h-5 w-5 text-primary" />
               Recent Activity
@@ -507,7 +481,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
         </div>
 
         {/* Business Insights Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Top Suppliers */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
