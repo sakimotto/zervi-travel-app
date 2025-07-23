@@ -162,7 +162,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
                     <Clock className="mr-2 h-4 w-4 text-blue-500" />
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900">{apt.title}</p>
-                      <p className="text-xs text-gray-600">{apt.startTime}</p>
+                      <p className="text-xs text-gray-600">{apt.start_time}</p>
                     </div>
                   </div>
                 ))}

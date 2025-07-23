@@ -22,15 +22,15 @@ const MiniCalendar: React.FC<MiniCalendarProps> = ({
 
   const hasEvents = (date: Date) => {
     const dateStr = format(date, 'yyyy-MM-dd');
-    const hasAppointment = appointments.some(apt => apt.startDate === dateStr);
-    const hasItinerary = itinerary.some(item => item.startDate === dateStr);
+    const hasAppointment = appointments.some(apt => apt.start_date === dateStr);
+    const hasItinerary = itinerary.some(item => item.start_date === dateStr);
     return hasAppointment || hasItinerary;
   };
 
   const getEventTypes = (date: Date) => {
     const dateStr = format(date, 'yyyy-MM-dd');
-    const hasAppointment = appointments.some(apt => apt.startDate === dateStr);
-    const hasItinerary = itinerary.some(item => item.startDate === dateStr);
+    const hasAppointment = appointments.some(apt => apt.start_date === dateStr);
+    const hasItinerary = itinerary.some(item => item.start_date === dateStr);
     
     if (hasAppointment && hasItinerary) return 'both';
     if (hasAppointment) return 'appointment';

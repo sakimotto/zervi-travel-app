@@ -160,7 +160,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
 
             {/* Appointments */}
             {filteredAppointments
-              .sort((a, b) => a.start_time.localeCompare(b.start_time))
+              .sort((a, b) => (a.start_time || '').localeCompare(b.start_time || ''))
               .map(appointment => (
               <div
                 key={`appointment-${appointment.id}`}
