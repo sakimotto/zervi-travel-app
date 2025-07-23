@@ -27,16 +27,20 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, expenses, todos, appointments }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   // Calculate dashboard metrics
-  const todaysTodos = todos.filter(todo => 
-    todo.due_date && typeof todo.due_date === 'string' && todo.due_date.trim() !== '' && isValid(parseISO(todo.due_date)) && isToday(parseISO(todo.due_date))
-  );
+  const todaysTodos = todos.filter(todo => {
+    if (!todo.due_date || typeof todo.due_date !== 'string' || todo.due_date.trim() === '') return false;
+    const parsedDate = parseISO(todo.due_date);
+    return isValid(parsedDate) && isToday(parsedDate);
+  });
   
-  const todaysAppointments = appointments.filter(appointment => 
-    appointment.start_date && typeof appointment.start_date === 'string' && appointment.start_date.trim() !== '' && isValid(parseISO(appointment.start_date)) && isToday(parseISO(appointment.start_date))
-  );
+  const todaysAppointments = appointments.filter(appointment => {
+    if (!appointment.start_date || typeof appointment.start_date !== 'string' || appointment.start_date.trim() === '') return false;
+    const parsedDate = parseISO(appointment.start_date);
+    return isValid(parsedDate) && isToday(parsedDate);
+  });
 
   const upcomingItinerary = itinerary.filter(item => {
-    if (!item.start_date || typeof item.start_date !== 'string' || item.start_date.trim() === '') return false;
+    if (!item.start_date || typeof item.start_date !== 'string' || item.start_date.trim() === '' || item.start_date === null || item.start_date === undefined) return false;
     const itemDate = parseISO(item.start_date);
     if (!isValid(itemDate)) return false;
     const today = new Date();
@@ -44,9 +48,11 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
     return itemDate >= today && itemDate <= nextWeek;
   }).slice(0, 3);
 
-  const todaysItinerary = itinerary.filter(item => 
-    item.start_date && typeof item.start_date === 'string' && item.start_date.trim() !== '' && isValid(parseISO(item.start_date)) && isToday(parseISO(item.start_date))
-  );
+  const todaysItinerary = itinerary.filter(item => {
+    if (!item.start_date || typeof item.start_date !== 'string' || item.start_date.trim() === '' || item.start_date === null || item.start_date === undefined) return false;
+    const parsedDate = parseISO(item.start_date);
+    return isValid(parsedDate) && isToday(parsedDate);
+  });
 
   const activeSuppliers = suppliers.filter(s => s.status === 'Active').length;
   const totalExpenses = expenses.reduce((sum, expense) => {
@@ -134,7 +140,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
                         <p className="font-medium text-gray-900">{item.title}</p>
                         <p className="text-sm text-gray-600">{item.location}</p>
                         <p className="text-xs text-gray-500">
-                          {format(parseISO(item.startDate), 'MMM dd, yyyy')}
+                          {format(parseISO(item.start_date), 'MMM dd, yyyy')}
                         </p>
                       </div>
                       <span className={`px-2 py-1 text-xs rounded-full ${
