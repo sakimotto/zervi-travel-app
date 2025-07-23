@@ -46,55 +46,68 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    // Handle type-specific fields
-    const typeSpecificFields = [
-      'airline', 'flightNumber', 'departureTime', 'arrivalTime',
-      'hotelName', 'roomType', 'checkInTime', 'checkOutTime',
-      'contactName', 'contactPhone', 'companyName',
-      'entranceFee', 'openingHours', 'tourDuration', 'tourGuide',
-      'trainNumber', 'trainClass', 'platform',
-      'busNumber', 'busCompany', 'busStop',
-      'meetingRoom', 'agenda', 'meetingType',
-      'conferenceHall', 'factoryType', 'safetyRequirements'
-    ];
-    
-    if (typeSpecificFields.includes(name)) {
-      setFormData(prev => ({
-        ...prev,
-        type_specific_data: {
-          ...prev.type_specific_data,
-          [name]: value
-        }
-      }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    // Handle type-specific checkbox fields
-    const typeSpecificCheckboxFields = ['registrationRequired', 'tourGuideRequired'];
-    
-    if (typeSpecificCheckboxFields.includes(name)) {
-      setFormData(prev => ({
-        ...prev,
-        type_specific_data: {
-          ...prev.type_specific_data,
-          [name]: checked
-        }
-      }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: checked }));
-    }
+    setFormData(prev => ({ ...prev, [name]: checked }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({
+    
+    // Prepare data for database - move type-specific fields to type_specific_data
+    const typeSpecificFields = {
+      airline: formData.airline,
+      flightNumber: formData.flightNumber,
+      departureTime: formData.departureTime,
+      arrivalTime: formData.arrivalTime,
+      hotelName: formData.hotelName,
+      roomType: formData.roomType,
+      checkInTime: formData.checkInTime,
+      checkOutTime: formData.checkOutTime,
+      contactName: formData.contactName,
+      contactPhone: formData.contactPhone,
+      companyName: formData.companyName,
+      entranceFee: formData.entranceFee,
+      openingHours: formData.openingHours,
+      tourDuration: formData.tourDuration,
+      tourGuide: formData.tourGuide,
+      trainNumber: formData.trainNumber,
+      trainClass: formData.trainClass,
+      platform: formData.platform,
+      busNumber: formData.busNumber,
+      busCompany: formData.busCompany,
+      busStop: formData.busStop,
+      meetingRoom: formData.meetingRoom,
+      agenda: formData.agenda,
+      meetingType: formData.meetingType,
+      conferenceHall: formData.conferenceHall,
+      registrationRequired: formData.registrationRequired,
+      factoryType: formData.factoryType,
+      safetyRequirements: formData.safetyRequirements,
+      tourGuideRequired: formData.tourGuideRequired
+    };
+
+    // Remove undefined values from type_specific_data
+    const cleanTypeSpecificData = Object.fromEntries(
+      Object.entries(typeSpecificFields).filter(([_, value]) => value !== undefined && value !== '')
+    );
+
+    const itemToSave = {
       ...formData,
       id: formData.id || uuidv4(),
+      type_specific_data: cleanTypeSpecificData
+    };
+
+    // Remove the flattened fields from the main object
+    const fieldsToRemove = Object.keys(typeSpecificFields);
+    fieldsToRemove.forEach(field => {
+      delete itemToSave[field];
     });
+
+    onSave(itemToSave);
   };
 
   return (

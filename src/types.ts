@@ -48,8 +48,6 @@ export type ItineraryItem = {
   description: string;
   start_date: string;
   end_date?: string;
-  start_time?: string;
-  end_time?: string;
   location: string;
   assigned_to: string;
   confirmed: boolean;
@@ -57,6 +55,42 @@ export type ItineraryItem = {
   type_specific_data?: any;
   created_at?: string;
   updated_at?: string;
+  
+  // Legacy fields for backward compatibility
+  startDate?: string;
+  endDate?: string;
+  assignedTo?: string;
+  
+  // Type-specific fields (flattened for easier access)
+  airline?: string;
+  flightNumber?: string;
+  departureTime?: string;
+  arrivalTime?: string;
+  hotelName?: string;
+  roomType?: string;
+  checkInTime?: string;
+  checkOutTime?: string;
+  contactName?: string;
+  contactPhone?: string;
+  companyName?: string;
+  entranceFee?: string;
+  openingHours?: string;
+  tourDuration?: string;
+  tourGuide?: string;
+  trainNumber?: string;
+  trainClass?: string;
+  platform?: string;
+  busNumber?: string;
+  busCompany?: string;
+  busStop?: string;
+  meetingRoom?: string;
+  agenda?: string;
+  meetingType?: string;
+  conferenceHall?: string;
+  registrationRequired?: boolean;
+  factoryType?: string;
+  safetyRequirements?: string;
+  tourGuideRequired?: boolean;
 };
 
 export type Supplier = {
