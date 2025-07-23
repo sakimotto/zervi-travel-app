@@ -565,7 +565,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
                     <button
                       onClick={() => {
                         setSelectedEvent(null);
-                        window.location.href = '/calendar';
+                        // Navigate to dashboard where appointments can be edited
+                        window.location.href = '/dashboard';
                       }}
                       className="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90"
                     >
