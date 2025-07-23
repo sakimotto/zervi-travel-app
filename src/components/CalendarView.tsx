@@ -460,12 +460,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
         <div className="mb-8 flex flex-col lg:flex-row gap-4 justify-between items-center">
           <div className="flex items-center gap-4">
             {/* View Mode Selector */}
-            <div className="flex bg-gray-100 rounded-lg p-1">
+            <div className="flex bg-gray-100 rounded-lg p-0.5">
               {(['month', 'week', 'day', 'year'] as ViewMode[]).map(mode => (
                 <button
                   key={mode}
                   onClick={() => setViewMode(mode)}
-                  className={`px-3 py-1.5 rounded-md text-sm font-medium capitalize ${
+                  className={`px-2 py-1 rounded-md text-xs sm:text-sm font-medium capitalize ${
                     viewMode === mode 
                       ? 'bg-white shadow-sm text-primary' 
                       : 'text-gray-700 hover:text-primary'
@@ -477,43 +477,43 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <button
                 onClick={() => navigateDate('prev')}
-                className="p-2 hover:bg-gray-200 rounded-full"
+                className="p-1.5 hover:bg-gray-200 rounded-full"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={16} />
               </button>
-              <h3 className="text-lg font-semibold text-gray-900 min-w-[200px] text-center">
+              <h3 className="text-sm sm:text-base font-semibold text-gray-900 min-w-[120px] sm:min-w-[200px] text-center">
                 {getViewTitle()}
               </h3>
               <button
                 onClick={() => navigateDate('next')}
-                className="p-2 hover:bg-gray-200 rounded-full"
+                className="p-1.5 hover:bg-gray-200 rounded-full"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={16} />
               </button>
             </div>
 
             <button
               onClick={goToToday}
-              className="px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 text-sm"
+              className="px-2 py-1.5 bg-primary text-white rounded-lg hover:bg-primary/90 text-xs sm:text-sm"
             >
               Today
             </button>
           </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Filter size={18} className="text-gray-500" />
-              <span className="text-gray-700">Filter:</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1">
+              <Filter size={14} className="text-gray-500" />
+              <span className="text-gray-700 text-xs sm:text-sm hidden sm:inline">Filter:</span>
             </div>
             
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value as any)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="px-2 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-xs sm:text-sm min-w-[100px] sm:min-w-[120px]"
             >
               <option value="all">All Events</option>
               <option value="itinerary">Travel & Itinerary</option>
@@ -524,7 +524,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
             <select
               value={filterAssignee}
               onChange={(e) => setFilterAssignee(e.target.value as any)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="px-2 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-xs sm:text-sm min-w-[100px] sm:min-w-[120px]"
             >
               <option value="all">All Assignees</option>
               <option value="Archie">Archie</option>
