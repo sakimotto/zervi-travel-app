@@ -562,13 +562,9 @@ const ItinerarySection: React.FC = () => {
                             <p className="font-medium">
                               Check-in: {item.checkInTime} • Check-out: {item.checkOutTime}
                             </p>
+                            {item.end_date && <span> • Until: {format(parseISO(item.end_date), 'MMM d')}</span>}
                           </div>
                         </div>
-                        {item.end_date && (
-                          <div className="mt-2">
-                            <p className="text-sm text-indigo-700">Until: {format(parseISO(item.end_date), 'MMM d')}</p>
-                          </div>
-                        )}
                       </div>
                     )}
                     
