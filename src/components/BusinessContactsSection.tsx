@@ -200,8 +200,8 @@ const BusinessContactsSection: React.FC = () => {
     <section id="contacts" className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary font-montserrat mb-3">Business Contacts</h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">Business Contacts</h2>
+          <p className="text-base text-gray-700 max-w-3xl mx-auto">
             Manage your professional network and business relationships in China
           </p>
         </div>
@@ -326,7 +326,7 @@ const BusinessContactsSection: React.FC = () => {
                       <User size={24} className="text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">{contact.name}</h3>
+                      <h3 className="text-base font-semibold text-gray-900">{contact.name}</h3>
                       {contact.nickname && (
                         <p className="text-sm text-gray-500 italic">"{contact.nickname}"</p>
                       )}

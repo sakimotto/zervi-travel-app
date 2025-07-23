@@ -242,8 +242,8 @@ const ExpensesSection: React.FC = () => {
     <section id="expenses" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary font-montserrat mb-3">Expense Tracking</h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">Expense Tracking</h2>
+          <p className="text-base text-gray-700 max-w-3xl mx-auto">
             Track and manage your business travel expenses in China
           </p>
         </div>
@@ -254,7 +254,7 @@ const ExpensesSection: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-blue-100">Total Expenses</p>
-                <p className="text-2xl font-bold">${totalAmount.toFixed(2)}</p>
+                <p className="text-xl font-bold">${totalAmount.toFixed(2)}</p>
               </div>
               <DollarSign size={32} className="text-blue-200" />
             </div>
@@ -264,7 +264,7 @@ const ExpensesSection: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-green-100">Reimbursable</p>
-                <p className="text-2xl font-bold">${reimbursableAmount.toFixed(2)}</p>
+                <p className="text-xl font-bold">${reimbursableAmount.toFixed(2)}</p>
               </div>
               <DollarSign size={32} className="text-green-200" />
             </div>
@@ -274,7 +274,7 @@ const ExpensesSection: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-purple-100">Total Items</p>
-                <p className="text-2xl font-bold">{filteredExpenses.length}</p>
+                <p className="text-xl font-bold">{filteredExpenses.length}</p>
               </div>
               <Calendar size={32} className="text-purple-200" />
             </div>

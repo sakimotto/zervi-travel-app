@@ -197,8 +197,8 @@ const SuppliersSection: React.FC = () => {
     <section id="suppliers" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary font-montserrat mb-3">Supplier Directory</h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">Supplier Directory</h2>
+          <p className="text-base text-gray-700 max-w-3xl mx-auto">
             Manage your network of Chinese suppliers and manufacturers
           </p>
         </div>
@@ -319,7 +319,7 @@ const SuppliersSection: React.FC = () => {
               <div key={supplier.id} className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1">{supplier.company_name}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{supplier.company_name}</h3>
                     <p className="text-gray-600">{supplier.industry}</p>
                     {renderStars(supplier.rating)}
                   </div>

@@ -448,10 +448,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
     <section id="calendar" className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-primary font-montserrat mb-3">
+          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">
             Travel Calendar
           </h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <p className="text-base text-gray-700 max-w-3xl mx-auto">
             Complete overview of your business travel plans, meetings, and tasks
           </p>
         </div>
@@ -624,25 +624,25 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
         {/* Summary Stats */}
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-xl font-bold text-blue-600">
               {filteredEvents.filter(e => e.type === 'itinerary').length}
             </div>
             <div className="text-sm text-gray-600">Travel Items</div>
           </div>
           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-xl font-bold text-green-600">
               {filteredEvents.filter(e => e.type === 'appointment').length}
             </div>
             <div className="text-sm text-gray-600">Appointments</div>
           </div>
           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-yellow-600">
+            <div className="text-xl font-bold text-yellow-600">
               {filteredEvents.filter(e => e.type === 'todo').length}
             </div>
             <div className="text-sm text-gray-600">Tasks</div>
           </div>
           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-purple-600">
+            <div className="text-xl font-bold text-purple-600">
               {filteredEvents.filter(e => e.confirmed === false).length}
             </div>
             <div className="text-sm text-gray-600">Unconfirmed</div>

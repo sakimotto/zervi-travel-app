@@ -155,8 +155,8 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
     <section id="dashboard" className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary font-montserrat mb-3">Travel Dashboard</h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">Travel Dashboard</h2>
+          <p className="text-base text-gray-700 max-w-3xl mx-auto">
             Your business travel command center for China operations
           </p>
         </div>
@@ -167,7 +167,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Today's Tasks</p>
-                <p className="text-2xl font-bold text-primary">{todaysTodos.length}</p>
+                <p className="text-xl font-bold text-primary">{todaysTodos.length}</p>
               </div>
               <CheckSquare className="h-8 w-8 text-blue-500" />
             </div>
@@ -177,7 +177,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Today's Meetings</p>
-                <p className="text-2xl font-bold text-primary">{todaysAppointments.length}</p>
+                <p className="text-xl font-bold text-primary">{todaysAppointments.length}</p>
               </div>
               <Clock className="h-8 w-8 text-green-500" />
             </div>
@@ -187,7 +187,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Active Suppliers</p>
-                <p className="text-2xl font-bold text-primary">{activeSuppliers}</p>
+                <p className="text-xl font-bold text-primary">{activeSuppliers}</p>
               </div>
               <Building2 className="h-8 w-8 text-purple-500" />
             </div>
@@ -197,7 +197,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Expenses</p>
-                <p className="text-2xl font-bold text-primary">${totalExpenses.toFixed(0)}</p>
+                <p className="text-xl font-bold text-primary">${totalExpenses.toFixed(0)}</p>
               </div>
               <DollarSign className="h-8 w-8 text-yellow-500" />
             </div>

@@ -16,8 +16,8 @@ const TravelTipsSection: React.FC = () => {
     <section id="tips" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary font-montserrat mb-3">Essential Travel Tips</h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">Essential Travel Tips</h2>
+          <p className="text-base text-gray-700 max-w-3xl mx-auto">
             Make the most of your journey through China with these practical insights and cultural advice
           </p>
         </div>
@@ -51,7 +51,7 @@ const TravelTipsSection: React.FC = () => {
                   <div className="p-2 bg-primary bg-opacity-10 rounded-full mr-3">
                     <Icon size={20} className="text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold text-primary font-montserrat">{tip.title}</h3>
+                  <h3 className="text-base font-semibold text-primary font-montserrat">{tip.title}</h3>
                 </div>
                 <p className="text-gray-700">{tip.content}</p>
                 <div className="mt-4">

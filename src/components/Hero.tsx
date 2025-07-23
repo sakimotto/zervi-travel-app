@@ -15,10 +15,10 @@ const Hero: React.FC = () => {
           <a 
             href="https://www.trade.gov/country-commercial-guides/china" 
             target="_blank" 
-            rel="noopener noreferrer"
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-montserrat mb-4">
             className="ml-2 underline inline-flex items-center"
           >
-            Trade Guide <ExternalLink size={14} className="ml-1"/>
+        <p className="text-lg sm:text-xl text-white mb-8">
           </a>
         </p>
       </div>

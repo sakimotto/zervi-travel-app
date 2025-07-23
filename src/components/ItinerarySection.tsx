@@ -260,10 +260,10 @@ const ItinerarySection: React.FC = () => {
     <section id="itinerary" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-primary font-montserrat mb-3">
+          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">
             Travel Itinerary
           </h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <p className="text-base text-gray-700 max-w-3xl mx-auto">
             Manage your business trip details, including flights, accommodations, meetings, transportation, and sightseeing
           </p>
         </div>
@@ -452,7 +452,7 @@ const ItinerarySection: React.FC = () => {
                         {getTypeIcon(item.type)}
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>
+                        <h3 className="text-base font-semibold text-gray-900">{item.title}</h3>
                         <p className="text-sm text-gray-600">{item.type}</p>
                       </div>
                     </div>

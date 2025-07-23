@@ -6,8 +6,8 @@ const AboutSection: React.FC = () => {
     <section id="about" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary font-montserrat mb-3">About Zervi Travel</h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">About Zervi Travel</h2>
+          <p className="text-base text-gray-700 max-w-3xl mx-auto">
             Your comprehensive platform for managing business travel and relationships in China
           </p>
         </div>
@@ -22,7 +22,7 @@ const AboutSection: React.FC = () => {
           </div>
           
           <div>
-            <h3 className="text-2xl font-semibold text-primary font-montserrat mb-4">Our Mission</h3>
+            <h3 className="text-xl font-semibold text-primary font-montserrat mb-4">Our Mission</h3>
             <p className="text-gray-700 mb-6">
               Zervi Travel, part of Zervi Asia - Manufacturing & Development, was created to help business professionals navigate the complex landscape of doing business in Asia. We provide comprehensive tools for managing suppliers, tracking expenses, organizing meetings, and building lasting business relationships.
             </p>

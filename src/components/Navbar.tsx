@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center">
               <Link to="/" className="flex-shrink-0 flex items-center">
                 <Building2 className="h-8 w-8 text-primary" />
-                <span className="ml-2 text-xl font-montserrat font-bold text-primary">Zervi Travel</span>
+                <span className="ml-2 text-lg font-montserrat font-bold text-primary">Zervi Travel</span>
               </Link>
             </div>
             
