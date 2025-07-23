@@ -22,6 +22,54 @@ export const defaultTravelers: TravelerOption[] = [
   }
 ];
 
+// Sample traveler profiles with passport/visa details
+export const sampleTravelerProfiles = [
+  {
+    id: uuidv4(),
+    name: 'Archie',
+    email: 'archie@zervi.com',
+    phone: '+1 555 0123',
+    passport_number: 'US123456789',
+    passport_expiry: '2028-06-15',
+    passport_country: 'United States',
+    visa_status: 'Valid' as const,
+    visa_expiry: '2025-12-31',
+    emergency_contact_name: 'Sarah Johnson',
+    emergency_contact_phone: '+1 555 0199',
+    dietary_restrictions: ['No shellfish'],
+    preferred_airlines: ['Air China', 'United Airlines'],
+    frequent_flyer_numbers: {
+      'Air China': 'AC123456789',
+      'United': 'UA987654321'
+    },
+    hotel_preferences: 'Business hotels near city center, non-smoking rooms',
+    travel_insurance: 'Global Travel Insurance - Policy #GTI789456',
+    medical_conditions: 'None'
+  },
+  {
+    id: uuidv4(),
+    name: 'Yok',
+    email: 'yok@zervi.com',
+    phone: '+66 2 415 2174',
+    passport_number: 'TH987654321',
+    passport_expiry: '2027-03-20',
+    passport_country: 'Thailand',
+    visa_status: 'Valid' as const,
+    visa_expiry: '2025-11-15',
+    emergency_contact_name: 'Somchai Zervi',
+    emergency_contact_phone: '+66 2 415 2175',
+    dietary_restrictions: ['Vegetarian'],
+    preferred_airlines: ['Thai Airways', 'China Southern'],
+    frequent_flyer_numbers: {
+      'Thai Airways': 'TG555666777',
+      'China Southern': 'CZ111222333'
+    },
+    hotel_preferences: 'Hotels with gym facilities, vegetarian restaurant options',
+    travel_insurance: 'Asia Travel Cover - Policy #ATC456123',
+    medical_conditions: 'Mild food allergies'
+  }
+];
+
 // Get travelers from localStorage or use defaults
 export const getTravelers = (): TravelerOption[] => {
   try {

@@ -110,6 +110,61 @@ export type BusinessContact = {
   updated_at?: string;
 };
 
+export type ContactType = 'Business' | 'Traveler' | 'Customer';
+
+export type TravelerProfile = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  passport_number?: string;
+  passport_expiry?: string;
+  passport_country?: string;
+  visa_status?: 'Valid' | 'Expired' | 'Pending' | 'Not Required';
+  visa_expiry?: string;
+  emergency_contact_name?: string;
+  emergency_contact_phone?: string;
+  dietary_restrictions?: string[];
+  preferred_airlines?: string[];
+  frequent_flyer_numbers?: { [airline: string]: string };
+  hotel_preferences?: string;
+  travel_insurance?: string;
+  medical_conditions?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type TravelChecklist = {
+  id: string;
+  traveler_id: string;
+  trip_name: string;
+  departure_date: string;
+  items: TravelChecklistItem[];
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type TravelChecklistItem = {
+  id: string;
+  category: 'Documents' | 'Packing' | 'Health' | 'Technology' | 'Business' | 'Other';
+  item: string;
+  completed: boolean;
+  required: boolean;
+  notes?: string;
+};
+
+export type TravelAlert = {
+  id: string;
+  type: 'departure_reminder' | 'visa_expiry' | 'passport_expiry' | 'travel_time' | 'customs_prep';
+  title: string;
+  message: string;
+  priority: 'High' | 'Medium' | 'Low';
+  trigger_time: string;
+  related_item_id?: string;
+  dismissed: boolean;
+  created_at?: string;
+};
+
 export type Expense = {
   id: string;
   date: string;
