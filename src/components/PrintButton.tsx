@@ -16,10 +16,10 @@ const PrintButton: React.FC<PrintButtonProps> = ({ itinerary, className = '' }) 
   return (
     <button
       onClick={handlePrint}
-      className={`flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition-colors ${className}`}
+      className={`flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1.5 rounded-lg transition-colors text-sm ${className}`}
       title="Print itinerary"
     >
-      <Printer size={18} className="mr-1" />
+      <Printer size={16} className="mr-1" />
       <span className="hidden sm:inline">Print</span>
     </button>
   );

@@ -273,37 +273,37 @@ const ItinerarySection: React.FC = () => {
             <div className="flex bg-gray-100 rounded-lg p-1">
               <button
                 onClick={() => setViewMode('full')}
-                className={`px-3 py-1.5 rounded-md flex items-center ${
+                className={`px-2 py-1 rounded-md flex items-center text-sm ${
                   viewMode === 'full' 
                     ? 'bg-white shadow-sm text-primary' 
                     : 'text-gray-700 hover:text-primary'
                 }`}
               >
-                <LayoutList size={18} className="mr-1.5" />
+                <LayoutList size={16} className="mr-1" />
                 <span>Full View</span>
               </button>
               <button
                 onClick={() => setViewMode('summary')}
-                className={`px-3 py-1.5 rounded-md flex items-center ${
+                className={`px-2 py-1 rounded-md flex items-center text-sm ${
                   viewMode === 'summary' 
                     ? 'bg-white shadow-sm text-primary' 
                     : 'text-gray-700 hover:text-primary'
                 }`}
               >
-                <List size={18} className="mr-1.5" />
+                <List size={16} className="mr-1" />
                 <span>Summary</span>
               </button>
             </div>
 
             {viewMode === 'full' && (
-              <div className="flex flex-wrap items-center gap-2 ml-1">
-                <Filter size={20} className="text-gray-500" />
-                <span className="text-gray-700">Filter by:</span>
+              <div className="flex flex-wrap items-center gap-1 ml-1">
+                <Filter size={16} className="text-gray-500" />
+                <span className="text-gray-700 text-sm hidden sm:inline">Filter by:</span>
                 
                 <select 
                   value={filterType}
                   onChange={(e) => setFilterType(e.target.value as ItineraryItemType | 'All')}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  className="px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm"
                 >
                   <option value="All">All Types</option>
                   <option value="Flight">Flights</option>
@@ -323,7 +323,7 @@ const ItinerarySection: React.FC = () => {
                 <select 
                   value={filterTraveler}
                   onChange={(e) => setFilterTraveler(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  className="px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm"
                 >
                   {travelerOptions.map(traveler => (
                     <option key={traveler} value={traveler}>
@@ -341,33 +341,33 @@ const ItinerarySection: React.FC = () => {
                 setEditingItem(null);
                 setShowAddModal(true);
               }}
-              className="flex items-center bg-secondary hover:bg-secondary/90 text-white px-4 py-2 rounded-lg transition-colors"
+              className="flex items-center bg-secondary hover:bg-secondary/90 text-white px-3 py-1.5 rounded-lg transition-colors text-sm"
             >
-              <Plus size={20} className="mr-2" />
+              <Plus size={16} className="mr-1" />
               Add Item
             </button>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <button
                 onClick={exportItinerary}
-                className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition-colors"
+                className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1.5 rounded-lg transition-colors text-sm"
                 title="Export itinerary"
               >
-                <Download size={18} className="mr-1" />
+                <Download size={16} className="mr-1" />
                 <span className="hidden sm:inline">Export</span>
               </button>
               
               <button
                 onClick={exportToWordDocument}
-                className="flex items-center bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg transition-colors"
+                className="flex items-center bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1.5 rounded-lg transition-colors text-sm"
                 title="Export as Word document"
               >
-                <Download size={18} className="mr-1" />
+                <Download size={16} className="mr-1" />
                 <span className="hidden sm:inline">Word</span>
               </button>
               
-              <label className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition-colors cursor-pointer">
-                <Upload size={18} className="mr-1" />
+              <label className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1.5 rounded-lg transition-colors cursor-pointer text-sm">
+                <Upload size={16} className="mr-1" />
                 <span className="hidden sm:inline">Import</span>
                 <input 
                   type="file" 
@@ -379,23 +379,24 @@ const ItinerarySection: React.FC = () => {
               
               <PrintButton 
                 itinerary={sortedItinerary} 
+                className="px-2 py-1.5 text-sm"
               />
               
               <button
                 onClick={handleSaveAsDefault}
-                className="flex items-center bg-primary hover:bg-primary/90 text-white px-3 py-2 rounded-lg transition-colors"
+                className="flex items-center bg-primary hover:bg-primary/90 text-white px-2 py-1.5 rounded-lg transition-colors text-sm"
                 title="Save as default data"
               >
-                <Save size={18} className="mr-1" />
+                <Save size={16} className="mr-1" />
                 <span className="hidden sm:inline">Save as Default</span>
               </button>
               
               <button
                 onClick={() => setShowConfirmReset(true)}
-                className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition-colors"
+                className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1.5 rounded-lg transition-colors text-sm"
                 title="Reset to sample data"
               >
-                <Database size={18} className="mr-1" />
+                <Database size={16} className="mr-1" />
                 <span className="hidden sm:inline">Reset</span>
               </button>
             </div>
