@@ -49,7 +49,6 @@ export type ItineraryItem = {
   start_date: string;
   end_date?: string;
   start_time?: string;
-  end_time?: string;
   location: string;
   assigned_to: string;
   confirmed: boolean;
