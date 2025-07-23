@@ -4,20 +4,14 @@ import Navbar from './components/Navbar';
 import AuthGuard from './components/AuthGuard';
 import TravelChatbot from './components/TravelChatbot';
 import { useState, useEffect } from 'react';
-import { sampleItinerary } from './data/itinerary';
-import { sampleSuppliers } from './data/suppliers';
-import { sampleBusinessContacts } from './data/businessContacts';
-import { sampleExpenses } from './data/expenses';
-import { sampleTodos } from './data/todos';
-import { sampleAppointments } from './data/appointments';
 import { 
-  getItineraryFromLocalStorage,
-  getSuppliersFromLocalStorage,
-  getContactsFromLocalStorage,
-  getExpensesFromLocalStorage,
-  getTodosFromLocalStorage,
-  getAppointmentsFromLocalStorage
-} from './utils/localStorage';
+  useItineraryItems,
+  useSuppliers,
+  useBusinessContacts,
+  useExpenses,
+  useTodos,
+  useAppointments
+} from './hooks/useSupabase';
 
 // Lazy load components for better performance
 const HomePage = React.lazy(() => import('./pages/HomePage'));
@@ -43,26 +37,13 @@ const LoadingSpinner = () => (
 );
 
 function App() {
-  const [currentData, setCurrentData] = useState({
-    itinerary: sampleItinerary,
-    suppliers: sampleSuppliers,
-    contacts: sampleBusinessContacts,
-    expenses: sampleExpenses,
-    todos: sampleTodos,
-    appointments: sampleAppointments,
-  });
-
-  // Load data from localStorage on app mount
-  useEffect(() => {
-    const itinerary = getItineraryFromLocalStorage() || sampleItinerary;
-    const suppliers = getSuppliersFromLocalStorage() || sampleSuppliers;
-    const contacts = getContactsFromLocalStorage() || sampleBusinessContacts;
-    const expenses = getExpensesFromLocalStorage() || sampleExpenses;
-    const todos = getTodosFromLocalStorage() || sampleTodos;
-    const appointments = getAppointmentsFromLocalStorage() || sampleAppointments;
-    
-    setCurrentData({ itinerary, suppliers, contacts, expenses, todos, appointments });
-  }, []);
+  // Use live Supabase data for chatbot
+  const { data: itinerary } = useItineraryItems();
+  const { data: suppliers } = useSuppliers();
+  const { data: contacts } = useBusinessContacts();
+  const { data: expenses } = useExpenses();
+  const { data: todos } = useTodos();
+  const { data: appointments } = useAppointments();
 
   return (
     <AuthGuard>
@@ -87,12 +68,12 @@ function App() {
           
           {/* Global Travel Chatbot - Available on all pages */}
           <TravelChatbot 
-            itinerary={currentData.itinerary}
-            suppliers={currentData.suppliers}
-            contacts={currentData.contacts}
-            expenses={currentData.expenses}
-            todos={currentData.todos}
-            appointments={currentData.appointments}
+            itinerary={itinerary}
+            suppliers={suppliers}
+            contacts={contacts}
+            expenses={expenses}
+            todos={todos}
+            appointments={appointments}
           />
         </div>
       </Router>
