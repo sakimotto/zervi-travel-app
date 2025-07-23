@@ -52,7 +52,12 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: value,
+      // Also update the flattened type-specific fields
+      ...(name.startsWith('type_specific_') ? {} : { [name]: value })
+    }));
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,24 +68,29 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create clean data object matching database schema exactly
-    const itemToSave = {
+    // Prepare the base item data
+    const baseData = {
       id: formData.id || uuidv4(),
       type: formData.type,
       title: formData.title,
       description: formData.description,
       start_date: formData.start_date,
-      end_date: formData.end_date || null,
-      start_time: formData.start_time || null,
-      end_time: formData.end_time || null,
+      end_date: formData.end_date || undefined,
       location: formData.location,
       assigned_to: formData.assigned_to,
       confirmed: formData.confirmed,
-      notes: formData.notes || null,
-      type_specific_data: {}
+      notes: formData.notes || undefined
     };
 
-    // Add type-specific data only if values exist
+    // Add start_time and end_time only if they have values
+    if (formData.start_time && formData.start_time.trim() !== '') {
+      baseData.start_time = formData.start_time;
+    }
+    if (formData.end_time && formData.end_time.trim() !== '') {
+      baseData.end_time = formData.end_time;
+    }
+
+    // Collect type-specific data
     const typeSpecificData: any = {};
     
     // Flight fields
@@ -100,11 +110,45 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
     if (formData.contactPhone) typeSpecificData.contactPhone = formData.contactPhone;
     if (formData.companyName) typeSpecificData.companyName = formData.companyName;
     
-    // Add other type-specific fields as needed...
+    // Train fields
+    if (formData.trainNumber) typeSpecificData.trainNumber = formData.trainNumber;
+    if (formData.trainClass) typeSpecificData.trainClass = formData.trainClass;
+    if (formData.platform) typeSpecificData.platform = formData.platform;
     
-    itemToSave.type_specific_data = typeSpecificData;
+    // Bus fields
+    if (formData.busNumber) typeSpecificData.busNumber = formData.busNumber;
+    if (formData.busCompany) typeSpecificData.busCompany = formData.busCompany;
+    if (formData.busStop) typeSpecificData.busStop = formData.busStop;
+    
+    // Sightseeing fields
+    if (formData.entranceFee) typeSpecificData.entranceFee = formData.entranceFee;
+    if (formData.openingHours) typeSpecificData.openingHours = formData.openingHours;
+    if (formData.tourDuration) typeSpecificData.tourDuration = formData.tourDuration;
+    if (formData.tourGuide) typeSpecificData.tourGuide = formData.tourGuide;
+    
+    // Meeting fields
+    if (formData.meetingRoom) typeSpecificData.meetingRoom = formData.meetingRoom;
+    if (formData.meetingType) typeSpecificData.meetingType = formData.meetingType;
+    if (formData.agenda) typeSpecificData.agenda = formData.agenda;
+    
+    // Conference fields
+    if (formData.conferenceHall) typeSpecificData.conferenceHall = formData.conferenceHall;
+    if (formData.registrationRequired !== undefined) typeSpecificData.registrationRequired = formData.registrationRequired;
+    
+    // Factory visit fields
+    if (formData.factoryType) typeSpecificData.factoryType = formData.factoryType;
+    if (formData.safetyRequirements) typeSpecificData.safetyRequirements = formData.safetyRequirements;
+    if (formData.tourGuideRequired !== undefined) typeSpecificData.tourGuideRequired = formData.tourGuideRequired;
+    
+    // Only add type_specific_data if there's actual data
+    const finalData = { ...baseData };
+    if (Object.keys(typeSpecificData).length > 0) {
+      finalData.type_specific_data = typeSpecificData;
+    }
+    
+    console.log('Saving itinerary item:', finalData);
 
-    onSave(itemToSave);
+    onSave(finalData);
   };
 
   return (
