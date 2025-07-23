@@ -542,7 +542,40 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
                   )}
                 </div>
                 
-                <div className="flex justify-end mt-6">
+                <div className="flex justify-between mt-6">
+                  {selectedEvent.type === 'itinerary' && (
+                    <button
+                      onClick={() => {
+                        setSelectedEvent(null);
+                        window.location.href = '/itinerary';
+                      }}
+                      className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
+                    >
+                      Open Itinerary
+                    </button>
+                  )}
+                  {selectedEvent.type === 'appointment' && (
+                    <button
+                      onClick={() => {
+                        setSelectedEvent(null);
+                        window.location.href = '/calendar';
+                      }}
+                      className="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90"
+                    >
+                      Edit Appointment
+                    </button>
+                  )}
+                  {selectedEvent.type === 'todo' && (
+                    <button
+                      onClick={() => {
+                        setSelectedEvent(null);
+                        window.location.href = '/dashboard';
+                      }}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    >
+                      Edit Task
+                    </button>
+                  )}
                   <button
                     onClick={() => setSelectedEvent(null)}
                     className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
