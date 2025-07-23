@@ -204,10 +204,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
     const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
 
     return (
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full">
         <div className="grid grid-cols-7 bg-gray-50 border-b">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="p-3 text-center font-medium text-gray-700 border-r last:border-r-0">
+          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
+            <div key={day} className="p-1 sm:p-3 text-center font-medium text-gray-700 border-r last:border-r-0 text-xs sm:text-sm">
               {day}
             </div>
           ))}
@@ -222,31 +222,31 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
             return (
               <div 
                 key={day.toISOString()} 
-                className={`min-h-[120px] p-2 border-r border-b last:border-r-0 ${
+                className={`min-h-[80px] sm:min-h-[120px] p-1 sm:p-2 border-r border-b last:border-r-0 ${
                   !isCurrentMonth ? 'bg-gray-50' : ''
                 } ${isCurrentDay ? 'bg-blue-50' : ''}`}
               >
-                <div className={`text-sm font-medium mb-2 ${
+                <div className={`text-xs sm:text-sm font-medium mb-1 sm:mb-2 ${
                   !isCurrentMonth ? 'text-gray-400' : isCurrentDay ? 'text-blue-600' : 'text-gray-700'
                 }`}>
                   {format(day, 'd')}
                 </div>
                 
-                <div className="space-y-1">
+                <div className="space-y-0.5 sm:space-y-1">
                   {dayEvents.slice(0, 3).map(event => (
                     <div
                       key={event.id}
                       onClick={() => setSelectedEvent(event)}
-                      className={`text-xs px-2 py-1 rounded cursor-pointer ${event.color} truncate flex items-center gap-1 hover:opacity-80`}
+                      className={`text-xs px-1 sm:px-2 py-0.5 sm:py-1 rounded cursor-pointer ${event.color} truncate flex items-center gap-0.5 sm:gap-1 hover:opacity-80`}
                       title={`${event.title} ${event.time ? `at ${event.time}` : ''}`}
                     >
-                      {event.icon}
-                      <span className="truncate">{event.title}</span>
+                      <span className="hidden sm:inline">{event.icon}</span>
+                      <span className="truncate text-xs">{event.title}</span>
                     </div>
                   ))}
                   {dayEvents.length > 3 && (
                     <div 
-                      className="text-xs text-gray-500 px-2 cursor-pointer hover:text-gray-700"
+                      className="text-xs text-gray-500 px-1 sm:px-2 cursor-pointer hover:text-gray-700"
                       onClick={() => {
                         // Show all events for this day
                         setCurrentDate(day);
@@ -457,15 +457,15 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
         </div>
 
         {/* Controls */}
-        <div className="mb-8 flex flex-col lg:flex-row gap-4 justify-between items-center">
+        <div className="mb-4 sm:mb-8 flex flex-col gap-2 sm:gap-4">
           <div className="flex items-center gap-4">
             {/* View Mode Selector */}
-            <div className="flex bg-gray-100 rounded-lg p-0.5">
+            <div className="flex bg-gray-100 rounded-lg p-0.5 w-full sm:w-auto">
               {(['month', 'week', 'day', 'year'] as ViewMode[]).map(mode => (
                 <button
                   key={mode}
                   onClick={() => setViewMode(mode)}
-                  className={`px-2 py-1 rounded-md text-xs sm:text-sm font-medium capitalize ${
+                  className={`flex-1 sm:flex-none px-2 py-1 rounded-md text-xs font-medium capitalize ${
                     viewMode === mode 
                       ? 'bg-white shadow-sm text-primary' 
                       : 'text-gray-700 hover:text-primary'
@@ -480,16 +480,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
             <div className="flex items-center gap-1">
               <button
                 onClick={() => navigateDate('prev')}
-                className="p-1.5 hover:bg-gray-200 rounded-full"
+                className="p-1 sm:p-1.5 hover:bg-gray-200 rounded-full"
               >
                 <ChevronLeft size={16} />
               </button>
-              <h3 className="text-sm sm:text-base font-semibold text-gray-900 min-w-[120px] sm:min-w-[200px] text-center">
+              <h3 className="text-xs sm:text-base font-semibold text-gray-900 min-w-[100px] sm:min-w-[200px] text-center">
                 {getViewTitle()}
               </h3>
               <button
                 onClick={() => navigateDate('next')}
-                className="p-1.5 hover:bg-gray-200 rounded-full"
+                className="p-1 sm:p-1.5 hover:bg-gray-200 rounded-full"
               >
                 <ChevronRight size={16} />
               </button>
@@ -497,14 +497,14 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
 
             <button
               onClick={goToToday}
-              className="px-2 py-1.5 bg-primary text-white rounded-lg hover:bg-primary/90 text-xs sm:text-sm"
+              className="px-2 py-1 sm:py-1.5 bg-primary text-white rounded-lg hover:bg-primary/90 text-xs"
             >
               Today
             </button>
           </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1 sm:gap-2 w-full sm:w-auto">
             <div className="flex items-center gap-1">
               <Filter size={14} className="text-gray-500" />
               <span className="text-gray-700 text-xs sm:text-sm hidden sm:inline">Filter:</span>
@@ -513,7 +513,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value as any)}
-              className="px-2 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-xs sm:text-sm min-w-[100px] sm:min-w-[120px]"
+              className="flex-1 sm:flex-none px-2 py-1 sm:py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-xs min-w-[80px] sm:min-w-[120px]"
             >
               <option value="all">All Events</option>
               <option value="itinerary">Travel & Itinerary</option>
@@ -524,7 +524,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
             <select
               value={filterAssignee}
               onChange={(e) => setFilterAssignee(e.target.value as any)}
-              className="px-2 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-xs sm:text-sm min-w-[100px] sm:min-w-[120px]"
+              className="flex-1 sm:flex-none px-2 py-1 sm:py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-xs min-w-[80px] sm:min-w-[120px]"
             >
               <option value="all">All Assignees</option>
               <option value="Archie">Archie</option>
