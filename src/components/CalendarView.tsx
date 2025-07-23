@@ -3,12 +3,13 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday
 import { ChevronLeft, ChevronRight, Filter, Calendar as CalendarIcon, Plane, Hotel, Car, Building2, Users, Clock, MapPin, Plus } from 'lucide-react';
 import { ItineraryItem, Appointment, TodoItem } from '../types';
 import AddAppointmentModal from './AddAppointmentModal';
-import { useSuppliers, useBusinessContacts } from '../hooks/useSupabase';
 
 interface CalendarViewProps {
   itinerary: ItineraryItem[];
   appointments: Appointment[];
   todos: TodoItem[];
+  suppliers: Supplier[];
+  contacts: BusinessContact[];
 }
 
 interface CalendarEvent {
@@ -28,7 +29,7 @@ interface CalendarEvent {
 
 type ViewMode = 'month' | 'week' | 'day' | 'year';
 
-const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, todos }) => {
+const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, todos, suppliers, contacts }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<ViewMode>('month');
   const [filterType, setFilterType] = useState<'all' | 'itinerary' | 'appointments' | 'todos'>('all');
@@ -37,9 +38,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
   const [showEditAppointmentModal, setShowEditAppointmentModal] = useState(false);
   const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
   
-  // Get suppliers and contacts for appointment editing
-  const { data: suppliers } = useSuppliers();
-  const { data: contacts } = useBusinessContacts();
 
   // Handle appointment editing
   const handleEditAppointment = (appointmentId: string) => {

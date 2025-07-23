@@ -3,7 +3,6 @@ import { Appointment, Supplier, BusinessContact } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 import { X, Plus, Trash2 } from 'lucide-react';
-import TravelerSelector from './TravelerSelector';
 
 interface AddAppointmentModalProps {
   onClose: () => void;
@@ -20,8 +19,6 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
   editAppointment, 
   suppliers, 
   contacts, 
-  selectedDate 
-}) => {
   const [formData, setFormData] = useState<Appointment>({
     id: '',
     title: '',
