@@ -36,8 +36,8 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
   );
 
   const upcomingItinerary = itinerary.filter(item => {
-    if (!item.startDate || typeof item.startDate !== 'string' || item.startDate.trim() === '') return false;
-    const itemDate = parseISO(item.startDate);
+    if (!item.start_date || typeof item.start_date !== 'string' || item.start_date.trim() === '') return false;
+    const itemDate = parseISO(item.start_date);
     if (!isValid(itemDate)) return false;
     const today = new Date();
     const nextWeek = addDays(today, 7);
@@ -45,7 +45,7 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
   }).slice(0, 3);
 
   const todaysItinerary = itinerary.filter(item => 
-    item.startDate && typeof item.startDate === 'string' && item.startDate.trim() !== '' && isValid(parseISO(item.startDate)) && isToday(parseISO(item.startDate))
+    item.start_date && typeof item.start_date === 'string' && item.start_date.trim() !== '' && isValid(parseISO(item.start_date)) && isToday(parseISO(item.start_date))
   );
 
   const activeSuppliers = suppliers.filter(s => s.status === 'Active').length;
