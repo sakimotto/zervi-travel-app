@@ -648,6 +648,17 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
             <div className="text-sm text-gray-600">Unconfirmed</div>
           </div>
         </div>
+        
+        {/* Help Text */}
+        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-blue-800 mb-2">📅 Calendar Usage Guide</h3>
+          <div className="text-xs text-blue-700 space-y-1">
+            <p><strong>Appointments:</strong> Business meetings, calls, factory visits - managed separately from travel</p>
+            <p><strong>Travel Items:</strong> Flights, hotels, transportation - managed in the Itinerary section</p>
+            <p><strong>Tasks:</strong> Todo items with due dates - managed in the Dashboard</p>
+            <p><strong>Tip:</strong> Use the Calendar page to schedule appointments, and Itinerary page for travel planning</p>
+          </div>
+        </div>
       </div>
 
       {/* Edit Appointment Modal */}

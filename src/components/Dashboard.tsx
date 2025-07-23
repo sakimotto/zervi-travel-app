@@ -233,13 +233,37 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
               </div>
             )}
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               <MiniCalendar 
                 selectedDate={selectedDate}
                 onDateSelect={setSelectedDate}
                 appointments={appointments}
                 itinerary={itinerary}
               />
+              
+              {/* Quick Add Appointment */}
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                  <Calendar className="mr-2 h-5 w-5 text-primary" />
+                  Quick Actions
+                </h3>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => window.location.href = '/calendar'}
+                    className="w-full flex items-center justify-center px-3 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors text-sm"
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    Schedule Appointment
+                  </button>
+                  <button
+                    onClick={() => window.location.href = '/itinerary'}
+                    className="w-full flex items-center justify-center px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm"
+                  >
+                    <Plane className="mr-2 h-4 w-4" />
+                    Add Travel Item
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

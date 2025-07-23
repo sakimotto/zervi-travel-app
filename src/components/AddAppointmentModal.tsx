@@ -132,10 +132,18 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
     
     const filteredAttendees = attendees.filter(attendee => attendee.trim() !== '');
     
+    // Ensure we're using the correct database field names
     onSave({
       ...formData,
       id: formData.id || uuidv4(),
       attendees: filteredAttendees,
+      // Make sure all fields match database schema
+      start_date: formData.start_date,
+      start_time: formData.start_time,
+      end_time: formData.end_time,
+      supplier_id: formData.supplier_id || null,
+      contact_id: formData.contact_id || null,
+      assigned_to: formData.assigned_to || null,
     });
   };
 
