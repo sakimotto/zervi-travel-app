@@ -39,13 +39,16 @@ const Footer: React.FC = () => {
           <div className="md:col-span-1">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><a href="#home" className="text-gray-300 hover:text-accent">Home</a></li>
-              <li><a href="#destinations" className="text-gray-300 hover:text-accent">Cities</a></li>
-              <li><a href="#suppliers" className="text-gray-300 hover:text-accent">Suppliers</a></li>
-              <li><a href="#contacts" className="text-gray-300 hover:text-accent">Contacts</a></li>
-              <li><a href="#itinerary" className="text-gray-300 hover:text-accent">Itinerary</a></li>
-              <li><a href="#expenses" className="text-gray-300 hover:text-accent">Expenses</a></li>
-              <li><a href="#about" className="text-gray-300 hover:text-accent">About</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-accent">Home</a></li>
+              <li><a href="/destinations" className="text-gray-300 hover:text-accent">Destinations</a></li>
+              <li><a href="/suppliers" className="text-gray-300 hover:text-accent">Suppliers</a></li>
+              <li><a href="/contacts" className="text-gray-300 hover:text-accent">Contacts</a></li>
+              <li><a href="/itinerary" className="text-gray-300 hover:text-accent">Itinerary</a></li>
+              <li><a href="/calendar" className="text-gray-300 hover:text-accent">Calendar</a></li>
+              <li><a href="/expenses" className="text-gray-300 hover:text-accent">Expenses</a></li>
+              <li><a href="/tips" className="text-gray-300 hover:text-accent">Travel Tips</a></li>
+              <li><a href="/phrases" className="text-gray-300 hover:text-accent">Phrases</a></li>
+              <li><a href="/about" className="text-gray-300 hover:text-accent">About</a></li>
             </ul>
           </div>
           

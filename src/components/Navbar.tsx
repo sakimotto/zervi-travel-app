@@ -67,12 +67,14 @@ const Navbar: React.FC = () => {
             
             <div className="hidden md:flex md:items-center md:space-x-4">
               <NavLink to="/dashboard" icon={<LayoutDashboard size={16} />} text="Dashboard" />
-              <NavLink to="/destinations" icon={<Building2 size={16} />} text="Cities" />
+              <NavLink to="/destinations" icon={<Building2 size={16} />} text="Destinations" />
               <NavLink to="/suppliers" icon={<Building2 size={16} />} text="Suppliers" />
               <NavLink to="/contacts" icon={<Users size={16} />} text="Contacts" />
               <NavLink to="/itinerary" icon={<ListTodo size={16} />} text="Itinerary" />
               <NavLink to="/calendar" icon={<Calendar size={16} />} text="Calendar" />
               <NavLink to="/expenses" icon={<DollarSign size={16} />} text="Expenses" />
+              <NavLink to="/tips" icon={<Lightbulb size={16} />} text="Tips" />
+              <NavLink to="/phrases" icon={<MessageCircle size={16} />} text="Phrases" />
               <NavLink to="/about" icon={<Info size={16} />} text="About" />
               <UserMenu />
             </div>

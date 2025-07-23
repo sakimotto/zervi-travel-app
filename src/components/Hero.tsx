@@ -3,7 +3,7 @@ import { ChevronDown, ExternalLink } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const scrollToDestinations = () => {
-    document.getElementById('destinations')?.scrollIntoView({ behavior: 'smooth' });
+    window.location.href = '/destinations';
   };
 
   return (

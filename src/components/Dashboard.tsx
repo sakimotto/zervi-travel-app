@@ -417,35 +417,35 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
             <div className="space-y-3">
               <button 
-                onClick={() => window.location.href = '/suppliers'}
+                onClick={() => window.location.href = '#/suppliers'}
                 className="w-full flex items-center justify-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Supplier
               </button>
               <button 
-                onClick={() => window.location.href = '/calendar'}
+                onClick={() => window.location.href = '#/calendar'}
                 className="w-full flex items-center justify-center px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors"
               >
                 <Calendar className="mr-2 h-4 w-4" />
                 Schedule Meeting
               </button>
               <button 
-                onClick={() => window.location.href = '/expenses'}
+                onClick={() => window.location.href = '#/expenses'}
                 className="w-full flex items-center justify-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors"
               >
                 <DollarSign className="mr-2 h-4 w-4" />
                 Add Expense
               </button>
               <button 
-                onClick={() => window.location.href = '/contacts'}
+                onClick={() => window.location.href = '#/contacts'}
                 className="w-full flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 <Users className="mr-2 h-4 w-4" />
                 Add Contact
               </button>
               <button 
-                onClick={() => window.location.href = '/itinerary'}
+                onClick={() => window.location.href = '#/itinerary'}
                 className="w-full flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
               >
                 <Plane className="mr-2 h-4 w-4" />
