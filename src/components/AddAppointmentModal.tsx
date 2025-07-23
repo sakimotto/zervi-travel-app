@@ -94,15 +94,15 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
     if (supplier) {
       setFormData(prev => ({
         ...prev,
-        title: `Meeting with ${supplier.companyName}`,
+        title: `Meeting with ${supplier.company_name}`,
         location: `${supplier.address}, ${supplier.city}`,
         type: 'Supplier Meeting',
-        supplierId: supplier.id,
+        supplier_id: supplier.id,
       }));
       
       // Add supplier contact to attendees if not already there
-      if (!attendees.includes(supplier.contactPerson)) {
-        setAttendees([...attendees.filter(a => a), supplier.contactPerson]);
+      if (!attendees.includes(supplier.contact_person)) {
+        setAttendees([...attendees.filter(a => a), supplier.contact_person]);
       }
     }
   };
@@ -114,7 +114,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
         ...prev,
         title: `Meeting with ${contact.name}`,
         location: `${contact.company}, ${contact.city}`,
-        contactId: contact.id,
+        contact_id: contact.id,
       }));
       
       // Add contact to attendees if not already there
@@ -166,7 +166,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
                   <option value="">Choose a supplier...</option>
                   {suppliers.map(supplier => (
                     <option key={supplier.id} value={supplier.id}>
-                      {supplier.companyName}
+                      {supplier.company_name}
                     </option>
                   ))}
                 </select>
