@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, parseISO, addMonths, subMonths, startOfWeek, endOfWeek, addDays, startOfDay, isSameMonth } from 'date-fns';
 import { ChevronLeft, ChevronRight, Filter, Calendar as CalendarIcon, Plane, Hotel, Car, Building2, Users, Clock, MapPin, Plus } from 'lucide-react';
 import { ItineraryItem, Appointment, TodoItem } from '../types';
+import AddAppointmentModal from './AddAppointmentModal';
+import { useSuppliers, useBusinessContacts } from '../hooks/useSupabase';
 
 interface CalendarViewProps {
   itinerary: ItineraryItem[];
@@ -32,6 +34,29 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
   const [filterType, setFilterType] = useState<'all' | 'itinerary' | 'appointments' | 'todos'>('all');
   const [filterAssignee, setFilterAssignee] = useState<'all' | 'Archie' | 'Yok' | 'Both'>('all');
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
+  const [showEditAppointmentModal, setShowEditAppointmentModal] = useState(false);
+  const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
+  
+  // Get suppliers and contacts for appointment editing
+  const { data: suppliers } = useSuppliers();
+  const { data: contacts } = useBusinessContacts();
+
+  // Handle appointment editing
+  const handleEditAppointment = (appointmentId: string) => {
+    const appointment = appointments.find(apt => apt.id === appointmentId);
+    if (appointment) {
+      setEditingAppointment(appointment);
+      setShowEditAppointmentModal(true);
+      setSelectedEvent(null);
+    }
+  };
+
+  const handleSaveAppointment = (appointment: Appointment) => {
+    // This would typically update the appointment in the database
+    // For now, we'll just close the modal
+    setShowEditAppointmentModal(false);
+    setEditingAppointment(null);
+  };
 
   // Convert all data to calendar events
   const getCalendarEvents = (): CalendarEvent[] => {
@@ -564,9 +589,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
                   {selectedEvent.type === 'appointment' && (
                     <button
                       onClick={() => {
-                        setSelectedEvent(null);
-                        // Navigate to dashboard where appointments can be edited
-                        window.location.href = '/dashboard';
+                        handleEditAppointment(selectedEvent.id);
                       }}
                       className="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90"
                     >
@@ -624,6 +647,21 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
           </div>
         </div>
       </div>
+
+      {/* Edit Appointment Modal */}
+      {showEditAppointmentModal && editingAppointment && (
+        <AddAppointmentModal
+          onClose={() => {
+            setShowEditAppointmentModal(false);
+            setEditingAppointment(null);
+          }}
+          onSave={handleSaveAppointment}
+          editAppointment={editingAppointment}
+          suppliers={suppliers}
+          contacts={contacts}
+          selectedDate={parseISO(editingAppointment.start_date)}
+        />
+      )}
     </section>
   );
 };
