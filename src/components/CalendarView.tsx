@@ -70,13 +70,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
         title: item.title,
         type: 'itinerary',
         subType: item.type,
-        date: item.startDate,
-        endDate: item.endDate,
-        time: item.departureTime || item.checkInTime,
+        date: item.start_date,
+        endDate: item.end_date,
+        time: item.type_specific_data?.departureTime || item.type_specific_data?.checkInTime,
         color: getItineraryColor(item.type),
         icon: getItineraryIcon(item.type),
         confirmed: item.confirmed,
-        assignedTo: item.assignedTo
+        assigned_to: item.assigned_to
       });
     });
 
@@ -218,7 +218,14 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
                     </div>
                   ))}
                   {dayEvents.length > 3 && (
-                    <div className="text-xs text-gray-500 px-2">
+                    <div 
+                      className="text-xs text-gray-500 px-2 cursor-pointer hover:text-gray-700"
+                      onClick={() => {
+                        // Show all events for this day
+                        setCurrentDate(day);
+                        setViewMode('day');
+                      }}
+                    >
                       +{dayEvents.length - 3} more
                     </div>
                   )}
@@ -547,7 +554,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
                     <button
                       onClick={() => {
                         setSelectedEvent(null);
-                        window.location.href = '#/itinerary';
+                        window.location.href = '/itinerary';
                       }}
                       className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
                     >
@@ -558,7 +565,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
                     <button
                       onClick={() => {
                         setSelectedEvent(null);
-                        window.location.href = '#/calendar';
+                        window.location.href = '/calendar';
                       }}
                       className="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90"
                     >
@@ -569,7 +576,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
                     <button
                       onClick={() => {
                         setSelectedEvent(null);
-                        window.location.href = '#/dashboard';
+                        window.location.href = '/dashboard';
                       }}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                     >
