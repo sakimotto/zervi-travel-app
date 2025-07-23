@@ -11,211 +11,324 @@ export const exportToWord = (
   contacts: BusinessContact[],
   expenses: Expense[]
 ): void => {
-  const content = generateWordContent(itinerary, suppliers, contacts, expenses);
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  saveAs(blob, `China-Business-Travel-Report-${new Date().toISOString().split('T')[0]}.txt`);
+  const content = generateWordCompatibleHTML(itinerary, suppliers, contacts, expenses);
+  const blob = new Blob([content], { type: 'application/msword' });
+  saveAs(blob, `China-Business-Travel-Report-${new Date().toISOString().split('T')[0]}.doc`);
 };
 
 /**
- * Generate formatted content for Word document
+ * Generate Word-compatible HTML content
  */
-const generateWordContent = (
+const generateWordCompatibleHTML = (
   itinerary: ItineraryItem[],
   suppliers: Supplier[],
   contacts: BusinessContact[],
   expenses: Expense[]
 ): string => {
-  let content = '';
+  // Sort itinerary by date
+  const sortedItinerary = [...itinerary].sort((a, b) => 
+    new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
+  );
 
-  // Document Header
-  content += '='.repeat(80) + '\n';
-  content += 'ZERVI TRAVEL REPORT\n';
-  content += '='.repeat(80) + '\n';
-  content += `Generated on: ${format(new Date(), 'MMMM dd, yyyy')}\n\n`;
+  // Calculate totals
+  const totalExpenses = expenses.reduce((sum, expense) => {
+    const usdAmount = expense.currency === 'CNY' ? expense.amount / 7.2 : 
+                     expense.currency === 'EUR' ? expense.amount * 1.1 : 
+                     expense.amount;
+    return sum + usdAmount;
+  }, 0);
 
-  // Executive Summary
-  content += 'EXECUTIVE SUMMARY\n';
-  content += '-'.repeat(40) + '\n';
-  content += `• Total Itinerary Items: ${itinerary.length}\n`;
-  content += `• Active Suppliers: ${suppliers.filter(s => s.status === 'Active').length}\n`;
-  content += `• Business Contacts: ${contacts.length}\n`;
-  content += `• Total Expenses: ${expenses.length} items\n\n`;
-
-  // Itinerary Section
-  if (itinerary.length > 0) {
-    content += 'TRAVEL ITINERARY\n';
-    content += '='.repeat(50) + '\n\n';
-
-    const sortedItinerary = [...itinerary].sort((a, b) => 
-      new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
-    );
-
-    sortedItinerary.forEach((item, index) => {
-      content += `${index + 1}. ${item.title}\n`;
-      content += `   Type: ${item.type}\n`;
-      content += `   Date: ${format(parseISO(item.start_date), 'MMMM dd, yyyy')}`;
-      if (item.end_date) {
-        content += ` - ${format(parseISO(item.end_date), 'MMMM dd, yyyy')}`;
-      }
-      content += '\n';
-      content += `   Location: ${item.location}\n`;
-      content += `   Assigned To: ${item.assigned_to}\n`;
-      content += `   Status: ${item.confirmed ? 'Confirmed' : 'Unconfirmed'}\n`;
-      content += `   Description: ${item.description}\n`;
-
-      // Add type-specific details
-      if (item.type === 'Flight' && item.type_specific_data?.flightNumber) {
-        content += `   Flight: ${item.type_specific_data?.airline} ${item.type_specific_data?.flightNumber}\n`;
-        if (item.type_specific_data?.departureTime && item.type_specific_data?.arrivalTime) {
-          content += `   Times: ${item.type_specific_data?.departureTime} - ${item.type_specific_data?.arrivalTime}\n`;
-        }
-      }
-
-      if (item.type === 'Hotel' && item.type_specific_data?.hotelName) {
-        content += `   Hotel: ${item.type_specific_data?.hotelName}\n`;
-        if (item.type_specific_data?.roomType) content += `   Room: ${item.type_specific_data?.roomType}\n`;
-        if (item.type_specific_data?.checkInTime && item.type_specific_data?.checkOutTime) {
-          content += `   Check-in: ${item.type_specific_data?.checkInTime}, Check-out: ${item.type_specific_data?.checkOutTime}\n`;
-        }
-      }
-
-      if (item.type === 'BusinessVisit' && item.type_specific_data?.contactName) {
-        content += `   Contact: ${item.type_specific_data?.contactName}\n`;
-        if (item.type_specific_data?.companyName) content += `   Company: ${item.type_specific_data?.companyName}\n`;
-        if (item.type_specific_data?.contactPhone) content += `   Phone: ${item.type_specific_data?.contactPhone}\n`;
-      }
-
-      if (item.notes) {
-        content += `   Notes: ${item.notes}\n`;
-      }
-
-      content += '\n';
-    });
-  }
-
-  // Suppliers Section
-  if (suppliers.length > 0) {
-    content += 'SUPPLIER DIRECTORY\n';
-    content += '='.repeat(50) + '\n\n';
-
-    suppliers.forEach((supplier, index) => {
-      content += `${index + 1}. ${supplier.company_name}\n`;
-      content += `   Contact: ${supplier.contact_person}\n`;
-      content += `   Email: ${supplier.email}\n`;
-      content += `   Phone: ${supplier.phone}\n`;
-      content += `   Location: ${supplier.city}, ${supplier.province}\n`;
-      content += `   Industry: ${supplier.industry}\n`;
-      content += `   Status: ${supplier.status}\n`;
-      
-      if (supplier.products.length > 0) {
-        content += `   Products: ${supplier.products.join(', ')}\n`;
-      }
-      
-      if (supplier.minimum_order) {
-        content += `   Min Order: ${supplier.minimum_order}\n`;
-      }
-      
-      if (supplier.lead_time) {
-        content += `   Lead Time: ${supplier.lead_time}\n`;
-      }
-      
-      if (supplier.rating) {
-        content += `   Rating: ${supplier.rating}/5\n`;
-      }
-      
-      if (supplier.notes) {
-        content += `   Notes: ${supplier.notes}\n`;
-      }
-      
-      content += '\n';
-    });
-  }
-
-  // Business Contacts Section
-  if (contacts.length > 0) {
-    content += 'BUSINESS CONTACTS\n';
-    content += '='.repeat(50) + '\n\n';
-
-    contacts.forEach((contact, index) => {
-      content += `${index + 1}. ${contact.name}\n`;
-      content += `   Title: ${contact.title}\n`;
-      content += `   Company: ${contact.company}\n`;
-      content += `   Email: ${contact.email}\n`;
-      content += `   Phone: ${contact.phone}\n`;
-      content += `   City: ${contact.city}\n`;
-      content += `   Industry: ${contact.industry}\n`;
-      content += `   Relationship: ${contact.relationship}\n`;
-      content += `   Importance: ${contact.importance}\n`;
-      
-      if (contact.wechat) {
-        content += `   WeChat: ${contact.wechat}\n`;
-      }
-      
-      if (contact.linkedin) {
-        content += `   LinkedIn: ${contact.linkedin}\n`;
-      }
-      
-      if (contact.notes) {
-        content += `   Notes: ${contact.notes}\n`;
-      }
-      
-      content += '\n';
-    });
-  }
-
-  // Expenses Section
-  if (expenses.length > 0) {
-    content += 'EXPENSE REPORT\n';
-    content += '='.repeat(50) + '\n\n';
-
-    // Calculate totals
-    const totalAmount = expenses.reduce((sum, expense) => {
-      const usdAmount = expense.currency === 'CNY' ? expense.amount / 7.2 : 
-                       expense.currency === 'EUR' ? expense.amount * 1.1 : 
-                       expense.amount;
-      return sum + usdAmount;
-    }, 0);
-
-    const reimbursableAmount = expenses
-      .filter(expense => expense.reimbursable)
-      .reduce((sum, expense) => {
-        const usdAmount = expense.currency === 'CNY' ? expense.amount / 7.2 : 
-                         expense.currency === 'EUR' ? expense.amount * 1.1 : 
-                         expense.amount;
-        return sum + usdAmount;
-      }, 0);
-
-    content += `EXPENSE SUMMARY\n`;
-    content += `Total Expenses: $${totalAmount.toFixed(2)} USD (estimated)\n`;
-    content += `Reimbursable: $${reimbursableAmount.toFixed(2)} USD (estimated)\n`;
-    content += `Total Items: ${expenses.length}\n\n`;
-
-    content += `DETAILED EXPENSES\n`;
-    content += '-'.repeat(30) + '\n';
-
-    const sortedExpenses = [...expenses].sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-
-    sortedExpenses.forEach((expense, index) => {
-      content += `${index + 1}. ${expense.description}\n`;
-      content += `   Date: ${format(parseISO(expense.date), 'MMMM dd, yyyy')}\n`;
-      content += `   Category: ${expense.category}\n`;
-      content += `   Amount: ${expense.amount} ${expense.currency}\n`;
-      content += `   Payment: ${expense.payment_method}\n`;
-      content += `   Traveler: ${expense.assigned_to}\n`;
-      content += `   Status: ${expense.approved ? 'Approved' : 'Pending'}\n`;
-      content += `   Reimbursable: ${expense.reimbursable ? 'Yes' : 'No'}\n`;
-      content += `   Purpose: ${expense.business_purpose}\n`;
-      content += '\n';
-    });
-  }
-
-  // Footer
-  content += '='.repeat(80) + '\n';
-  content += 'End of Report\n';
-  content += `Generated by Zervi Travel on ${format(new Date(), 'MMMM dd, yyyy \'at\' HH:mm')}\n`;
-  content += '='.repeat(80) + '\n';
-
-  return content;
+  return `
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <meta charset="utf-8">
+  <title>Zervi Travel Business Report</title>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>90</w:Zoom>
+      <w:DoNotPromptForConvert/>
+      <w:DoNotShowInsertionsAndDeletions/>
+    </w:WordDocument>
+  </xml>
+  <![endif]-->
+  <style>
+    @page {
+      size: A4;
+      margin: 2cm;
+    }
+    body {
+      font-family: 'Times New Roman', serif;
+      font-size: 12pt;
+      line-height: 1.5;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 18pt;
+      font-weight: bold;
+      text-align: center;
+      color: #1a365d;
+      margin-bottom: 20pt;
+      border-bottom: 2pt solid #2a9d8f;
+      padding-bottom: 10pt;
+    }
+    h2 {
+      font-size: 14pt;
+      font-weight: bold;
+      color: #2a9d8f;
+      margin-top: 20pt;
+      margin-bottom: 10pt;
+      border-bottom: 1pt solid #ccc;
+      padding-bottom: 5pt;
+    }
+    h3 {
+      font-size: 12pt;
+      font-weight: bold;
+      color: #1a365d;
+      margin-top: 15pt;
+      margin-bottom: 8pt;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10pt 0;
+      font-size: 11pt;
+    }
+    th, td {
+      border: 1pt solid #000;
+      padding: 8pt;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+    .summary-table {
+      margin-bottom: 20pt;
+    }
+    .summary-table td {
+      border: 1pt solid #ccc;
+      padding: 6pt;
+    }
+    .item-confirmed {
+      background-color: #f0f9ff;
+    }
+    .item-pending {
+      background-color: #fffbeb;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+    .no-break {
+      page-break-inside: avoid;
+    }
+    .center {
+      text-align: center;
+    }
+    .footer {
+      margin-top: 30pt;
+      padding-top: 15pt;
+      border-top: 1pt solid #ccc;
+      font-size: 10pt;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏢 Zervi Travel - Business Report</h1>
+  
+  <p class="center">Generated on ${format(new Date(), 'MMMM dd, yyyy')}</p>
+  
+  <h2>📋 Executive Summary</h2>
+  <table class="summary-table">
+    <tr>
+      <td><strong>Total Itinerary Items:</strong></td>
+      <td>${itinerary.length}</td>
+      <td><strong>Confirmed Items:</strong></td>
+      <td>${itinerary.filter(i => i.confirmed).length}</td>
+    </tr>
+    <tr>
+      <td><strong>Active Suppliers:</strong></td>
+      <td>${suppliers.filter(s => s.status === 'Active').length}</td>
+      <td><strong>Business Contacts:</strong></td>
+      <td>${contacts.length}</td>
+    </tr>
+    <tr>
+      <td><strong>Total Expenses:</strong></td>
+      <td>$${totalExpenses.toFixed(2)} USD</td>
+  ${itinerary.length > 0 ? `
+  <h2>✈️ Travel Itinerary</h2>
+  <table>
+    <thead>
+      <tr>
+        <th width="15%">Date</th>
+        <th width="20%">Title</th>
+        <th width="12%">Type</th>
+        <th width="15%">Time</th>
+        <th width="20%">Location</th>
+        <th width="10%">Assigned</th>
+        <th width="8%">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${sortedItinerary.map(item => `
+        <tr class="${item.confirmed ? 'item-confirmed' : 'item-pending'}">
+          <td>${format(parseISO(item.start_date), 'MMM dd, yyyy')}</td>
+          <td><strong>${item.title}</strong><br><small>${item.description}</small></td>
+          <td>${item.type}</td>
+          <td>
+            ${item.start_time || 'TBD'}
+            ${item.end_time ? `<br>to ${item.end_time}` : ''}
+          </td>
+          <td>${item.location}</td>
+          <td>${item.assigned_to}</td>
+          <td>${item.confirmed ? '✅ Confirmed' : '⏳ Pending'}</td>
+        </tr>
+        ${item.type_specific_data && Object.keys(item.type_specific_data).length > 0 ? `
+        <tr class="${item.confirmed ? 'item-confirmed' : 'item-pending'}">
+          <td colspan="7">
+            <small>
+              ${item.type === 'Flight' && item.type_specific_data.airline ? 
+                `<strong>Flight:</strong> ${item.type_specific_data.airline} ${item.type_specific_data.flightNumber || ''}<br>` : ''}
+              ${item.type === 'Hotel' && item.type_specific_data.hotelName ? 
+                `<strong>Hotel:</strong> ${item.type_specific_data.hotelName} (${item.type_specific_data.roomType || 'Standard'})<br>` : ''}
+              ${item.type === 'BusinessVisit' && item.type_specific_data.contactName ? 
+                `<strong>Contact:</strong> ${item.type_specific_data.contactName} at ${item.type_specific_data.companyName || ''}<br>` : ''}
+              ${item.notes ? `<strong>Notes:</strong> ${item.notes}` : ''}
+            </small>
+          </td>
+        </tr>
+        ` : ''}
+      `).join('')}
+    </tbody>
+  </table>
+  ` : ''}
+      <td><strong>Expense Items:</strong></td>
+  ${suppliers.length > 0 ? `
+  <div class="page-break"></div>
+  <h2>🏢 Supplier Directory</h2>
+  <table>
+    <thead>
+      <tr>
+        <th width="25%">Company</th>
+        <th width="20%">Contact Person</th>
+        <th width="20%">Location</th>
+        <th width="15%">Industry</th>
+        <th width="10%">Status</th>
+        <th width="10%">Rating</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${suppliers.map(supplier => `
+        <tr>
+          <td>
+            <strong>${supplier.company_name}</strong><br>
+            <small>${supplier.email}<br>${supplier.phone}</small>
+          </td>
+          <td>${supplier.contact_person}</td>
+          <td>${supplier.city}, ${supplier.province}</td>
+          <td>${supplier.industry}</td>
+          <td>${supplier.status}</td>
+          <td>${supplier.rating ? `${supplier.rating}/5` : 'N/A'}</td>
+        </tr>
+        ${supplier.products.length > 0 || supplier.notes ? `
+        <tr>
+          <td colspan="6">
+            <small>
+              ${supplier.products.length > 0 ? `<strong>Products:</strong> ${supplier.products.join(', ')}<br>` : ''}
+              ${supplier.notes ? `<strong>Notes:</strong> ${supplier.notes}` : ''}
+            </small>
+          </td>
+        </tr>
+        ` : ''}
+      `).join('')}
+    </tbody>
+  </table>
+  ` : ''}
+      <td>${expenses.length}</td>
+  ${contacts.length > 0 ? `
+  <div class="page-break"></div>
+  <h2>👥 Business Contacts</h2>
+  <table>
+    <thead>
+      <tr>
+        <th width="20%">Name</th>
+        <th width="15%">Title</th>
+        <th width="20%">Company</th>
+        <th width="15%">Contact Info</th>
+        <th width="15%">Location</th>
+        <th width="15%">Relationship</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${contacts.map(contact => `
+        <tr>
+          <td><strong>${contact.name}</strong></td>
+          <td>${contact.title}</td>
+          <td>${contact.company}</td>
+          <td>
+            <small>
+              ${contact.email}<br>
+              ${contact.phone}
+              ${contact.wechat ? `<br>WeChat: ${contact.wechat}` : ''}
+            </small>
+          </td>
+          <td>${contact.city}</td>
+          <td>${contact.relationship}<br><small>${contact.importance} Priority</small></td>
+        </tr>
+      `).join('')}
+    </tbody>
+  </table>
+  ` : ''}
+    </tr>
+  ${expenses.length > 0 ? `
+  <div class="page-break"></div>
+  <h2>💰 Expense Report</h2>
+  <table>
+    <thead>
+      <tr>
+        <th width="12%">Date</th>
+        <th width="25%">Description</th>
+        <th width="15%">Category</th>
+        <th width="12%">Amount</th>
+        <th width="12%">Traveler</th>
+        <th width="12%">Payment</th>
+        <th width="12%">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${expenses.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(expense => `
+        <tr>
+          <td>${format(parseISO(expense.date), 'MMM dd')}</td>
+          <td>
+            <strong>${expense.description}</strong><br>
+            <small>${expense.business_purpose}</small>
+          </td>
+          <td>${expense.category}</td>
+          <td>${expense.amount} ${expense.currency}</td>
+          <td>${expense.assigned_to}</td>
+          <td><small>${expense.payment_method}</small></td>
+          <td>
+            ${expense.approved ? '✅ Approved' : '⏳ Pending'}
+            ${expense.reimbursable ? '<br><small>Reimbursable</small>' : ''}
+          </td>
+        </tr>
+      `).join('')}
+    </tbody>
+  </table>
+  ` : ''}
+  </table>
+  <div class="footer">
+    <p><strong>Zervi Travel</strong> - Your Complete Business Travel Solution</p>
+    <p>📞 (02) 415 2174 | 📧 info@zervi.com | 🌐 www.zervi.com</p>
+    <p>9 Soi Bangkhuntien 11 Yaek 2-3 Samaedam, Bangkhuntien Bangkok 10150</p>
+  </div>
+</body>
+</html>
+  `;
 };
