@@ -14,11 +14,10 @@ const Hero: React.FC = () => {
           <span className="font-bold">Business Travel to China Made Easy!</span> Manage suppliers, meetings, and travel all in one place.
           <a 
             href="https://www.trade.gov/country-commercial-guides/china" 
-            target="_blank" 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-montserrat mb-4">
+            target="_blank"
             className="ml-2 underline inline-flex items-center"
           >
-        <p className="text-lg sm:text-xl text-white mb-8">
+            Learn More <ExternalLink size={16} className="ml-1" />
           </a>
         </p>
       </div>
