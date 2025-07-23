@@ -117,7 +117,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({ itinerary, appointments, to
         time: appointment.start_time,
         color: 'bg-blue-600 text-white',
         icon: <Users size={12} />,
-        confirmed: appointment.status === 'Confirmed'
+        confirmed: appointment.status === 'Confirmed',
+        assigned_to: appointment.assigned_to
       });
     });
 

@@ -33,6 +33,7 @@ export const sampleAppointments: Appointment[] = [
     reminder: 30,
     notes: 'Bring product samples and pricing sheets',
     supplier_id: 'supplier-1',
+    assigned_to: 'Both',
   },
   {
     id: uuidv4(),
@@ -47,6 +48,7 @@ export const sampleAppointments: Appointment[] = [
     status: 'Scheduled',
     reminder: 15,
     notes: 'Prepare supplier evaluation report',
+    assigned_to: 'Both',
   },
   {
     id: uuidv4(),
@@ -62,6 +64,7 @@ export const sampleAppointments: Appointment[] = [
     reminder: 60,
     notes: 'Bring safety equipment and quality checklist',
     supplier_id: 'supplier-2',
+    assigned_to: 'Archie',
   },
   {
     id: uuidv4(),
@@ -76,5 +79,6 @@ export const sampleAppointments: Appointment[] = [
     status: 'Confirmed',
     reminder: 45,
     notes: 'Traditional Chinese business etiquette expected',
+    assigned_to: 'Both',
   },
 ];

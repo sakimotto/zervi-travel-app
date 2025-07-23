@@ -358,6 +358,7 @@ export type Database = {
           notes: string;
           supplier_id: string | null;
           contact_id: string | null;
+          assigned_to: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -377,6 +378,7 @@ export type Database = {
           notes?: string;
           supplier_id?: string;
           contact_id?: string;
+          assigned_to?: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -396,6 +398,7 @@ export type Database = {
           notes?: string;
           supplier_id?: string;
           contact_id?: string;
+          assigned_to?: string;
           updated_at?: string;
         };
       };

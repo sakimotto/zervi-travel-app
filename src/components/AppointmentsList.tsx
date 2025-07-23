@@ -175,6 +175,12 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
                       {appointment.start_time}
                       {appointment.end_time && ` - ${appointment.end_time}`}
                     </span>
+                    {appointment.assigned_to && (
+                      <span className="flex items-center gap-1">
+                        <User size={14} />
+                        {appointment.assigned_to}
+                      </span>
+                    )}
                     {appointment.reminder && (
                       <span className="flex items-center gap-1">
                         <Bell size={14} />

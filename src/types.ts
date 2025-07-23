@@ -211,6 +211,7 @@ export type Appointment = {
   notes?: string;
   supplier_id?: string;
   contact_id?: string;
+  assigned_to?: string; // Add traveler assignment
   created_at?: string;
   updated_at?: string;
 };

@@ -3,6 +3,7 @@ import { Appointment, Supplier, BusinessContact } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 import { X, Plus, Trash2 } from 'lucide-react';
+import TravelerSelector from './TravelerSelector';
 
 interface AddAppointmentModalProps {
   onClose: () => void;
@@ -34,6 +35,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
     status: 'Scheduled',
     reminder: 15,
     notes: '',
+    assigned_to: 'Both',
   });
 
   const [attendees, setAttendees] = useState<string[]>(['']);
@@ -57,6 +59,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
         status: 'Scheduled',
         reminder: 15,
         notes: '',
+        assigned_to: 'Both',
       });
       setAttendees(['']);
     }
@@ -307,7 +310,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Type *
@@ -358,6 +361,15 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 min="0"
                 placeholder="15"
+              />
+            </div>
+
+            <div>
+              <TravelerSelector
+                value={formData.assigned_to || 'Both'}
+                onChange={(value) => setFormData(prev => ({ ...prev, assigned_to: value }))}
+                label="Assigned To"
+                required
               />
             </div>
           </div>
