@@ -23,7 +23,7 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
     city: '',
     industry: '',
     notes: '',
-    lastContact: '',
+    last_contact: '',
     relationship: 'Other',
     importance: 'Medium',
   });
@@ -46,7 +46,7 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
         city: '',
         industry: '',
         notes: '',
-        lastContact: today,
+        last_contact: today,
         relationship: 'Other',
         importance: 'Medium',
       });
