@@ -255,7 +255,7 @@ const ItinerarySection: React.FC = () => {
 
   // Sort by date
   const sortedItinerary = [...filteredItinerary].sort((a, b) => {
-    return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    return new Date(a.start_date).getTime() - new Date(b.start_date).getTime();
   });
 
   return (
@@ -501,9 +501,9 @@ const ItinerarySection: React.FC = () => {
                         <div>
                           <p className="text-sm text-gray-500">Date</p>
                           <p className="font-medium">
-                            {format(parseISO(item.startDate), 'MMM dd, yyyy')}
-                            {item.endDate && (
-                              <> — {format(parseISO(item.endDate), 'MMM dd, yyyy')}</>
+                            {format(parseISO(item.start_date), 'MMM dd, yyyy')}
+                            {item.end_date && (
+                              <> — {format(parseISO(item.end_date), 'MMM dd, yyyy')}</>
                             )}
                           </p>
                         </div>
@@ -563,7 +563,7 @@ const ItinerarySection: React.FC = () => {
                               Check-in: {item.checkInTime} • Check-out: {item.checkOutTime}
                             </p>
                           </div>
-                        </div>
+                          {item.end_date && <span> • Until: {format(parseISO(item.end_date), 'MMM d')}</span>}
                       </div>
                     )}
                     

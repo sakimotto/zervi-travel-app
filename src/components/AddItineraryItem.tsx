@@ -19,9 +19,9 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
     type: 'Flight',
     title: '',
     description: '',
-    startDate: '',
+    start_date: '',
     location: '',
-    assignedTo: 'Both',
+    assigned_to: 'Both',
     confirmed: false,
   });
 
@@ -36,9 +36,9 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
         type: 'Flight',
         title: '',
         description: '',
-        startDate: today,
+        start_date: today,
         location: '',
-        assignedTo: 'Both',
+        assigned_to: 'Both',
         confirmed: false,
       });
     }
@@ -143,7 +143,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
             <div>
               <TravelerSelector
                 value={formData.assigned_to}
-                onChange={(value) => setFormData(prev => ({ ...prev, assigned_to: value }))}
+               onChange={(value) => setFormData(prev => ({ ...prev, assigned_to: value }))}
                 required
               />
             </div>

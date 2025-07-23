@@ -19,7 +19,7 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
     
     // Get upcoming items (today and future)
     const upcoming = itinerary.filter(item => {
-      const itemDate = startOfDay(parseISO(item.startDate));
+      const itemDate = startOfDay(parseISO(item.start_date));
       // Include items from today onwards
       return !isBefore(itemDate, today);
     });
@@ -27,7 +27,7 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
     // Sort upcoming items by date
     const sorted = [...upcoming].sort((a, b) => {
       // Sort by start date
-      const dateComparison = parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime();
+      const dateComparison = parseISO(a.start_date).getTime() - parseISO(b.start_date).getTime();
       
       // If same date, sort by departure/check-in time
       if (dateComparison === 0) {
@@ -69,7 +69,7 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
     const grouped: Record<string, ItineraryItem[]> = {};
     
     items.forEach(item => {
-      const dateKey = item.startDate;
+      const dateKey = item.start_date;
       if (!grouped[dateKey]) {
         grouped[dateKey] = [];
       }
@@ -220,7 +220,7 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
                                 <span className="font-semibold">{item.hotelName}</span>
                                 {item.roomType && <span> • {item.roomType}</span>}
                                 {item.checkInTime && <span> • Check-in: {item.checkInTime}</span>}
-                                {item.endDate && <span> • Until: {format(parseISO(item.endDate), 'MMM d')}</span>}
+                                {item.end_date && <span> • Until: {format(parseISO(item.end_date), 'MMM d')}</span>}
                               </div>
                             )}
                           </div>
