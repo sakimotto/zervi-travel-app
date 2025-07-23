@@ -102,22 +102,22 @@ const TodoList: React.FC<TodoListProps> = ({
   });
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">Todo List</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900">Todo List</h3>
         <button
           onClick={() => {
             setEditingTodo(null);
             setShowAddModal(true);
           }}
-          className="flex items-center text-primary hover:text-primary/80 text-sm"
+          className="flex items-center text-primary hover:text-primary/80 text-xs sm:text-sm"
         >
-          <Plus size={16} className="mr-1" />
+          <Plus size={14} className="mr-1" />
           Add Task
         </button>
       </div>
 
-      <div className="space-y-3 max-h-96 overflow-y-auto">
+      <div className="space-y-2 sm:space-y-3 max-h-80 sm:max-h-96 overflow-y-auto overflow-x-hidden">
         {sortedTodos.map(todo => (
           <div
             key={todo.id}
@@ -125,23 +125,23 @@ const TodoList: React.FC<TodoListProps> = ({
               todo.completed 
                 ? 'bg-gray-50 border-gray-200' 
                 : 'bg-white border-gray-200 hover:border-gray-300'
-            }`}
+            } min-w-0`}
           >
             <button
               onClick={() => toggleTodo(todo.id)}
-              className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center ${
+              className={`mt-0.5 w-4 h-4 sm:w-5 sm:h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
                 todo.completed
                   ? 'bg-green-500 border-green-500 text-white'
                   : 'border-gray-300 hover:border-gray-400'
               }`}
             >
-              {todo.completed && <Check size={12} />}
+              {todo.completed && <Check size={10} className="sm:w-3 sm:h-3" />}
             </button>
 
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-1 sm:gap-2 mb-1 flex-wrap">
                 {getPriorityIcon(todo.priority)}
-                <h4 className={`font-medium ${
+                <h4 className={`font-medium text-sm sm:text-base truncate ${
                   todo.completed ? 'line-through text-gray-500' : 'text-gray-900'
                 }`}>
                   {todo.title}
@@ -149,28 +149,28 @@ const TodoList: React.FC<TodoListProps> = ({
               </div>
               
               {todo.description && (
-                <p className={`text-sm mb-2 ${
+                <p className={`text-xs sm:text-sm mb-1 sm:mb-2 break-words ${
                   todo.completed ? 'text-gray-400' : 'text-gray-600'
                 }`}>
                   {todo.description}
                 </p>
               )}
 
-              <div className="flex items-center gap-4 text-xs">
+              <div className="flex items-center gap-2 sm:gap-4 text-xs flex-wrap">
                 {todo.due_date && (
-                  <span className={`flex items-center gap-1 ${
+                  <span className={`flex items-center gap-1 whitespace-nowrap ${
                     todo.due_date && isPast(parseISO(todo.due_date)) && !todo.completed
                       ? 'text-red-600'
                       : todo.due_date && isToday(parseISO(todo.due_date))
                       ? 'text-orange-600'
                       : 'text-gray-500'
                   }`}>
-                    <Clock size={12} />
+                    <Clock size={10} className="sm:w-3 sm:h-3" />
                     {todo.due_date ? format(parseISO(todo.due_date), 'MMM dd') : 'No date'}
                   </span>
                 )}
                 
-                <span className={`px-2 py-1 rounded-full text-xs ${
+                <span className={`px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs whitespace-nowrap ${
                   todo.category === 'Business' ? 'bg-blue-100 text-blue-800' :
                   todo.category === 'Travel' ? 'bg-green-100 text-green-800' :
                   todo.category === 'Supplier' ? 'bg-purple-100 text-purple-800' :
@@ -180,33 +180,33 @@ const TodoList: React.FC<TodoListProps> = ({
                   {todo.category}
                 </span>
 
-                <span className="text-gray-500">{todo.assigned_to}</span>
+                <span className="text-gray-500 text-xs whitespace-nowrap">{todo.assigned_to}</span>
               </div>
             </div>
 
-            <div className="flex gap-1">
+            <div className="flex gap-1 flex-shrink-0">
               <button
                 onClick={() => {
                   setEditingTodo(todo);
                   setShowAddModal(true);
                 }}
-                className="p-1 text-gray-400 hover:text-blue-600"
+                className="p-0.5 sm:p-1 text-gray-400 hover:text-blue-600"
               >
-                <Edit size={14} />
+                <Edit size={12} className="sm:w-3.5 sm:h-3.5" />
               </button>
               <button
                 onClick={() => deleteTodo(todo.id)}
-                className="p-1 text-gray-400 hover:text-red-600"
+                className="p-0.5 sm:p-1 text-gray-400 hover:text-red-600"
               >
-                <Trash2 size={14} />
+                <Trash2 size={12} className="sm:w-3.5 sm:h-3.5" />
               </button>
             </div>
           </div>
         ))}
 
         {sortedTodos.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            <p>No tasks yet. Add your first task to get started!</p>
+          <div className="text-center py-6 sm:py-8 text-gray-500">
+            <p className="text-sm sm:text-base">No tasks yet. Add your first task to get started!</p>
           </div>
         )}
       </div>
