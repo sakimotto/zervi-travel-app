@@ -27,7 +27,13 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
 
   useEffect(() => {
     if (editItem) {
-      setFormData(editItem);
+      // When editing, flatten type_specific_data fields for form
+      const flattenedItem = {
+        ...editItem,
+        // Flatten type-specific data to top level for form
+        ...editItem.type_specific_data
+      };
+      setFormData(flattenedItem);
     } else {
       // Initialize with today's date
       const today = new Date().toISOString().split('T')[0];
