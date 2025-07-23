@@ -267,7 +267,6 @@ const defaultItinerary: ItineraryItem[] = [
     description: 'Follow-up meeting with Canton Fair contact',
     start_date: getNextWeekEnd(),
     start_time: '10:00',
-    end_time: '12:00',
     location: 'GZ Trading Co. Office, Guangzhou',
     assigned_to: 'Both',
     confirmed: false,

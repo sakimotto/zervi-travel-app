@@ -510,7 +510,6 @@ const ItinerarySection: React.FC = () => {
                           <p className="text-sm text-gray-500">Date</p>
                           <p className="font-medium">
                             {format(parseISO(item.start_date), 'MMM dd, yyyy')}
-                            {item.end_date && (
                               <> — {format(parseISO(item.end_date), 'MMM dd, yyyy')}</>
                             )}
                           </p>

@@ -88,7 +88,6 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
 
     // Add time fields - use null for empty values
     itemData.start_time = formData.start_time || null;
-    itemData.end_time = formData.end_time || null;
 
     // Collect type-specific data
     const typeSpecificData: any = {};

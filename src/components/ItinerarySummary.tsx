@@ -174,7 +174,6 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
                                   <span className="flex items-center gap-1">
                                     <Clock size={14} />
                                     {item.start_time}
-                                    {item.start_time && item.end_time && ` - ${item.end_time}`}
                                   </span>
                                 )}
                                 <button
