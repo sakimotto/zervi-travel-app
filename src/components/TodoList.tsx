@@ -54,18 +54,18 @@ const TodoList: React.FC<TodoListProps> = ({
   const handleSaveTodo = async (todo: TodoItem) => {
     if (editingTodo) {
       try {
-        await update(appointment.id, appointment);
+        await update(todo.id, todo);
       } catch (error) {
-        console.error('Error updating appointment:', error);
-        alert('Failed to update appointment. Please try again.');
+        console.error('Error updating todo:', error);
+        alert('Failed to update task. Please try again.');
       }
       setEditingTodo(null);
     } else {
       try {
-        await insert(appointment);
+        await insert(todo);
       } catch (error) {
-        console.error('Error creating appointment:', error);
-        alert('Failed to create appointment. Please try again.');
+        console.error('Error creating todo:', error);
+        alert('Failed to create task. Please try again.');
       }
     }
     setShowAddModal(false);
