@@ -468,8 +468,8 @@ const ItinerarySection: React.FC = () => {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <span className={`px-3 py-1 rounded-full text-xs ${getAssigneeColor(item.assignedTo)}`}>
-                        {item.assignedTo}
+                      <span className={`px-3 py-1 rounded-full text-xs ${getAssigneeColor(item.assigned_to)}`}>
+                        {item.assigned_to}
                       </span>
                       
                       <button 
@@ -544,36 +544,36 @@ const ItinerarySection: React.FC = () => {
                     <p className="text-gray-700 mb-4">{item.description}</p>
                     
                     {/* Type-specific details */}
-                    {item.type === 'Flight' && item.flightNumber && (
+                    {item.type === 'Flight' && item.type_specific_data?.flight_number && (
                       <div className="bg-blue-50 p-4 rounded-lg">
                         <p className="font-semibold text-blue-800 mb-2">Flight Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <p className="text-sm text-blue-700">Airline & Flight</p>
-                            <p className="font-medium">{item.airline} {item.flightNumber}</p>
+                            <p className="font-medium">{item.type_specific_data?.airline} {item.type_specific_data?.flight_number}</p>
                           </div>
                           <div>
                             <p className="text-sm text-blue-700">Times</p>
                             <p className="font-medium">
-                              Departs: {item.departureTime} • Arrives: {item.arrivalTime}
+                              Departs: {item.type_specific_data?.departure_time} • Arrives: {item.type_specific_data?.arrival_time}
                             </p>
                           </div>
                         </div>
                       </div>
                     )}
                     
-                    {item.type === 'Hotel' && item.hotelName && (
+                    {item.type === 'Hotel' && item.type_specific_data?.hotel_name && (
                       <div className="bg-indigo-50 p-4 rounded-lg">
                         <p className="font-semibold text-indigo-800 mb-2">Hotel Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <p className="text-sm text-indigo-700">Hotel & Room</p>
-                            <p className="font-medium">{item.hotelName}: {item.roomType}</p>
+                            <p className="font-medium">{item.type_specific_data?.hotel_name}: {item.type_specific_data?.room_type}</p>
                           </div>
                           <div>
                             <p className="text-sm text-indigo-700">Times</p>
                             <p className="font-medium">
-                              Check-in: {item.checkInTime} • Check-out: {item.checkOutTime}
+                              Check-in: {item.type_specific_data?.check_in_time} • Check-out: {item.type_specific_data?.check_out_time}
                             </p>
                             {item.end_date && <span> • Until: {format(parseISO(item.end_date), 'MMM d')}</span>}
                           </div>
@@ -581,22 +581,22 @@ const ItinerarySection: React.FC = () => {
                       </div>
                     )}
                     
-                    {item.type === 'BusinessVisit' && item.contactName && (
+                    {item.type === 'BusinessVisit' && item.type_specific_data?.contact_name && (
                       <div className="bg-purple-50 p-4 rounded-lg">
                         <p className="font-semibold text-purple-800 mb-2">Contact Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <p className="text-sm text-purple-700">Contact Person</p>
-                            <p className="font-medium">{item.contactName}</p>
+                            <p className="font-medium">{item.type_specific_data?.contact_name}</p>
                           </div>
                           <div>
                             <p className="text-sm text-purple-700">Company</p>
-                            <p className="font-medium">{item.companyName}</p>
+                            <p className="font-medium">{item.type_specific_data?.company_name}</p>
                           </div>
-                          {item.contactPhone && (
+                          {item.type_specific_data?.contact_phone && (
                             <div>
                               <p className="text-sm text-purple-700">Phone</p>
-                              <p className="font-medium">{item.contactPhone}</p>
+                              <p className="font-medium">{item.type_specific_data?.contact_phone}</p>
                             </div>
                           )}
                         </div>
@@ -607,22 +607,22 @@ const ItinerarySection: React.FC = () => {
                       <div className="bg-teal-50 p-4 rounded-lg">
                         <p className="font-semibold text-teal-800 mb-2">Meeting Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {item.meetingRoom && (
+                          {item.type_specific_data?.meeting_room && (
                             <div>
                               <p className="text-sm text-teal-700">Meeting Room</p>
-                              <p className="font-medium">{item.meetingRoom}</p>
+                              <p className="font-medium">{item.type_specific_data?.meeting_room}</p>
                             </div>
                           )}
-                          {item.meetingType && (
+                          {item.type_specific_data?.meeting_type && (
                             <div>
                               <p className="text-sm text-teal-700">Type</p>
-                              <p className="font-medium">{item.meetingType}</p>
+                              <p className="font-medium">{item.type_specific_data?.meeting_type}</p>
                             </div>
                           )}
-                          {item.agenda && (
+                          {item.type_specific_data?.agenda && (
                             <div className="md:col-span-2">
                               <p className="text-sm text-teal-700">Agenda</p>
-                              <p className="font-medium">{item.agenda}</p>
+                              <p className="font-medium">{item.type_specific_data?.agenda}</p>
                             </div>
                           )}
                         </div>
@@ -633,16 +633,16 @@ const ItinerarySection: React.FC = () => {
                       <div className="bg-orange-50 p-4 rounded-lg">
                         <p className="font-semibold text-orange-800 mb-2">Conference Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {item.conferenceHall && (
+                          {item.type_specific_data?.conference_hall && (
                             <div>
                               <p className="text-sm text-orange-700">Conference Hall</p>
-                              <p className="font-medium">{item.conferenceHall}</p>
+                              <p className="font-medium">{item.type_specific_data?.conference_hall}</p>
                             </div>
                           )}
-                          {item.registrationRequired !== undefined && (
+                          {item.type_specific_data?.registration_required !== undefined && (
                             <div>
                               <p className="text-sm text-orange-700">Registration</p>
-                              <p className="font-medium">{item.registrationRequired ? 'Required' : 'Not Required'}</p>
+                              <p className="font-medium">{item.type_specific_data?.registration_required ? 'Required' : 'Not Required'}</p>
                             </div>
                           )}
                         </div>
@@ -653,22 +653,22 @@ const ItinerarySection: React.FC = () => {
                       <div className="bg-gray-50 p-4 rounded-lg">
                         <p className="font-semibold text-gray-800 mb-2">Factory Visit Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {item.factoryType && (
+                          {item.type_specific_data?.factory_type && (
                             <div>
                               <p className="text-sm text-gray-700">Factory Type</p>
-                              <p className="font-medium">{item.factoryType}</p>
+                              <p className="font-medium">{item.type_specific_data?.factory_type}</p>
                             </div>
                           )}
-                          {item.safetyRequirements && (
+                          {item.type_specific_data?.safety_requirements && (
                             <div>
                               <p className="text-sm text-gray-700">Safety Requirements</p>
-                              <p className="font-medium">{item.safetyRequirements}</p>
+                              <p className="font-medium">{item.type_specific_data?.safety_requirements}</p>
                             </div>
                           )}
-                          {item.tourGuideRequired !== undefined && (
+                          {item.type_specific_data?.tour_guide_required !== undefined && (
                             <div>
                               <p className="text-sm text-gray-700">Tour Guide</p>
-                              <p className="font-medium">{item.tourGuideRequired ? 'Required' : 'Not Required'}</p>
+                              <p className="font-medium">{item.type_specific_data?.tour_guide_required ? 'Required' : 'Not Required'}</p>
                             </div>
                           )}
                         </div>
@@ -679,28 +679,28 @@ const ItinerarySection: React.FC = () => {
                       <div className="bg-green-50 p-4 rounded-lg">
                         <p className="font-semibold text-green-800 mb-2">Sightseeing Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {item.entranceFee && (
+                          {item.type_specific_data?.entrance_fee && (
                             <div>
                               <p className="text-sm text-green-700">Entrance Fee</p>
-                              <p className="font-medium">{item.entranceFee}</p>
+                              <p className="font-medium">{item.type_specific_data?.entrance_fee}</p>
                             </div>
                           )}
-                          {item.openingHours && (
+                          {item.type_specific_data?.opening_hours && (
                             <div>
                               <p className="text-sm text-green-700">Opening Hours</p>
-                              <p className="font-medium">{item.openingHours}</p>
+                              <p className="font-medium">{item.type_specific_data?.opening_hours}</p>
                             </div>
                           )}
-                          {item.tourDuration && (
+                          {item.type_specific_data?.tour_duration && (
                             <div>
                               <p className="text-sm text-green-700">Tour Duration</p>
-                              <p className="font-medium">{item.tourDuration}</p>
+                              <p className="font-medium">{item.type_specific_data?.tour_duration}</p>
                             </div>
                           )}
-                          {item.tourGuide && (
+                          {item.type_specific_data?.tour_guide && (
                             <div>
                               <p className="text-sm text-green-700">Tour Guide</p>
-                              <p className="font-medium">{item.tourGuide}</p>
+                              <p className="font-medium">{item.type_specific_data?.tour_guide}</p>
                             </div>
                           )}
                         </div>
@@ -711,32 +711,32 @@ const ItinerarySection: React.FC = () => {
                       <div className="bg-amber-50 p-4 rounded-lg">
                         <p className="font-semibold text-amber-800 mb-2">Fast Train Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {item.trainNumber && (
+                          {item.type_specific_data?.train_number && (
                             <div>
                               <p className="text-sm text-amber-700">Train Number</p>
-                              <p className="font-medium">{item.trainNumber}</p>
+                              <p className="font-medium">{item.type_specific_data?.train_number}</p>
                             </div>
                           )}
-                          {item.trainClass && (
+                          {item.type_specific_data?.train_class && (
                             <div>
                               <p className="text-sm text-amber-700">Class</p>
-                              <p className="font-medium">{item.trainClass}</p>
+                              <p className="font-medium">{item.type_specific_data?.train_class}</p>
                             </div>
                           )}
-                          {(item.departureTime || item.arrivalTime) && (
+                          {(item.type_specific_data?.departure_time || item.type_specific_data?.arrival_time) && (
                             <div>
                               <p className="text-sm text-amber-700">Times</p>
                               <p className="font-medium">
-                                {item.departureTime && <>Departs: {item.departureTime}</>}
-                                {item.departureTime && item.arrivalTime && <> • </>}
-                                {item.arrivalTime && <>Arrives: {item.arrivalTime}</>}
+                                {item.type_specific_data?.departure_time && <>Departs: {item.type_specific_data?.departure_time}</>}
+                                {item.type_specific_data?.departure_time && item.type_specific_data?.arrival_time && <> • </>}
+                                {item.type_specific_data?.arrival_time && <>Arrives: {item.type_specific_data?.arrival_time}</>}
                               </p>
                             </div>
                           )}
-                          {item.platform && (
+                          {item.type_specific_data?.platform && (
                             <div>
                               <p className="text-sm text-amber-700">Platform</p>
-                              <p className="font-medium">{item.platform}</p>
+                              <p className="font-medium">{item.type_specific_data?.platform}</p>
                             </div>
                           )}
                         </div>
@@ -747,32 +747,32 @@ const ItinerarySection: React.FC = () => {
                       <div className="bg-lime-50 p-4 rounded-lg">
                         <p className="font-semibold text-lime-800 mb-2">Bus Details</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {item.busNumber && (
+                          {item.type_specific_data?.bus_number && (
                             <div>
                               <p className="text-sm text-lime-700">Bus Number</p>
-                              <p className="font-medium">{item.busNumber}</p>
+                              <p className="font-medium">{item.type_specific_data?.bus_number}</p>
                             </div>
                           )}
-                          {item.busCompany && (
+                          {item.type_specific_data?.bus_company && (
                             <div>
                               <p className="text-sm text-lime-700">Bus Company</p>
-                              <p className="font-medium">{item.busCompany}</p>
+                              <p className="font-medium">{item.type_specific_data?.bus_company}</p>
                             </div>
                           )}
-                          {(item.departureTime || item.arrivalTime) && (
+                          {(item.type_specific_data?.departure_time || item.type_specific_data?.arrival_time) && (
                             <div>
                               <p className="text-sm text-lime-700">Times</p>
                               <p className="font-medium">
-                                {item.departureTime && <>Departs: {item.departureTime}</>}
-                                {item.departureTime && item.arrivalTime && <> • </>}
-                                {item.arrivalTime && <>Arrives: {item.arrivalTime}</>}
+                                {item.type_specific_data?.departure_time && <>Departs: {item.type_specific_data?.departure_time}</>}
+                                {item.type_specific_data?.departure_time && item.type_specific_data?.arrival_time && <> • </>}
+                                {item.type_specific_data?.arrival_time && <>Arrives: {item.type_specific_data?.arrival_time}</>}
                               </p>
                             </div>
                           )}
-                          {item.busStop && (
+                          {item.type_specific_data?.bus_stop && (
                             <div>
                               <p className="text-sm text-lime-700">Bus Stop/Station</p>
-                              <p className="font-medium">{item.busStop}</p>
+                              <p className="font-medium">{item.type_specific_data?.bus_stop}</p>
                             </div>
                           )}
                         </div>

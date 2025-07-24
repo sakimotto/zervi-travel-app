@@ -8,9 +8,10 @@ interface AddBusinessContactModalProps {
   onClose: () => void;
   onSave: (contact: BusinessContact) => void;
   editContact: BusinessContact | null;
+  duplicateContact?: BusinessContact | null;
 }
 
-const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClose, onSave, editContact }) => {
+const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClose, onSave, editContact, duplicateContact }) => {
   const { data: suppliers } = useSuppliers();
   
   const [formData, setFormData] = useState<BusinessContact>({
@@ -41,6 +42,21 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
   useEffect(() => {
     if (editContact) {
       setFormData(editContact);
+    } else if (duplicateContact) {
+      // Pre-fill form with duplicate contact data but generate new ID and clear personal fields
+      const today = new Date().toISOString().split('T')[0];
+      setFormData({
+        ...duplicateContact,
+        id: uuidv4(),
+        name: '', // Clear personal name
+        nickname: '', // Clear nickname
+        email: '', // Clear personal email
+        phone: '', // Clear personal phone
+        wechat: '', // Clear personal WeChat
+        linkedin: '', // Clear personal LinkedIn
+        notes: '', // Clear personal notes
+        last_contact: today, // Set to today
+      });
     } else {
       const today = new Date().toISOString().split('T')[0];
       setFormData({
@@ -68,7 +84,7 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
         other_ecommerce: '',
       });
     }
-  }, [editContact]);
+  }, [editContact, duplicateContact]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -95,7 +111,7 @@ const AddBusinessContactModal: React.FC<AddBusinessContactModalProps> = ({ onClo
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-6 border-b">
           <h3 className="text-xl font-semibold text-gray-900">
-            {editContact ? 'Edit Business Contact' : 'Add New Business Contact'}
+            {editContact ? 'Edit Business Contact' : duplicateContact ? 'Duplicate Business Contact' : 'Add New Business Contact'}
           </h3>
           <button
             onClick={onClose}

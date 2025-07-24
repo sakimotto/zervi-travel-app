@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Supplier } from '../types';
 import { sampleSuppliers } from '../data/suppliers';
-import { Search, Plus, Building2, Mail, Phone, MapPin, Star, Edit, Trash2, Download, Upload, Database, Save, AlertCircle, X } from 'lucide-react';
+import { Search, Plus, Building2, Mail, Phone, MapPin, Star, Edit, Trash2, Download, Upload, Database, Save, AlertCircle, X, Copy } from 'lucide-react';
 import AddSupplierModal from './AddSupplierModal';
 import { saveAs } from 'file-saver';
 import { exportToWord } from '../utils/wordExport';
@@ -22,6 +22,7 @@ const SuppliersSection: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
+  const [duplicatingSupplier, setDuplicatingSupplier] = useState<Supplier | null>(null);
   const [showConfirmReset, setShowConfirmReset] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
 
@@ -61,6 +62,13 @@ const SuppliersSection: React.FC = () => {
 
   const handleEditSupplier = (supplier: Supplier) => {
     setEditingSupplier(supplier);
+    setDuplicatingSupplier(null);
+    setShowAddModal(true);
+  };
+
+  const handleDuplicateSupplier = (supplier: Supplier) => {
+    setDuplicatingSupplier(supplier);
+    setEditingSupplier(null);
     setShowAddModal(true);
   };
 
@@ -92,6 +100,7 @@ const SuppliersSection: React.FC = () => {
         alert('Failed to create supplier. Please try again.');
       }
     }
+    setDuplicatingSupplier(null);
     setShowAddModal(false);
   };
 
@@ -247,6 +256,7 @@ const SuppliersSection: React.FC = () => {
             <button
               onClick={() => {
                 setEditingSupplier(null);
+                setDuplicatingSupplier(null);
                 setShowAddModal(true);
               }}
               className="flex items-center bg-secondary hover:bg-secondary/90 text-white px-4 py-2 rounded-lg transition-colors"
@@ -333,6 +343,13 @@ const SuppliersSection: React.FC = () => {
                       aria-label="Edit supplier"
                     >
                       <Edit size={16} className="text-blue-500" />
+                    </button>
+                    <button
+                      onClick={() => handleDuplicateSupplier(supplier)}
+                      className="p-1 rounded-full hover:bg-gray-100"
+                      aria-label="Duplicate supplier"
+                    >
+                      <Copy size={16} className="text-green-500" />
                     </button>
                     <button
                       onClick={() => handleDeleteSupplier(supplier.id)}
@@ -422,9 +439,11 @@ const SuppliersSection: React.FC = () => {
           onClose={() => {
             setShowAddModal(false);
             setEditingSupplier(null);
+            setDuplicatingSupplier(null);
           }}
           onSave={handleSaveSupplier}
           editSupplier={editingSupplier}
+          duplicateSupplier={duplicatingSupplier}
         />
       )}
 

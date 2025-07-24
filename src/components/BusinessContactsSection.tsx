@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BusinessContact } from '../types';
 import { sampleBusinessContacts } from '../data/businessContacts';
-import { Search, Plus, User, Mail, Phone, MapPin, Edit, Trash2, Download, Upload, Database, AlertCircle, X } from 'lucide-react';
+import { Search, Plus, User, Mail, Phone, MapPin, Edit, Trash2, Download, Upload, AlertCircle, X, Copy } from 'lucide-react';
 import AddBusinessContactModal from './AddBusinessContactModal';
 import { saveAs } from 'file-saver';
 import { exportToWord } from '../utils/wordExport';
@@ -22,14 +22,15 @@ const BusinessContactsSection: React.FC = () => {
   const [selectedImportance, setSelectedImportance] = useState('All');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingContact, setEditingContact] = useState<BusinessContact | null>(null);
-  const [showConfirmReset, setShowConfirmReset] = useState(false);
+  const [duplicatingContact, setDuplicatingContact] = useState<BusinessContact | null>(null);
+
   const [importError, setImportError] = useState<string | null>(null);
 
   const relationships = ['All', 'Client', 'Supplier', 'Partner', 'Government', 'Service Provider', 'Other'];
   const importanceLevels = ['All', 'High', 'Medium', 'Low'];
   
   // Get suppliers for linking
-  const { data: displaySuppliers } = useSuppliers();
+  const { data: displaySuppliers, refetch: refetchSuppliers } = useSuppliers();
 
   // Load sample data into Supabase if database is empty
   useEffect(() => {
@@ -51,6 +52,11 @@ const BusinessContactsSection: React.FC = () => {
     loadSampleDataIfEmpty();
   }, [loading, contacts.length]);
 
+  // Force re-render when suppliers data changes to update linked supplier display
+  useEffect(() => {
+    console.log('Suppliers data updated, contacts will re-render with updated supplier links');
+  }, [displaySuppliers]);
+
   const filteredContacts = displayContacts.filter(contact => {
     const matchesSearch = contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          contact.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -63,6 +69,13 @@ const BusinessContactsSection: React.FC = () => {
 
   const handleEditContact = (contact: BusinessContact) => {
     setEditingContact(contact);
+    setDuplicatingContact(null);
+    setShowAddModal(true);
+  };
+
+  const handleDuplicateContact = (contact: BusinessContact) => {
+    setDuplicatingContact(contact);
+    setEditingContact(null);
     setShowAddModal(true);
   };
 
@@ -70,6 +83,7 @@ const BusinessContactsSection: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this contact?')) {
       try {
         await remove(id);
+        await refetch(); // Refresh data after delete
       } catch (error) {
         console.error('Error deleting contact:', error);
         alert('Failed to delete contact. Please try again.');
@@ -81,6 +95,9 @@ const BusinessContactsSection: React.FC = () => {
     if (editingContact) {
       try {
         await update(contact.id, contact);
+        // Force refresh both contacts and suppliers data
+        await Promise.all([refetch(), refetchSuppliers()]);
+        console.log('Contact updated and data refreshed');
       } catch (error) {
         console.error('Error updating contact:', error);
         alert('Failed to update contact. Please try again.');
@@ -89,6 +106,9 @@ const BusinessContactsSection: React.FC = () => {
     } else {
       try {
         await insert(contact);
+        // Force refresh both contacts and suppliers data
+        await Promise.all([refetch(), refetchSuppliers()]);
+        console.log('Contact created and data refreshed');
       } catch (error) {
         console.error('Error creating contact:', error);
         alert('Failed to create contact. Please try again.');
@@ -152,19 +172,7 @@ const BusinessContactsSection: React.FC = () => {
     event.target.value = '';
   };
 
-  const resetToSampleData = () => {
-    // Clear existing data and insert sample data
-    Promise.all([
-      ...displayContacts.map(contact => remove(contact.id)),
-      ...sampleBusinessContacts.map(contact => insert(contact))
-    ]).then(() => {
-      refetch();
-    }).catch(error => {
-      console.error('Error resetting to sample data:', error);
-      alert('Failed to reset data. Please try again.');
-    });
-    setShowConfirmReset(false);
-  };
+
 
   const getRelationshipColor = (relationship: string) => {
     switch (relationship) {
@@ -288,14 +296,7 @@ const BusinessContactsSection: React.FC = () => {
                 />
               </label>
               
-              <button
-                onClick={() => setShowConfirmReset(true)}
-                className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition-colors"
-                title="Reset to sample data"
-              >
-                <Database size={18} className="mr-1" />
-                <span className="hidden sm:inline">Reset</span>
-              </button>
+
             </div>
           </div>
         </div>
@@ -340,6 +341,13 @@ const BusinessContactsSection: React.FC = () => {
                       aria-label="Edit contact"
                     >
                       <Edit size={16} className="text-blue-500" />
+                    </button>
+                    <button
+                      onClick={() => handleDuplicateContact(contact)}
+                      className="p-1 rounded-full hover:bg-gray-100"
+                      aria-label="Duplicate contact"
+                    >
+                      <Copy size={16} className="text-green-500" />
                     </button>
                     <button
                       onClick={() => handleDeleteContact(contact.id)}
@@ -443,7 +451,19 @@ const BusinessContactsSection: React.FC = () => {
                         <span className="font-medium">Linked Supplier:</span> 
                         {(() => {
                           const linkedSupplier = displaySuppliers.find(s => s.id === contact.linked_supplier_id);
-                          return linkedSupplier ? linkedSupplier.company_name : 'Unknown Supplier';
+                          if (linkedSupplier) {
+                            return (
+                              <span className="ml-1 text-secondary font-medium">
+                                {linkedSupplier.company_name}
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span className="ml-1 text-gray-400 italic">
+                                Loading supplier info...
+                              </span>
+                            );
+                          }
                         })()}
                       </p>
                     </div>
@@ -470,40 +490,15 @@ const BusinessContactsSection: React.FC = () => {
           onClose={() => {
             setShowAddModal(false);
             setEditingContact(null);
+            setDuplicatingContact(null);
           }}
           onSave={handleSaveContact}
           editContact={editingContact}
+          duplicateContact={duplicatingContact}
         />
       )}
 
-      {showConfirmReset && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Reset Contacts
-              </h3>
-              <p className="text-gray-700 mb-6">
-                Are you sure you want to reset to the sample contacts? This will replace all your current contacts.
-              </p>
-              <div className="flex justify-end space-x-3">
-                <button
-                  onClick={() => setShowConfirmReset(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={resetToSampleData}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
     </section>
   );
 };

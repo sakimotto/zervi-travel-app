@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Building2, Info, Lightbulb, Calendar, MessageCircle, ChevronUp, ListTodo, Users, DollarSign, LayoutDashboard, Calendar as CalendarIcon } from 'lucide-react';
+import { Menu, X, Building2, Info, Lightbulb, Calendar, MessageCircle, ChevronUp, ListTodo, Users, DollarSign, LayoutDashboard, Calendar as CalendarIcon, BookOpen } from 'lucide-react';
 import UserMenu from './UserMenu';
 import { useAuth } from '../hooks/useAuth';
 
@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
               <NavLink to="/contacts" icon={<Users size={16} />} text="Contacts" />
               <NavLink to="/itinerary" icon={<ListTodo size={16} />} text="Itinerary" />
               <NavLink to="/calendar" icon={<Calendar size={16} />} text="Calendar" />
-              <NavLink to="/expenses" icon={<DollarSign size={16} />} text="Expenses" />
+              <NavLink to="/user-manual" icon={<BookOpen size={16} />} text="User Manual" />
               <UserMenu />
             </div>
             
@@ -98,7 +98,7 @@ const Navbar: React.FC = () => {
               <NavLink to="/contacts" icon={<Users size={18} />} text="Contacts" onClick={closeMenu} />
               <NavLink to="/itinerary" icon={<ListTodo size={18} />} text="Itinerary" onClick={closeMenu} />
               <NavLink to="/calendar" icon={<CalendarIcon size={18} />} text="Calendar" onClick={closeMenu} />
-              <NavLink to="/expenses" icon={<DollarSign size={18} />} text="Expenses" onClick={closeMenu} />
+              <NavLink to="/user-manual" icon={<BookOpen size={18} />} text="User Manual" onClick={closeMenu} />
             </div>
           </div>
         )}

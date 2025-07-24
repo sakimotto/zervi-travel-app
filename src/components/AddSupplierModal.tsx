@@ -7,9 +7,10 @@ interface AddSupplierModalProps {
   onClose: () => void;
   onSave: (supplier: Supplier) => void;
   editSupplier: Supplier | null;
+  duplicateSupplier?: Supplier | null;
 }
 
-const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, editSupplier }) => {
+const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, editSupplier, duplicateSupplier }) => {
   const [formData, setFormData] = useState<Supplier>({
     id: '',
     company_name: '',
@@ -42,6 +43,22 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
       setFormData(editSupplier);
       setProducts(editSupplier.products.length > 0 ? editSupplier.products : ['']);
       setCertifications(editSupplier.certifications.length > 0 ? editSupplier.certifications : ['']);
+    } else if (duplicateSupplier) {
+      // Pre-fill form with duplicate supplier data but generate new ID and clear personal fields
+      const today = new Date().toISOString().split('T')[0];
+      setFormData({
+        ...duplicateSupplier,
+        id: uuidv4(),
+        contact_person: '', // Clear personal contact name
+        email: '', // Clear personal email
+        phone: '', // Clear personal phone
+        notes: '', // Clear personal notes
+        last_contact: today, // Set to today
+        rating: 0, // Reset rating
+        status: 'Potential', // Reset status
+      });
+      setProducts(duplicateSupplier.products.length > 0 ? duplicateSupplier.products : ['']);
+      setCertifications(duplicateSupplier.certifications.length > 0 ? duplicateSupplier.certifications : ['']);
     } else {
       const today = new Date().toISOString().split('T')[0];
       setFormData({
@@ -70,7 +87,7 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
       setProducts(['']);
       setCertifications(['']);
     }
-  }, [editSupplier]);
+  }, [editSupplier, duplicateSupplier]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -133,7 +150,7 @@ const AddSupplierModal: React.FC<AddSupplierModalProps> = ({ onClose, onSave, ed
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-6 border-b">
           <h3 className="text-xl font-semibold text-gray-900">
-            {editSupplier ? 'Edit Supplier' : 'Add New Supplier'}
+            {editSupplier ? 'Edit Supplier' : duplicateSupplier ? 'Duplicate Supplier' : 'Add New Supplier'}
           </h3>
           <button
             onClick={onClose}

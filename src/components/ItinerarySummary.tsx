@@ -31,8 +31,8 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
       
       // If same date, sort by departure/check-in time
       if (dateComparison === 0) {
-        const timeA = a.departureTime || a.checkInTime || '';
-        const timeB = b.departureTime || b.checkInTime || '';
+        const timeA = a.type_specific_data?.departure_time || a.type_specific_data?.check_in_time || '';
+        const timeB = b.type_specific_data?.departure_time || b.type_specific_data?.check_in_time || '';
         return timeA.localeCompare(timeB);
       }
       
@@ -133,8 +133,8 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
                     <div className="space-y-4">
                       {groupedItems[dateKey]
                         .sort((a, b) => {
-                          const timeA = a.departureTime || a.checkInTime || '';
-                          const timeB = b.departureTime || b.checkInTime || '';
+                          const timeA = a.type_specific_data?.departure_time || a.type_specific_data?.check_in_time || '';
+                          const timeB = b.type_specific_data?.departure_time || b.type_specific_data?.check_in_time || '';
                           return timeA.localeCompare(timeB);
                         })
                         .map(item => (
@@ -164,10 +164,10 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
                               </div>
                               
                               <div className="flex flex-col items-end">
-                                {(item.departureTime || item.checkInTime) && (
+                                {(item.type_specific_data?.departure_time || item.type_specific_data?.check_in_time) && (
                                   <div className="flex items-center text-sm font-medium text-gray-700">
                                     <Clock size={14} className="mr-1" />
-                                    {item.departureTime || item.checkInTime}
+                                    {item.type_specific_data?.departure_time || item.type_specific_data?.check_in_time}
                                   </div>
                                 )}
                                 {(item.start_time || item.end_time) && (
@@ -190,42 +190,42 @@ const ItinerarySummary: React.FC<ItinerarySummaryProps> = ({ itinerary, onEditIt
                             </div>
                             
                             {/* Compact type-specific details */}
-                            {item.type === 'Flight' && item.flightNumber && (
+                            {item.type === 'Flight' && item.type_specific_data?.flight_number && (
                               <div className="mt-2 bg-blue-50 text-blue-800 text-xs p-2 rounded">
-                                <span className="font-semibold">{item.airline} {item.flightNumber}</span>
-                                {item.departureTime && item.arrivalTime && (
-                                  <span> • {item.departureTime} - {item.arrivalTime}</span>
+                                <span className="font-semibold">{item.type_specific_data?.airline} {item.type_specific_data?.flight_number}</span>
+                                {item.type_specific_data?.departure_time && item.type_specific_data?.arrival_time && (
+                                  <span> • {item.type_specific_data?.departure_time} - {item.type_specific_data?.arrival_time}</span>
                                 )}
                               </div>
                             )}
                             
-                            {item.type === 'Train' && item.trainNumber && (
+                            {item.type === 'Train' && item.type_specific_data?.train_number && (
                               <div className="mt-2 bg-amber-50 text-amber-800 text-xs p-2 rounded">
-                                <span className="font-semibold">Train {item.trainNumber}</span>
-                                {item.trainClass && <span> • {item.trainClass}</span>}
-                                {item.departureTime && item.arrivalTime && (
-                                  <span> • {item.departureTime} - {item.arrivalTime}</span>
+                                <span className="font-semibold">Train {item.type_specific_data?.train_number}</span>
+                                {item.type_specific_data?.train_class && <span> • {item.type_specific_data?.train_class}</span>}
+                                {item.type_specific_data?.departure_time && item.type_specific_data?.arrival_time && (
+                                  <span> • {item.type_specific_data?.departure_time} - {item.type_specific_data?.arrival_time}</span>
                                 )}
-                                {item.platform && <span> • Platform {item.platform}</span>}
+                                {item.type_specific_data?.platform && <span> • Platform {item.type_specific_data?.platform}</span>}
                               </div>
                             )}
                             
-                            {item.type === 'Bus' && item.busNumber && (
+                            {item.type === 'Bus' && item.type_specific_data?.bus_number && (
                               <div className="mt-2 bg-lime-50 text-lime-800 text-xs p-2 rounded">
-                                <span className="font-semibold">Bus {item.busNumber}</span>
-                                {item.busCompany && <span> • {item.busCompany}</span>}
-                                {item.departureTime && item.arrivalTime && (
-                                  <span> • {item.departureTime} - {item.arrivalTime}</span>
+                                <span className="font-semibold">Bus {item.type_specific_data?.bus_number}</span>
+                                {item.type_specific_data?.bus_company && <span> • {item.type_specific_data?.bus_company}</span>}
+                                {item.type_specific_data?.departure_time && item.type_specific_data?.arrival_time && (
+                                  <span> • {item.type_specific_data?.departure_time} - {item.type_specific_data?.arrival_time}</span>
                                 )}
-                                {item.busStop && <span> • Stop: {item.busStop}</span>}
+                                {item.type_specific_data?.bus_stop && <span> • Stop: {item.type_specific_data?.bus_stop}</span>}
                               </div>
                             )}
                             
-                            {item.type === 'Hotel' && item.hotelName && (
+                            {item.type === 'Hotel' && item.type_specific_data?.hotel_name && (
                               <div className="mt-2 bg-indigo-50 text-indigo-800 text-xs p-2 rounded">
-                                <span className="font-semibold">{item.hotelName}</span>
-                                {item.roomType && <span> • {item.roomType}</span>}
-                                {item.checkInTime && <span> • Check-in: {item.checkInTime}</span>}
+                                <span className="font-semibold">{item.type_specific_data?.hotel_name}</span>
+                                {item.type_specific_data?.room_type && <span> • {item.type_specific_data?.room_type}</span>}
+                                {item.type_specific_data?.check_in_time && <span> • Check-in: {item.type_specific_data?.check_in_time}</span>}
                                 {item.end_date && <span> • Until: {format(parseISO(item.end_date), 'MMM d')}</span>}
                               </div>
                             )}
