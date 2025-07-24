@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, CheckSquare, Clock, Users, Building2, DollarSign, MapPin, Plus, AlertTriangle, Plane, Car, Clock3, Navigation } from 'lucide-react';
+import { Calendar, CheckSquare, Clock, Users, Building2, DollarSign, MapPin, Plus, AlertTriangle, Plane, Car, Clock3, Navigation, QrCode, FileText, Shield, Train, MapIcon } from 'lucide-react';
 import { TodoItem, Appointment, ItineraryItem, Supplier, BusinessContact, Expense } from '../types';
 import { sampleTodos } from '../data/todos';
 import { sampleAppointments } from '../data/appointments';
@@ -150,6 +150,81 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
   };
 
   const travelAlerts = generateTravelAlerts();
+
+  // Flight countdown logic
+  const getFlightCountdown = (flightDate: string, departureTime?: string) => {
+    if (!departureTime) return null;
+    const [hours, minutes] = departureTime.split(':');
+    const flightDateTime = new Date(flightDate);
+    flightDateTime.setHours(parseInt(hours), parseInt(minutes));
+    
+    const now = new Date();
+    const timeDiff = flightDateTime.getTime() - now.getTime();
+    
+    if (timeDiff <= 0) return 'Departed';
+    
+    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    const hrs = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (days > 0) return `${days}d ${hrs}h ${mins}m`;
+    if (hrs > 0) return `${hrs}h ${mins}m`;
+    return `${mins}m`;
+  };
+
+  // QR Code state management
+  const [qrContacts, setQrContacts] = useState({
+    wechat: localStorage.getItem('wechat-id') || 'your-wechat-id',
+    whatsapp: localStorage.getItem('whatsapp-number') || '+1234567890'
+  });
+  
+  const [editingQR, setEditingQR] = useState<'wechat' | 'whatsapp' | null>(null);
+  
+  // Generate QR code data
+  const generateQRCode = (type: 'wechat' | 'whatsapp', data: string) => {
+    const qrData = type === 'wechat' ? `weixin://dl/chat?${data}` : `https://wa.me/${data}`;
+    return `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrData)}`;
+  };
+  
+  // Update QR contact info
+  const updateQRContact = (type: 'wechat' | 'whatsapp', value: string) => {
+    setQrContacts(prev => ({ ...prev, [type]: value }));
+    localStorage.setItem(type === 'wechat' ? 'wechat-id' : 'whatsapp-number', value);
+    setEditingQR(null);
+  };
+
+  // Document management state
+  const [documents, setDocuments] = useState([
+    { id: 1, name: 'Passport', expiry: localStorage.getItem('passport-expiry') || '2025-12-15', type: 'passport' },
+    { id: 2, name: 'China Visa', expiry: localStorage.getItem('visa-expiry') || '2025-06-30', type: 'visa' },
+    { id: 3, name: 'Business License', expiry: localStorage.getItem('license-expiry') || '2025-03-20', type: 'license' },
+    { id: 4, name: 'Health Certificate', expiry: localStorage.getItem('health-expiry') || '2025-02-10', type: 'health' }
+  ]);
+  
+  const [editingDoc, setEditingDoc] = useState<number | null>(null);
+  
+  // Document status checker
+  const getDocumentStatus = (expiryDate: string) => {
+    const expiry = new Date(expiryDate);
+    const now = new Date();
+    const daysUntilExpiry = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (daysUntilExpiry < 0) return { status: 'expired', color: 'red', days: Math.abs(daysUntilExpiry) };
+    if (daysUntilExpiry <= 30) return { status: 'expiring', color: 'yellow', days: daysUntilExpiry };
+    return { status: 'valid', color: 'green', days: daysUntilExpiry };
+  };
+  
+  // Update document expiry
+  const updateDocumentExpiry = (id: number, newExpiry: string) => {
+    setDocuments(prev => prev.map(doc => 
+      doc.id === id ? { ...doc, expiry: newExpiry } : doc
+    ));
+    const doc = documents.find(d => d.id === id);
+    if (doc) {
+      localStorage.setItem(`${doc.type}-expiry`, newExpiry);
+    }
+    setEditingDoc(null);
+  };
 
   return (
     <section id="dashboard" className="py-16 bg-gray-50">
@@ -347,6 +422,313 @@ const Dashboard: React.FC<DashboardProps> = ({ itinerary, suppliers, contacts, e
                 <p className="text-gray-500 text-sm">No upcoming travel scheduled</p>
               )}
             </div>
+            </div>
+          </div>
+        </div>
+
+        {/* New Enhanced Features */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4 mb-8">
+          {/* Real-time Flight Status */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Plane className="mr-2 h-5 w-5 text-primary" />
+              Flight Status
+            </h3>
+            <div className="space-y-3">
+              {itinerary.filter(item => item.type === 'Flight').slice(0, 2).map(flight => {
+                const countdown = getFlightCountdown(flight.start_date, flight.type_specific_data?.departureTime);
+                const isUrgent = countdown && !countdown.includes('d') && (countdown.includes('h') ? parseInt(countdown) <= 3 : true);
+                
+                return (
+                  <div key={flight.id} className={`p-3 rounded-lg border ${
+                    isUrgent ? 'bg-red-50 border-red-200' : 'bg-blue-50 border-blue-200'
+                  }`}>
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="font-medium text-gray-900">{flight.title}</span>
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        isUrgent ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+                      }`}>
+                        On Time
+                      </span>
+                    </div>
+                    <div className="text-sm space-y-1">
+                      <p>🛫 Departure: {flight.type_specific_data?.departureTime || 'TBD'}</p>
+                      <p>📍 Gate: {flight.type_specific_data?.gate || 'TBA'}</p>
+                      {countdown && (
+                        <p className={`font-bold ${
+                          isUrgent ? 'text-red-600' : 'text-blue-600'
+                        }`}>
+                          ⏰ {countdown === 'Departed' ? 'Departed' : `Departs in ${countdown}`}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+              {itinerary.filter(item => item.type === 'Flight').length === 0 && (
+                <p className="text-gray-500 text-sm">No upcoming flights</p>
+              )}
+            </div>
+          </div>
+
+          {/* QR Code Center */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <QrCode className="mr-2 h-5 w-5 text-primary" />
+              Quick Connect
+            </h3>
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-sm font-medium text-gray-700">WeChat Contact</p>
+                  <button 
+                    onClick={() => setEditingQR('wechat')}
+                    className="text-xs text-blue-600 hover:text-blue-800"
+                  >
+                    Edit
+                  </button>
+                </div>
+                {editingQR === 'wechat' ? (
+                  <div className="bg-green-50 p-3 rounded-lg">
+                    <input
+                      type="text"
+                      value={qrContacts.wechat}
+                      onChange={(e) => setQrContacts(prev => ({ ...prev, wechat: e.target.value }))}
+                      className="w-full text-xs p-2 border rounded mb-2"
+                      placeholder="Enter WeChat ID"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => updateQRContact('wechat', qrContacts.wechat)}
+                        className="text-xs bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingQR(null)}
+                        className="text-xs bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-green-50 p-3 rounded-lg">
+                    <img 
+                      src={generateQRCode('wechat', qrContacts.wechat)} 
+                      alt="WeChat QR" 
+                      className="mx-auto w-20 h-20"
+                    />
+                    <p className="text-xs text-gray-600 mt-1">Scan to add WeChat</p>
+                    <p className="text-xs text-gray-500">ID: {qrContacts.wechat}</p>
+                  </div>
+                )}
+              </div>
+              <div className="text-center">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-sm font-medium text-gray-700">WhatsApp Contact</p>
+                  <button 
+                    onClick={() => setEditingQR('whatsapp')}
+                    className="text-xs text-blue-600 hover:text-blue-800"
+                  >
+                    Edit
+                  </button>
+                </div>
+                {editingQR === 'whatsapp' ? (
+                  <div className="bg-green-50 p-3 rounded-lg">
+                    <input
+                      type="text"
+                      value={qrContacts.whatsapp}
+                      onChange={(e) => setQrContacts(prev => ({ ...prev, whatsapp: e.target.value }))}
+                      className="w-full text-xs p-2 border rounded mb-2"
+                      placeholder="Enter phone number with country code"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => updateQRContact('whatsapp', qrContacts.whatsapp)}
+                        className="text-xs bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingQR(null)}
+                        className="text-xs bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-green-50 p-3 rounded-lg">
+                    <img 
+                      src={generateQRCode('whatsapp', qrContacts.whatsapp)} 
+                      alt="WhatsApp QR" 
+                      className="mx-auto w-20 h-20"
+                    />
+                    <p className="text-xs text-gray-600 mt-1">Scan to chat</p>
+                    <p className="text-xs text-gray-500">Phone: {qrContacts.whatsapp}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Document Status Tracker */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <FileText className="mr-2 h-5 w-5 text-primary" />
+              Document Status
+            </h3>
+            <div className="space-y-3">
+              {documents.map(doc => {
+                const status = getDocumentStatus(doc.expiry);
+                return (
+                  <div key={doc.name} className={`p-3 rounded-lg border ${
+                    status.color === 'red' ? 'bg-red-50 border-red-200' :
+                    status.color === 'yellow' ? 'bg-yellow-50 border-yellow-200' :
+                    'bg-green-50 border-green-200'
+                  }`}>
+                    <div className="flex justify-between items-center">
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-medium text-gray-900">{doc.name}</p>
+                            {editingDoc === doc.id ? (
+                              <div className="mt-1">
+                                <input
+                                  type="date"
+                                  value={doc.expiry}
+                                  onChange={(e) => setDocuments(prev => prev.map(d => 
+                                    d.id === doc.id ? { ...d, expiry: e.target.value } : d
+                                  ))}
+                                  className="text-xs p-1 border rounded"
+                                />
+                                <div className="flex gap-1 mt-1">
+                                  <button
+                                    onClick={() => updateDocumentExpiry(doc.id, doc.expiry)}
+                                    className="text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
+                                  >
+                                    Save
+                                  </button>
+                                  <button
+                                    onClick={() => setEditingDoc(null)}
+                                    className="text-xs bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600"
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-2">
+                                <p className="text-xs text-gray-600">Expires: {doc.expiry}</p>
+                                <button
+                                  onClick={() => setEditingDoc(doc.id)}
+                                  className="text-xs text-blue-600 hover:text-blue-800"
+                                >
+                                  Edit
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                          <span className={`text-xs px-2 py-1 rounded-full ${
+                            status.color === 'red' ? 'bg-red-100 text-red-800' :
+                            status.color === 'yellow' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-green-100 text-green-800'
+                          }`}>
+                            {status.status === 'expired' ? 'Expired' :
+                             status.status === 'expiring' ? `${status.days}d left` :
+                             'Valid'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Transportation Hub */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <Car className="mr-2 h-5 w-5 text-primary" />
+            Transportation Hub
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Traffic Conditions */}
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-semibold text-blue-900 mb-2 flex items-center">
+                <MapIcon className="mr-1 h-4 w-4" />
+                Traffic Status
+              </h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Airport → Hotel</span>
+                  <span className="text-green-600">25 min</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Hotel → Meeting</span>
+                  <span className="text-yellow-600">45 min</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Meeting → Factory</span>
+                  <span className="text-red-600">1h 20m</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Didi/Taxi Booking */}
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h4 className="font-semibold text-green-900 mb-2">🚗 Ride Booking</h4>
+              <div className="space-y-2">
+                <button className="w-full bg-orange-500 text-white text-xs py-2 px-3 rounded hover:bg-orange-600">
+                  Book Didi Now
+                </button>
+                <button className="w-full bg-yellow-500 text-white text-xs py-2 px-3 rounded hover:bg-yellow-600">
+                  Call Taxi
+                </button>
+                <p className="text-xs text-green-700">Est. arrival: 5-8 min</p>
+              </div>
+            </div>
+
+            {/* High-speed Train */}
+            <div className="bg-purple-50 p-4 rounded-lg">
+              <h4 className="font-semibold text-purple-900 mb-2 flex items-center">
+                <Train className="mr-1 h-4 w-4" />
+                High-Speed Rail
+              </h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Beijing → Shanghai</span>
+                  <span className="text-purple-600">4h 28m</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Next departure</span>
+                  <span className="text-purple-600">14:30</span>
+                </div>
+                <button className="w-full bg-purple-500 text-white text-xs py-1 px-2 rounded hover:bg-purple-600">
+                  Check Schedule
+                </button>
+              </div>
+            </div>
+
+            {/* Metro/Subway */}
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="font-semibold text-gray-900 mb-2">🚇 Metro Planner</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Line 1 → Line 10</span>
+                  <span className="text-gray-600">32 min</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>2 transfers</span>
+                  <span className="text-gray-600">¥6</span>
+                </div>
+                <button className="w-full bg-gray-500 text-white text-xs py-1 px-2 rounded hover:bg-gray-600">
+                  Route Details
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -41,10 +41,30 @@ Zervi Travel is a modern, full-featured travel planning and management platform 
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### 🐳 Option 1: Docker Setup (Recommended)
+
+**Prerequisites:** Docker Desktop installed
 
 ```bash
-# Required software
+# Clone the repository
+git clone https://github.com/your-username/zervi-travel.git
+cd zervi-travel
+
+# Quick start with Docker
+./quick-start.sh        # Linux/Mac
+# OR
+quick-start.bat         # Windows
+
+# Manual Docker setup
+docker-compose up --build
+```
+
+**Access:** http://localhost:5173
+
+### 💻 Option 2: Manual Setup
+
+**Prerequisites:**
+```bash
 Node.js >= 18.0.0
 npm >= 9.0.0
 Git
@@ -56,8 +76,7 @@ VS Code with extensions:
 - Tailwind CSS IntelliSense
 ```
 
-### Installation
-
+**Installation:**
 ```bash
 # Clone the repository
 git clone https://github.com/your-username/zervi-travel.git
