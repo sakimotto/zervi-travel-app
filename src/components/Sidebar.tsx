@@ -72,6 +72,7 @@ const Sidebar: React.FC = () => {
 
   const menuItems = [
     { to: '/dashboard', icon: <LayoutDashboard size={20} />, text: 'Dashboard' },
+    { to: '/entities', icon: <Users size={20} />, text: 'Unified Entities' },
     { to: '/customers', icon: <UserCircle size={20} />, text: 'Customers CRM' },
     { to: '/tradeshows', icon: <TrendingUp size={20} />, text: 'Trade Shows' },
     { to: '/flights', icon: <Plane size={20} />, text: 'Flights' },
