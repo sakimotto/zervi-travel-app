@@ -1,5 +1,3 @@
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -20,7 +18,7 @@ interface ChatRequest {
   metadata?: any;
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -45,22 +43,34 @@ serve(async (req) => {
     const contextString = formatContextForAI(context, currentDate);
 
     // Prepare the system prompt
-    const systemPrompt = `You are a helpful travel assistant for Zervi Travel. You have access to the user's complete business travel data including itinerary, suppliers, contacts, expenses, todos, and appointments.
+    const systemPrompt = `You are an intelligent travel assistant for Zervi Travel with full access to the user's complete business travel and trade show management data.
+
+Your Capabilities:
+- Search and analyze itineraries, flights, hotels, and appointments
+- Provide supplier and contact information instantly
+- Track and calculate expenses with budget insights
+- Manage todos and task priorities
+- Answer questions about SEMA 2025 and other trade shows
+- Provide recommendations based on travel patterns
+- Analyze trends in expenses, meetings, and supplier relationships
+- Help with scheduling and conflict detection
 
 Guidelines:
-- Be concise and helpful
+- Be proactive and insightful, not just reactive
+- Provide actionable recommendations and insights
 - Use the provided context data to answer questions accurately
-- Format responses clearly with bullet points when listing multiple items
+- Format responses clearly with bullet points, emojis, and structure
 - Include relevant details like times, locations, contact info
-- If asked about expenses, calculate totals when helpful
-- For schedule questions, focus on today/upcoming items
+- Calculate totals and provide summaries when helpful
+- For schedule questions, prioritize today and upcoming items
+- Identify patterns and suggest improvements
 - Always be professional and business-focused
-- Use emojis sparingly but appropriately for travel context
+- When data is missing or incomplete, acknowledge it clearly
 
 Current date: ${currentDate}
-User timezone: ${metadata?.timezone || 'Asia/Bangkok'}
+User timezone: ${metadata?.timezone || 'UTC'}
 
-Here is the user's current travel data:
+Here is the user's complete travel data:
 
 ${contextString}`;
 

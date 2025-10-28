@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import TravelChatbot from './components/TravelChatbot';
 import { useState, useEffect } from 'react';
 import {
@@ -48,34 +48,36 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <React.Suspense fallback={<LoadingSpinner />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/destinations" element={<DestinationsPage />} />
-            <Route path="/suppliers" element={<SuppliersPage />} />
-            <Route path="/contacts" element={<ContactsPage />} />
-            <Route path="/itinerary" element={<ItineraryPage />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/expenses" element={<ExpensesPage />} />
-            <Route path="/tips" element={<TipsPage />} />
-            <Route path="/phrases" element={<PhrasesPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/user-manual" element={<UserManualPage />} />
-          </Routes>
-        </React.Suspense>
+      <div className="min-h-screen bg-background flex">
+        <Sidebar />
+        <main className="flex-1 lg:ml-64 transition-all duration-300">
+          <React.Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/destinations" element={<DestinationsPage />} />
+              <Route path="/suppliers" element={<SuppliersPage />} />
+              <Route path="/contacts" element={<ContactsPage />} />
+              <Route path="/itinerary" element={<ItineraryPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/expenses" element={<ExpensesPage />} />
+              <Route path="/tips" element={<TipsPage />} />
+              <Route path="/phrases" element={<PhrasesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/user-manual" element={<UserManualPage />} />
+            </Routes>
+          </React.Suspense>
 
-        {/* Global Travel Chatbot - Available on all pages */}
-        <TravelChatbot
-          itinerary={itinerary}
-          suppliers={suppliers}
-          contacts={contacts}
-          expenses={expenses}
-          todos={todos}
-          appointments={appointments}
-        />
+          {/* Global Travel Chatbot - Available on all pages */}
+          <TravelChatbot
+            itinerary={itinerary}
+            suppliers={suppliers}
+            contacts={contacts}
+            expenses={expenses}
+            todos={todos}
+            appointments={appointments}
+          />
+        </main>
       </div>
     </Router>
   );

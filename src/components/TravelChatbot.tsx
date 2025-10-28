@@ -55,7 +55,7 @@ const TravelChatbot: React.FC<TravelChatbotProps> = ({
       setMessages([{
         id: '1',
         type: 'bot',
-        content: "Hi! I'm your Zervi Travel assistant. I can help you with:\n\n• Flight and hotel details\n• Supplier information\n• Meeting schedules\n• Expense tracking\n• Contact details\n\nWhat would you like to know?",
+        content: "Hi! I'm your Zervi Travel assistant. I have full access to your travel data and can help you with:\n\n• 📅 Schedule & Itinerary Management\n• ✈️ Flight & Hotel Bookings\n• 🏢 Supplier & Contact Information\n• 💰 Expense Tracking & Budgets\n• ✅ Task Management & Reminders\n• 📍 Trade Show Planning (SEMA 2025)\n• 📊 Analytics & Insights\n\nI can search, analyze, and provide recommendations based on your complete travel data. What would you like to know?",
         timestamp: new Date()
       }]);
     }
@@ -225,10 +225,12 @@ const TravelChatbot: React.FC<TravelChatbotProps> = ({
   const quickQuestions = [
     "What's my schedule today?",
     "Show me my next flight",
-    "List suppliers in Shanghai",
     "What's my total expenses?",
+    "List all suppliers",
     "Any pending tasks?",
-    "Contact details for Li Wei"
+    "SEMA 2025 schedule",
+    "Upcoming meetings",
+    "Budget summary"
   ];
 
   const handleQuickQuestion = (question: string) => {
