@@ -48,9 +48,9 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-background flex">
+      <div className="min-h-screen bg-background">
         <Sidebar />
-        <main className="flex-1 lg:ml-64 transition-all duration-300">
+        <div className="lg:ml-64">
           <React.Suspense fallback={<LoadingSpinner />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -77,7 +77,7 @@ function App() {
             todos={todos}
             appointments={appointments}
           />
-        </main>
+        </div>
       </div>
     </Router>
   );

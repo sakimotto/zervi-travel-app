@@ -80,17 +80,16 @@ const Sidebar: React.FC = () => {
   return (
     <>
       {/* Mobile Header */}
-      <div className="lg:hidden bg-white shadow-md sticky top-0 z-50">
+      <div className="lg:hidden bg-white shadow-md fixed top-0 left-0 right-0 z-50">
         <div className="flex justify-between items-center px-4 h-16">
           <Link to="/" className="flex items-center">
             <Building2 className="h-8 w-8 text-primary" />
             <span className="ml-2 text-lg font-bold text-primary">Zervi Travel</span>
           </Link>
           <div className="flex items-center gap-2">
-            <UserMenu />
             <button
               onClick={toggleMobileMenu}
-              className="p-2 rounded-md text-gray-700 hover:bg-gray-100"
+              className="p-2 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
               aria-label="Toggle menu"
             >
               {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -102,7 +101,7 @@ const Sidebar: React.FC = () => {
       {/* Mobile Overlay */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-[60] lg:hidden"
           onClick={closeMobileMenu}
         />
       )}
@@ -162,9 +161,9 @@ const Sidebar: React.FC = () => {
 
       {/* Mobile Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 bg-white z-50 transform transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-y-0 left-0 w-72 bg-white z-[70] transform transition-transform duration-300 ease-in-out lg:hidden ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full'
-        } shadow-xl`}
+        } shadow-2xl`}
       >
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 bg-white">
@@ -172,11 +171,18 @@ const Sidebar: React.FC = () => {
             <Building2 className="h-8 w-8 text-primary" />
             <span className="ml-2 text-lg font-bold text-primary">Zervi Travel</span>
           </Link>
+          <button
+            onClick={closeMobileMenu}
+            className="p-2 rounded-md text-gray-500 hover:bg-gray-100"
+            aria-label="Close menu"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {/* Navigation Links - Always show full text on mobile */}
-        <nav className="flex-1 overflow-y-auto py-4 bg-white">
-          <div className="space-y-1">
+        <nav className="h-[calc(100vh-4rem)] overflow-y-auto py-2 bg-white">
+          <div className="space-y-0">
             {menuItems.map((item) => (
               <NavLink
                 key={item.to}
@@ -189,12 +195,10 @@ const Sidebar: React.FC = () => {
             ))}
           </div>
         </nav>
-
-        {/* User Menu */}
-        <div className="border-t border-gray-200 p-4 bg-white">
-          <UserMenu />
-        </div>
       </aside>
+
+      {/* Mobile spacer to prevent content from going under fixed header */}
+      <div className="h-16 lg:hidden"></div>
     </>
   );
 };
