@@ -15,7 +15,7 @@
 
 ## 🌟 Overview
 
-Zervi Travel is a modern, full-featured travel planning and management platform built with React, TypeScript, and Supabase. Originally created using **Bolt.new** and currently hosted live on **Netlify**, it provides comprehensive tools for organizing destinations, tracking expenses, managing itineraries, and coordinating all aspects of travel planning.
+Zervi Travel is a modern, full-featured business travel and trade show management platform built with React, TypeScript, and Supabase. Originally created using **Bolt.new** and currently hosted live on **Netlify**, it provides comprehensive tools for organizing destinations, tracking expenses, managing itineraries, coordinating supplier meetings, and managing all aspects of business travel and trade show attendance worldwide.
 
 🔗 **Live Demo:** [View on Netlify](https://superb-chebakia-bcacf0.netlify.app)  
 ⚡ **Built with:** [Bolt.new](https://bolt.new) - AI-powered full-stack development platform

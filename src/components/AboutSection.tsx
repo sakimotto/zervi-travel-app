@@ -8,15 +8,15 @@ const AboutSection: React.FC = () => {
         <div className="text-center mb-12">
           <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">About Zervi Travel</h2>
           <p className="text-base text-gray-700 max-w-3xl mx-auto">
-            Your comprehensive platform for managing business travel and relationships in China
+            Your comprehensive platform for managing business travel, trade shows, and professional relationships worldwide
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
-            <img 
-              src="https://images.unsplash.com/photo-1591021761549-29e55570c4bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-              alt="A traveler exploring Chinese temples" 
+            <img
+              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+              alt="Business professionals at trade show"
               className="rounded-lg shadow-lg"
             />
           </div>
@@ -24,7 +24,7 @@ const AboutSection: React.FC = () => {
           <div>
             <h3 className="text-xl font-semibold text-primary font-montserrat mb-4">Our Mission</h3>
             <p className="text-gray-700 mb-6">
-              Zervi Travel, part of Zervi Asia - Manufacturing & Development, was created to help business professionals navigate the complex landscape of doing business in Asia. We provide comprehensive tools for managing suppliers, tracking expenses, organizing meetings, and building lasting business relationships.
+              Zervi Travel was created to help business professionals navigate trade shows, manage supplier relationships, and organize business travel worldwide. Whether you're attending SEMA, Canton Fair, CES, or any international trade show, we provide comprehensive tools for managing suppliers, tracking expenses, organizing meetings, and building lasting business relationships.
             </p>
             
             <div className="space-y-4">
@@ -86,7 +86,7 @@ const AboutSection: React.FC = () => {
               <div className="text-4xl font-montserrat font-bold text-secondary mb-4">02</div>
               <h4 className="text-lg font-semibold text-gray-900 mb-2">Plan Your Trip</h4>
               <p className="text-gray-700">
-                Create detailed itineraries including flights, hotels, business meetings, factory visits, and networking events.
+                Create detailed itineraries including flights, hotels, trade show schedules, supplier meetings, factory visits, and networking events.
               </p>
             </div>
             

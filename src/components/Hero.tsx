@@ -8,16 +8,16 @@ const Hero: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      {/* Canton Fair Banner */}
+      {/* Trade Show Banner */}
       <div className="w-full bg-secondary text-white px-4 py-3 flex justify-between items-center">
         <p className="text-sm md:text-base">
-          <span className="font-bold">Business Travel to China Made Easy!</span> Manage suppliers, meetings, and travel all in one place.
-          <a 
-            href="https://www.trade.gov/country-commercial-guides/china" 
+          <span className="font-bold">Business Travel & Trade Show Management Made Easy!</span> Manage suppliers, meetings, and travel all in one place.
+          <a
+            href="https://www.semashow.com"
             target="_blank"
             className="ml-2 underline inline-flex items-center"
           >
-            Learn More <ExternalLink size={16} className="ml-1" />
+            SEMA 2025 <ExternalLink size={16} className="ml-1" />
           </a>
         </p>
       </div>
@@ -35,7 +35,7 @@ const Hero: React.FC = () => {
             Zervi Travel
           </h1>
           <p className="text-xl sm:text-2xl text-white mb-8">
-            Your complete solution for business travel, supplier management, and networking in Asia
+            Your complete solution for business travel, trade show management, and professional networking worldwide
           </p>
           <button 
             onClick={scrollToDestinations}
