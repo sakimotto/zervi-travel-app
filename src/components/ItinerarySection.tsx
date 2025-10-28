@@ -26,7 +26,7 @@ import { useSuppliers, useBusinessContacts, useExpenses } from '../hooks/useSupa
 const ItinerarySection: React.FC = () => {
   // Use Supabase backend for all data operations
   const { data: itinerary, loading, insert, update, remove, refetch } = useItineraryItems();
-  const { data: trips } = useTrips();
+  const { data: trips, insert: insertTrip } = useTrips();
   
   // Fallback to sample data if Supabase is empty (for first-time users)
   const [localItinerary, setLocalItinerary] = useState<ItineraryItem[]>(sampleItinerary);
@@ -43,6 +43,8 @@ const ItinerarySection: React.FC = () => {
   const [importError, setImportError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'full' | 'summary'>('full');
   const [showSaveDefaultConfirm, setShowSaveDefaultConfirm] = useState(false);
+  const [showQuickTripCreate, setShowQuickTripCreate] = useState(false);
+  const [quickTripName, setQuickTripName] = useState('');
 
   // Get related data for comprehensive export
   const { data: suppliers } = useSuppliers();
@@ -253,6 +255,45 @@ const ItinerarySection: React.FC = () => {
     setShowSaveDefaultConfirm(false);
   };
 
+  const handleQuickCreateTrip = async () => {
+    if (!quickTripName.trim()) {
+      alert('Please enter a trip name');
+      return;
+    }
+
+    try {
+      const today = new Date();
+      const nextWeek = new Date(today);
+      nextWeek.setDate(today.getDate() + 7);
+
+      const newTrip = {
+        trip_name: quickTripName,
+        purpose: 'Business',
+        destination_city: '',
+        destination_country: '',
+        start_date: today.toISOString().split('T')[0],
+        end_date: nextWeek.toISOString().split('T')[0],
+        status: 'Planning',
+        budget: 0,
+        notes: '',
+      };
+
+      await insertTrip(newTrip);
+      setQuickTripName('');
+      setShowQuickTripCreate(false);
+      alert(`Trip "${quickTripName}" created successfully! You can now add items to this trip.`);
+    } catch (error) {
+      console.error('Error creating trip:', error);
+      alert('Failed to create trip. Please try again.');
+    }
+  };
+
+  const getSelectedTripName = () => {
+    if (filterTrip === 'All') return 'All Trips';
+    const trip = trips.find((t: any) => t.id === filterTrip);
+    return trip ? trip.trip_name : 'All Trips';
+  };
+
   const filteredItinerary = displayItinerary.filter(item => {
     const matchesType = filterType === 'All' || item.type === filterType;
     const matchesTraveler = filterTraveler === 'All' || item.assigned_to === filterTraveler;
@@ -268,11 +309,87 @@ const ItinerarySection: React.FC = () => {
   return (
     <section id="itinerary" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-primary font-montserrat mb-3">
-            Travel Itinerary
-          </h2>
-          <p className="text-base text-gray-700 max-w-3xl mx-auto">
+        {/* Trip-Centric Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-3xl font-bold text-gray-900">
+              Travel Itinerary
+            </h2>
+          </div>
+
+          {/* Prominent Trip Selector */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-6 mb-6">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex-1 min-w-[250px]">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Trip to Manage
+                </label>
+                <select
+                  value={filterTrip}
+                  onChange={(e) => setFilterTrip(e.target.value)}
+                  className="w-full px-4 py-3 text-lg font-semibold border-2 border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                >
+                  <option value="All">📋 All Trips</option>
+                  {trips.map((trip: any) => (
+                    <option key={trip.id} value={trip.id}>
+                      ✈️ {trip.trip_name}
+                    </option>
+                  ))}
+                </select>
+                {filterTrip !== 'All' && (
+                  <p className="mt-2 text-sm text-blue-700">
+                    Currently viewing: <strong>{getSelectedTripName()}</strong>
+                  </p>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                {!showQuickTripCreate ? (
+                  <button
+                    onClick={() => setShowQuickTripCreate(true)}
+                    className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 whitespace-nowrap"
+                  >
+                    <Plus size={20} />
+                    New Trip
+                  </button>
+                ) : (
+                  <div className="flex flex-col gap-2 min-w-[250px]">
+                    <input
+                      type="text"
+                      value={quickTripName}
+                      onChange={(e) => setQuickTripName(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleQuickCreateTrip()}
+                      placeholder="Enter trip name (e.g., SEMA 2025)"
+                      className="px-4 py-2 border-2 border-green-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      autoFocus
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleQuickCreateTrip}
+                        className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                      >
+                        Create
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowQuickTripCreate(false);
+                          setQuickTripName('');
+                        }}
+                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+                <p className="text-xs text-gray-600 text-center">
+                  {trips.length} {trips.length === 1 ? 'trip' : 'trips'} total
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-gray-600 text-center">
             Manage your business trip details, including flights, accommodations, meetings, transportation, and sightseeing
           </p>
         </div>
@@ -337,19 +454,6 @@ const ItinerarySection: React.FC = () => {
                   {travelerOptions.map(traveler => (
                     <option key={traveler} value={traveler}>
                       {traveler === 'All' ? 'All Travelers' : traveler}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={filterTrip}
-                  onChange={(e) => setFilterTrip(e.target.value)}
-                  className="px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm font-medium"
-                >
-                  <option value="All">All Trips</option>
-                  {trips.map((trip: any) => (
-                    <option key={trip.id} value={trip.id}>
-                      {trip.trip_name}
                     </option>
                   ))}
                 </select>
