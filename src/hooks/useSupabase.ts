@@ -162,5 +162,8 @@ export const useCars = () => useSupabaseTable('cars');
 export const useHotels = () => useSupabaseTable('hotels');
 export const useMeetings = () => useSupabaseTable('meetings');
 
+// Unified Trips hook (parent for all travel)
+export const useTrips = () => useSupabaseTable('trips');
+
 // Unified Entities hook (replaces customers/suppliers/contacts)
 export const useEntities = () => useSupabaseTable('entities');

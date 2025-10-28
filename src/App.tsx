@@ -16,6 +16,7 @@ import {
 // Lazy load components for better performance
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
+const TripsPage = React.lazy(() => import('./pages/TripsPage'));
 const EntitiesPage = React.lazy(() => import('./pages/EntitiesPage'));
 const CustomersPage = React.lazy(() => import('./pages/CustomersPage'));
 const TradeShowsPage = React.lazy(() => import('./pages/TradeShowsPage'));
@@ -62,6 +63,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/trips" element={<TripsPage />} />
               <Route path="/entities" element={<EntitiesPage />} />
               <Route path="/customers" element={<CustomersPage />} />
               <Route path="/tradeshows" element={<TradeShowsPage />} />

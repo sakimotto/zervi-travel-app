@@ -39,6 +39,22 @@ export type TravelerOption = {
   active: boolean;
 };
 
+export type Trip = {
+  id: string;
+  user_id?: string;
+  trip_name: string;
+  purpose: 'Business' | 'Leisure' | 'Mixed';
+  destination_city: string;
+  destination_country: string;
+  start_date: string;
+  end_date: string;
+  status: 'Planning' | 'Confirmed' | 'In Progress' | 'Completed' | 'Cancelled';
+  budget: number;
+  notes: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type ItineraryItemType = 'Flight' | 'Hotel' | 'Taxi' | 'TradeShow' | 'BusinessVisit' | 'Sightseeing' | 'Train' | 'Bus' | 'Meeting' | 'Conference' | 'Factory Visit' | 'Other';
 
 export type ItineraryItem = {
