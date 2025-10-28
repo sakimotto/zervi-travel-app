@@ -11,7 +11,7 @@ import {
 import AddItineraryItem from './AddItineraryItem';
 import ItineraryExportButton from './ItineraryExportButton';
 import ItinerarySummary from './ItinerarySummary';
-import { useItineraryItems } from '../hooks/useSupabase';
+import { useItineraryItems, useTrips } from '../hooks/useSupabase';
 import { 
   saveItineraryToLocalStorage, 
   getItineraryFromLocalStorage, 
@@ -26,6 +26,7 @@ import { useSuppliers, useBusinessContacts, useExpenses } from '../hooks/useSupa
 const ItinerarySection: React.FC = () => {
   // Use Supabase backend for all data operations
   const { data: itinerary, loading, insert, update, remove, refetch } = useItineraryItems();
+  const { data: trips } = useTrips();
   
   // Fallback to sample data if Supabase is empty (for first-time users)
   const [localItinerary, setLocalItinerary] = useState<ItineraryItem[]>(sampleItinerary);
@@ -36,6 +37,7 @@ const ItinerarySection: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [filterType, setFilterType] = useState<ItineraryItemType | 'All'>('All');
   const [filterTraveler, setFilterTraveler] = useState<string>('All');
+  const [filterTrip, setFilterTrip] = useState<string>('All');
   const [editingItem, setEditingItem] = useState<ItineraryItem | null>(null);
   const [showConfirmReset, setShowConfirmReset] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
@@ -254,7 +256,8 @@ const ItinerarySection: React.FC = () => {
   const filteredItinerary = displayItinerary.filter(item => {
     const matchesType = filterType === 'All' || item.type === filterType;
     const matchesTraveler = filterTraveler === 'All' || item.assigned_to === filterTraveler;
-    return matchesType && matchesTraveler;
+    const matchesTrip = filterTrip === 'All' || item.trip_id === filterTrip;
+    return matchesType && matchesTraveler && matchesTrip;
   });
 
   // Sort by date
@@ -326,7 +329,7 @@ const ItinerarySection: React.FC = () => {
                   <option value="Other">Other</option>
                 </select>
                 
-                <select 
+                <select
                   value={filterTraveler}
                   onChange={(e) => setFilterTraveler(e.target.value)}
                   className="px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm"
@@ -334,6 +337,19 @@ const ItinerarySection: React.FC = () => {
                   {travelerOptions.map(traveler => (
                     <option key={traveler} value={traveler}>
                       {traveler === 'All' ? 'All Travelers' : traveler}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={filterTrip}
+                  onChange={(e) => setFilterTrip(e.target.value)}
+                  className="px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm font-medium"
+                >
+                  <option value="All">All Trips</option>
+                  {trips.map((trip: any) => (
+                    <option key={trip.id} value={trip.id}>
+                      {trip.trip_name}
                     </option>
                   ))}
                 </select>
