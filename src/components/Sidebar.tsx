@@ -15,7 +15,13 @@ import {
   Lightbulb,
   MessageCircle,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  UserCircle,
+  TrendingUp,
+  Plane,
+  Car,
+  Hotel,
+  Video
 } from 'lucide-react';
 import UserMenu from './UserMenu';
 
@@ -66,12 +72,18 @@ const Sidebar: React.FC = () => {
 
   const menuItems = [
     { to: '/dashboard', icon: <LayoutDashboard size={20} />, text: 'Dashboard' },
-    { to: '/destinations', icon: <MapPin size={20} />, text: 'Destinations' },
+    { to: '/customers', icon: <UserCircle size={20} />, text: 'Customers CRM' },
+    { to: '/tradeshows', icon: <TrendingUp size={20} />, text: 'Trade Shows' },
+    { to: '/flights', icon: <Plane size={20} />, text: 'Flights' },
+    { to: '/cars', icon: <Car size={20} />, text: 'Cars' },
+    { to: '/hotels', icon: <Hotel size={20} />, text: 'Hotels' },
+    { to: '/meetings', icon: <Video size={20} />, text: 'Meetings' },
     { to: '/suppliers', icon: <Building2 size={20} />, text: 'Suppliers' },
     { to: '/contacts', icon: <Users size={20} />, text: 'Contacts' },
     { to: '/itinerary', icon: <ListTodo size={20} />, text: 'Itinerary' },
     { to: '/calendar', icon: <Calendar size={20} />, text: 'Calendar' },
     { to: '/expenses', icon: <DollarSign size={20} />, text: 'Expenses' },
+    { to: '/destinations', icon: <MapPin size={20} />, text: 'Destinations' },
     { to: '/tips', icon: <Lightbulb size={20} />, text: 'Travel Tips' },
     { to: '/phrases', icon: <MessageCircle size={20} />, text: 'Phrases' },
     { to: '/user-manual', icon: <BookOpen size={20} />, text: 'User Manual' }

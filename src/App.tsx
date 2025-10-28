@@ -16,6 +16,12 @@ import {
 // Lazy load components for better performance
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
+const CustomersPage = React.lazy(() => import('./pages/CustomersPage'));
+const TradeShowsPage = React.lazy(() => import('./pages/TradeShowsPage'));
+const FlightsPage = React.lazy(() => import('./pages/FlightsPage'));
+const CarsPage = React.lazy(() => import('./pages/CarsPage'));
+const HotelsPage = React.lazy(() => import('./pages/HotelsPage'));
+const MeetingsPage = React.lazy(() => import('./pages/MeetingsPage'));
 const DestinationsPage = React.lazy(() => import('./pages/DestinationsPage'));
 const SuppliersPage = React.lazy(() => import('./pages/SuppliersPage'));
 const ContactsPage = React.lazy(() => import('./pages/ContactsPage'));
@@ -55,6 +61,12 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/customers" element={<CustomersPage />} />
+              <Route path="/tradeshows" element={<TradeShowsPage />} />
+              <Route path="/flights" element={<FlightsPage />} />
+              <Route path="/cars" element={<CarsPage />} />
+              <Route path="/hotels" element={<HotelsPage />} />
+              <Route path="/meetings" element={<MeetingsPage />} />
               <Route path="/destinations" element={<DestinationsPage />} />
               <Route path="/suppliers" element={<SuppliersPage />} />
               <Route path="/contacts" element={<ContactsPage />} />

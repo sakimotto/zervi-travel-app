@@ -151,3 +151,13 @@ export const useItineraryItems = () => useSupabaseTable('itinerary_items');
 export const useExpenses = () => useSupabaseTable('expenses');
 export const useTodos = () => useSupabaseTable('todos');
 export const useAppointments = () => useSupabaseTable('appointments');
+
+// New CRM and Travel module hooks
+export const useCustomers = () => useSupabaseTable('customers');
+export const useCustomerCategories = () => useSupabaseTable('customer_categories');
+export const useTradeShows = () => useSupabaseTable('trade_shows');
+export const useTradeShowMeetings = () => useSupabaseTable('trade_show_meetings');
+export const useFlights = () => useSupabaseTable('flights');
+export const useCars = () => useSupabaseTable('cars');
+export const useHotels = () => useSupabaseTable('hotels');
+export const useMeetings = () => useSupabaseTable('meetings');

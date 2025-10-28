@@ -247,3 +247,167 @@ export type Appointment = {
   created_at?: string;
   updated_at?: string;
 };
+
+export type Customer = {
+  id: string;
+  user_id: string;
+  company_name: string;
+  contact_person?: string;
+  email?: string;
+  phone?: string;
+  website?: string;
+  country?: string;
+  city?: string;
+  address?: string;
+  notes?: string;
+  status: 'Lead' | 'Prospect' | 'Active' | 'Inactive';
+  priority: 'Low' | 'Medium' | 'High' | 'Critical';
+  estimated_value?: number;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type CustomerCategory = {
+  id: string;
+  customer_id: string;
+  is_oem: boolean;
+  is_odm: boolean;
+  is_importer: boolean;
+  is_shop_owner: boolean;
+  is_retail_chain: boolean;
+  is_manufacturing_outsource: boolean;
+  is_distributor: boolean;
+  is_wholesaler: boolean;
+  category_notes?: string;
+};
+
+export type TradeShow = {
+  id: string;
+  user_id: string;
+  name: string;
+  location?: string;
+  venue?: string;
+  start_date: string;
+  end_date: string;
+  booth_number?: string;
+  booth_size?: string;
+  booth_cost?: number;
+  our_booth_details?: string;
+  show_website?: string;
+  notes?: string;
+  created_at?: string;
+};
+
+export type TradeShowMeeting = {
+  id: string;
+  trade_show_id: string;
+  customer_id?: string;
+  contact_name: string;
+  company_name: string;
+  meeting_date: string;
+  meeting_time?: string;
+  location?: string;
+  interest_level: 'Cold' | 'Warm' | 'Hot';
+  products_interested?: string;
+  follow_up_required: boolean;
+  follow_up_date?: string;
+  notes?: string;
+  outcome?: string;
+  created_at?: string;
+};
+
+export type Flight = {
+  id: string;
+  user_id: string;
+  traveler_name: string;
+  airline: string;
+  flight_number?: string;
+  confirmation_number?: string;
+  departure_airport: string;
+  departure_city?: string;
+  arrival_airport: string;
+  arrival_city?: string;
+  departure_date: string;
+  departure_time?: string;
+  arrival_date: string;
+  arrival_time?: string;
+  seat_number?: string;
+  class: 'Economy' | 'Premium Economy' | 'Business' | 'First';
+  cost?: number;
+  booking_reference?: string;
+  status: 'Booked' | 'Confirmed' | 'Checked-in' | 'Completed' | 'Cancelled';
+  notes?: string;
+  created_at?: string;
+};
+
+export type Car = {
+  id: string;
+  user_id: string;
+  rental_company: string;
+  confirmation_number?: string;
+  vehicle_type?: string;
+  vehicle_make_model?: string;
+  pickup_location: string;
+  pickup_date: string;
+  pickup_time?: string;
+  dropoff_location: string;
+  dropoff_date: string;
+  dropoff_time?: string;
+  driver_name?: string;
+  cost_per_day?: number;
+  total_cost?: number;
+  insurance_included: boolean;
+  gps_included: boolean;
+  status: 'Reserved' | 'Picked-up' | 'Returned' | 'Cancelled';
+  notes?: string;
+  created_at?: string;
+};
+
+export type Hotel = {
+  id: string;
+  user_id: string;
+  hotel_name: string;
+  confirmation_number?: string;
+  address?: string;
+  city: string;
+  country?: string;
+  phone?: string;
+  email?: string;
+  check_in_date: string;
+  check_in_time?: string;
+  check_out_date: string;
+  check_out_time?: string;
+  room_type?: string;
+  room_number?: string;
+  guest_name: string;
+  number_of_guests: number;
+  cost_per_night?: number;
+  total_nights: number;
+  total_cost?: number;
+  breakfast_included: boolean;
+  wifi_included: boolean;
+  status: 'Reserved' | 'Checked-in' | 'Checked-out' | 'Cancelled';
+  notes?: string;
+  created_at?: string;
+};
+
+export type Meeting = {
+  id: string;
+  user_id: string;
+  customer_id?: string;
+  title: string;
+  meeting_type: 'In-person' | 'Phone' | 'Video' | 'Trade Show';
+  meeting_date: string;
+  meeting_time: string;
+  duration_minutes: number;
+  location?: string;
+  attendees?: string;
+  agenda?: string;
+  meeting_notes?: string;
+  action_items?: string;
+  follow_up_required: boolean;
+  follow_up_date?: string;
+  status: 'Scheduled' | 'Completed' | 'Cancelled' | 'Rescheduled';
+  priority: 'Low' | 'Medium' | 'High';
+  created_at?: string;
+};
