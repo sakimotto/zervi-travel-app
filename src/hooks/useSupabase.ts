@@ -161,3 +161,6 @@ export const useFlights = () => useSupabaseTable('flights');
 export const useCars = () => useSupabaseTable('cars');
 export const useHotels = () => useSupabaseTable('hotels');
 export const useMeetings = () => useSupabaseTable('meetings');
+
+// Unified Entities hook (replaces customers/suppliers/contacts)
+export const useEntities = () => useSupabaseTable('entities');

@@ -411,3 +411,85 @@ export type Meeting = {
   priority: 'Low' | 'Medium' | 'High';
   created_at?: string;
 };
+
+export type Entity = {
+  id: string;
+  user_id: string;
+
+  // Core Identity
+  company_name: string;
+  contact_person?: string;
+  email?: string;
+  phone?: string;
+  website?: string;
+  logo_url?: string;
+
+  // Location
+  address?: string;
+  city?: string;
+  state_province?: string;
+  country?: string;
+  postal_code?: string;
+
+  // Social/Communication
+  wechat?: string;
+  linkedin?: string;
+  whatsapp?: string;
+  skype?: string;
+
+  // Role Flags
+  is_customer: boolean;
+  is_supplier: boolean;
+  is_contact: boolean;
+  is_partner: boolean;
+  is_competitor: boolean;
+  is_other: boolean;
+
+  // Customer-Specific
+  customer_status?: 'Lead' | 'Prospect' | 'Active' | 'Inactive';
+  customer_priority?: 'Low' | 'Medium' | 'High' | 'Critical';
+  estimated_value?: number;
+  lead_source?: string;
+
+  // Customer Categories
+  is_oem: boolean;
+  is_odm: boolean;
+  is_importer: boolean;
+  is_shop_owner: boolean;
+  is_retail_chain: boolean;
+  is_manufacturing_outsource: boolean;
+  is_distributor: boolean;
+  is_wholesaler: boolean;
+
+  // Supplier-Specific
+  products?: string[];
+  certifications?: string[];
+  minimum_order?: string;
+  payment_terms?: string;
+  lead_time?: string;
+  supplier_rating?: number;
+  supplier_status?: 'Active' | 'Potential' | 'Inactive';
+
+  // Business Details
+  industry?: string;
+  year_established?: string;
+  employee_count?: string;
+  annual_revenue?: number;
+  business_type?: string;
+
+  // Relationship Management
+  relationship_type?: string;
+  importance?: 'High' | 'Medium' | 'Low';
+  last_contact_date?: string;
+  next_followup_date?: string;
+  assigned_to?: string;
+  tags?: string[];
+
+  // Additional
+  notes?: string;
+  category_notes?: string;
+
+  // Metadata
+  created_at?: string;
+  updated_at?: string;
+};
