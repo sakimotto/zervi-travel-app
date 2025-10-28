@@ -12,6 +12,7 @@ import AddItineraryItem from './AddItineraryItem';
 import ItineraryExportButton from './ItineraryExportButton';
 import ItinerarySummary from './ItinerarySummary';
 import { useItineraryItems, useTrips } from '../hooks/useSupabase';
+import { useAuth } from '../hooks/useAuth';
 import { 
   saveItineraryToLocalStorage, 
   getItineraryFromLocalStorage, 
@@ -24,6 +25,9 @@ import { exportToWord } from '../utils/wordExport';
 import { useSuppliers, useBusinessContacts, useExpenses } from '../hooks/useSupabase';
 
 const ItinerarySection: React.FC = () => {
+  // Get authenticated user
+  const { user } = useAuth();
+
   // Use Supabase backend for all data operations
   const { data: itinerary, loading, insert, update, remove, refetch } = useItineraryItems();
   const { data: trips, insert: insertTrip } = useTrips();
@@ -261,6 +265,11 @@ const ItinerarySection: React.FC = () => {
       return;
     }
 
+    if (!user) {
+      alert('You must be logged in to create a trip');
+      return;
+    }
+
     try {
       const today = new Date();
       const nextWeek = new Date(today);
@@ -276,11 +285,18 @@ const ItinerarySection: React.FC = () => {
         status: 'Planning',
         budget: 0,
         notes: '',
+        user_id: user.id,
       };
 
-      await insertTrip(newTrip);
+      const result = await insertTrip(newTrip);
       setQuickTripName('');
       setShowQuickTripCreate(false);
+
+      // Auto-select the newly created trip
+      if (result && result.id) {
+        setFilterTrip(result.id);
+      }
+
       alert(`Trip "${quickTripName}" created successfully! You can now add items to this trip.`);
     } catch (error) {
       console.error('Error creating trip:', error);
