@@ -35,6 +35,7 @@ const TipsPage = React.lazy(() => import('./pages/TipsPage'));
 const PhrasesPage = React.lazy(() => import('./pages/PhrasesPage'));
 const AboutPage = React.lazy(() => import('./pages/AboutPage'));
 const UserManualPage = React.lazy(() => import('./pages/UserManualPage'));
+const DelegationsPage = React.lazy(() => import('./pages/DelegationsPage'));
 
 // Loading component
 const LoadingSpinner = () => (
@@ -83,6 +84,7 @@ function App() {
                 <Route path="/phrases" element={<PhrasesPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/user-manual" element={<UserManualPage />} />
+                <Route path="/delegations" element={<DelegationsPage />} />
               </Routes>
             </React.Suspense>
 
