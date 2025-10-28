@@ -27,14 +27,14 @@ interface NavLinkProps {
   collapsed?: boolean;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ to, icon, text, onClick, collapsed }) => {
+const NavLink: React.FC<NavLinkProps> = ({ to, icon, text, onClick, collapsed = false }) => {
   const location = useLocation();
   const isActive = location.pathname === to || (to === '/' && location.pathname === '/');
 
   return (
     <Link
       to={to}
-      className={`flex items-center px-4 py-3 text-sm transition-all duration-200 ${
+      className={`flex items-center px-4 py-3 text-sm font-medium transition-all duration-200 ${
         isActive
           ? 'bg-primary text-white'
           : 'text-gray-700 hover:bg-gray-100'
@@ -42,8 +42,8 @@ const NavLink: React.FC<NavLinkProps> = ({ to, icon, text, onClick, collapsed })
       onClick={onClick}
       title={collapsed ? text : undefined}
     >
-      <span className={`${collapsed ? '' : 'mr-3'}`}>{icon}</span>
-      {!collapsed && <span>{text}</span>}
+      <span className={`flex-shrink-0 ${collapsed ? '' : 'mr-3'}`}>{icon}</span>
+      {!collapsed && <span className="whitespace-nowrap">{text}</span>}
     </Link>
   );
 };
@@ -164,18 +164,18 @@ const Sidebar: React.FC = () => {
       <aside
         className={`fixed inset-y-0 left-0 w-64 bg-white z-50 transform transition-transform duration-300 lg:hidden ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        } shadow-xl`}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 bg-white">
           <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
             <Building2 className="h-8 w-8 text-primary" />
             <span className="ml-2 text-lg font-bold text-primary">Zervi Travel</span>
           </Link>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex-1 overflow-y-auto py-4">
+        {/* Navigation Links - Always show full text on mobile */}
+        <nav className="flex-1 overflow-y-auto py-4 bg-white">
           <div className="space-y-1">
             {menuItems.map((item) => (
               <NavLink
@@ -184,13 +184,14 @@ const Sidebar: React.FC = () => {
                 icon={item.icon}
                 text={item.text}
                 onClick={closeMobileMenu}
+                collapsed={false}
               />
             ))}
           </div>
         </nav>
 
         {/* User Menu */}
-        <div className="border-t border-gray-200 p-4">
+        <div className="border-t border-gray-200 p-4 bg-white">
           <UserMenu />
         </div>
       </aside>
