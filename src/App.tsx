@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import TravelChatbot from './components/TravelChatbot';
+import AuthGuard from './components/AuthGuard';
 import { useState, useEffect } from 'react';
 import {
   useItineraryItems,
@@ -56,45 +57,47 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-background">
-        <Sidebar />
-        <div className="lg:ml-64">
-          <React.Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/trips" element={<TripsPage />} />
-              <Route path="/entities" element={<EntitiesPage />} />
-              <Route path="/customers" element={<CustomersPage />} />
-              <Route path="/tradeshows" element={<TradeShowsPage />} />
-              <Route path="/flights" element={<FlightsPage />} />
-              <Route path="/cars" element={<CarsPage />} />
-              <Route path="/hotels" element={<HotelsPage />} />
-              <Route path="/meetings" element={<MeetingsPage />} />
-              <Route path="/destinations" element={<DestinationsPage />} />
-              <Route path="/suppliers" element={<SuppliersPage />} />
-              <Route path="/contacts" element={<ContactsPage />} />
-              <Route path="/itinerary" element={<ItineraryPage />} />
-              <Route path="/calendar" element={<CalendarPage />} />
-              <Route path="/expenses" element={<ExpensesPage />} />
-              <Route path="/tips" element={<TipsPage />} />
-              <Route path="/phrases" element={<PhrasesPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/user-manual" element={<UserManualPage />} />
-            </Routes>
-          </React.Suspense>
+      <AuthGuard>
+        <div className="min-h-screen bg-background">
+          <Sidebar />
+          <div className="lg:ml-64">
+            <React.Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/trips" element={<TripsPage />} />
+                <Route path="/entities" element={<EntitiesPage />} />
+                <Route path="/customers" element={<CustomersPage />} />
+                <Route path="/tradeshows" element={<TradeShowsPage />} />
+                <Route path="/flights" element={<FlightsPage />} />
+                <Route path="/cars" element={<CarsPage />} />
+                <Route path="/hotels" element={<HotelsPage />} />
+                <Route path="/meetings" element={<MeetingsPage />} />
+                <Route path="/destinations" element={<DestinationsPage />} />
+                <Route path="/suppliers" element={<SuppliersPage />} />
+                <Route path="/contacts" element={<ContactsPage />} />
+                <Route path="/itinerary" element={<ItineraryPage />} />
+                <Route path="/calendar" element={<CalendarPage />} />
+                <Route path="/expenses" element={<ExpensesPage />} />
+                <Route path="/tips" element={<TipsPage />} />
+                <Route path="/phrases" element={<PhrasesPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/user-manual" element={<UserManualPage />} />
+              </Routes>
+            </React.Suspense>
 
-          {/* Global Travel Chatbot - Available on all pages */}
-          <TravelChatbot
-            itinerary={itinerary}
-            suppliers={suppliers}
-            contacts={contacts}
-            expenses={expenses}
-            todos={todos}
-            appointments={appointments}
-          />
+            {/* Global Travel Chatbot - Available on all pages */}
+            <TravelChatbot
+              itinerary={itinerary}
+              suppliers={suppliers}
+              contacts={contacts}
+              expenses={expenses}
+              todos={todos}
+              appointments={appointments}
+            />
+          </div>
         </div>
-      </div>
+      </AuthGuard>
     </Router>
   );
 }
