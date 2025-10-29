@@ -43,10 +43,13 @@ export default function UserManagementPage() {
   useEffect(() => {
     checkAdminStatus();
     loadProfileData();
+  }, [user]);
+
+  useEffect(() => {
     if (isAdmin) {
       fetchUsers();
     }
-  }, [user]);
+  }, [isAdmin]);
 
   const checkAdminStatus = async () => {
     if (!user) return;
