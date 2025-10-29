@@ -555,6 +555,8 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
         return;
       }
 
+      console.log('Calling edge function...');
+
       // Call the edge function to create the user with admin privileges
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-create-user`,
@@ -573,8 +575,11 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
         }
       );
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
         const errorText = await response.text();
+        console.error('Error response:', errorText);
         let errorMessage = 'Failed to create user';
         try {
           const errorJson = JSON.parse(errorText);
@@ -588,6 +593,7 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
       }
 
       const result = await response.json();
+      console.log('Success result:', result);
 
       if (result.error) {
         setError(result.error);
@@ -615,6 +621,7 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
 
       onSuccess();
     } catch (err) {
+      console.error('Caught error:', err);
       setError(err instanceof Error ? err.message : 'Database error saving new user');
     } finally {
       setLoading(false);
