@@ -1,12 +1,27 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "zervi-travel",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
+  "description": "Comprehensive business travel and trade show management platform",
+  "author": "Zervi Travel Team",
+  "license": "MIT",
+  "keywords": [
+    "travel",
+    "crm",
+    "business-travel",
+    "trade-shows",
+    "itinerary",
+    "expense-tracking",
+    "supabase",
+    "react",
+    "typescript"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "type-check": "tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
