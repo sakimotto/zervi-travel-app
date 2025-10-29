@@ -39,32 +39,38 @@ const UserMenu: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-          <div className="p-4 border-b border-gray-200">
-            <p className="font-medium text-gray-900">{user.name || 'User'}</p>
-            <p className="text-sm text-gray-600">{user.email}</p>
-            <span className={`inline-block mt-2 px-2 py-1 text-xs font-medium rounded-full ${getRoleColor(user.role)}`}>
-              {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
-            </span>
+        <>
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="absolute right-0 bottom-full mb-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+            <div className="p-4 border-b border-gray-200">
+              <p className="font-medium text-gray-900">{user.name || 'User'}</p>
+              <p className="text-sm text-gray-600">{user.email}</p>
+              <span className={`inline-block mt-2 px-2 py-1 text-xs font-medium rounded-full ${getRoleColor(user.role)}`}>
+                {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
+              </span>
+            </div>
+
+            <div className="py-2">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+              >
+                <Settings size={16} className="mr-2" />
+                Profile Settings
+              </button>
+              <button
+                onClick={handleSignOut}
+                className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+              >
+                <LogOut size={16} className="mr-2" />
+                Sign Out
+              </button>
+            </div>
           </div>
-          
-          <div className="py-2">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-            >
-              <Settings size={16} className="mr-2" />
-              Profile Settings
-            </button>
-            <button
-              onClick={handleSignOut}
-              className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
-            >
-              <LogOut size={16} className="mr-2" />
-              Sign Out
-            </button>
-          </div>
-        </div>
+        </>
       )}
     </div>
   );
