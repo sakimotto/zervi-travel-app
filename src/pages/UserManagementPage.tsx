@@ -557,7 +557,7 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
 
       // Call the edge function to create the user with admin privileges
       const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-admin-user`,
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-create-user`,
         {
           method: 'POST',
           headers: {
