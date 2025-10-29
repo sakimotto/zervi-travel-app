@@ -22,7 +22,8 @@ import {
   Car,
   Hotel,
   Video,
-  UserCheck
+  UserCheck,
+  Shield
 } from 'lucide-react';
 import UserMenu from './UserMenu';
 
@@ -90,6 +91,7 @@ const Sidebar: React.FC = () => {
     { to: '/tips', icon: <Lightbulb size={20} />, text: 'Travel Tips' },
     { to: '/phrases', icon: <MessageCircle size={20} />, text: 'Phrases' },
     { to: '/delegations', icon: <UserCheck size={20} />, text: 'Access Management' },
+    { to: '/users', icon: <Shield size={20} />, text: 'User Management' },
     { to: '/user-manual', icon: <BookOpen size={20} />, text: 'User Manual' }
   ];
 
