@@ -15,6 +15,59 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    // Get the authorization header
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Missing authorization header' }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // Create client with anon key to verify the calling user
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        global: {
+          headers: { Authorization: authHeader },
+        },
+      }
+    );
+
+    // Verify the calling user is authenticated and is an admin
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // Check if user is admin
+    const { data: profile, error: profileError } = await supabase
+      .from('user_profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (profileError || profile?.role !== 'admin') {
+      return new Response(
+        JSON.stringify({ error: 'Only admins can create users' }),
+        {
+          status: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
     const { email, password, full_name, role } = await req.json();
 
     if (!email || !password) {
@@ -61,15 +114,22 @@ Deno.serve(async (req: Request) => {
 
     // Update user profile with role
     if (authData.user && role) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
       const { error: profileError } = await supabaseAdmin
         .from('user_profiles')
-        .update({ role })
+        .update({ role, status: 'active' })
         .eq('id', authData.user.id);
 
       if (profileError) {
         console.error('Profile update error:', profileError);
+        return new Response(
+          JSON.stringify({ error: `User created but profile update failed: ${profileError.message}` }),
+          {
+            status: 500,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
       }
     }
 
@@ -81,8 +141,9 @@ Deno.serve(async (req: Request) => {
       }
     );
   } catch (error) {
+    console.error('Edge function error:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error.message || 'Internal server error' }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
