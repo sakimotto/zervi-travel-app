@@ -543,6 +543,15 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
     setError('');
 
     try {
+      // Get current session for authorization
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        setError('You must be logged in to invite users');
+        setLoading(false);
+        return;
+      }
+
       // Call the edge function to create the user with admin privileges
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-admin-user`,
@@ -550,6 +559,7 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
           },
           body: JSON.stringify({
             email: formData.email,
@@ -560,10 +570,24 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
         }
       );
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = 'Failed to create user';
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.error || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        setError(errorMessage);
+        setLoading(false);
+        return;
+      }
+
       const result = await response.json();
 
-      if (!response.ok || result.error) {
-        setError(result.error || 'Failed to create user');
+      if (result.error) {
+        setError(result.error);
         setLoading(false);
         return;
       }
