@@ -90,8 +90,8 @@ const Sidebar: React.FC = () => {
     { to: '/destinations', icon: <MapPin size={20} />, text: 'Destinations' },
     { to: '/tips', icon: <Lightbulb size={20} />, text: 'Travel Tips' },
     { to: '/phrases', icon: <MessageCircle size={20} />, text: 'Phrases' },
-    { to: '/delegations', icon: <UserCheck size={20} />, text: 'Access Management' },
-    { to: '/users', icon: <Shield size={20} />, text: 'User Management' },
+    { to: '/delegations', icon: <UserCheck size={20} />, text: 'Delegate Access' },
+    { to: '/users', icon: <Shield size={20} />, text: 'Account Settings' },
     { to: '/user-manual', icon: <BookOpen size={20} />, text: 'User Manual' }
   ];
 

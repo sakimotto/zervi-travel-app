@@ -188,9 +188,9 @@ export default function UserManagementPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
             <Settings className="w-8 h-8" />
-            User Management
+            Account Settings
           </h1>
-          <p className="text-gray-600 mt-2">Manage your profile and team settings</p>
+          <p className="text-gray-600 mt-2">Manage your profile and user accounts</p>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm">

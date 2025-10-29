@@ -151,10 +151,10 @@ const DelegationsPage: React.FC = () => {
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center">
                 <Users className="mr-3 text-primary" size={32} />
-                Access Management
+                Delegate Access
               </h1>
               <p className="mt-2 text-gray-600">
-                Grant others access to view and edit your travel data
+                Share your travel data with assistants or team members
               </p>
             </div>
             <button
