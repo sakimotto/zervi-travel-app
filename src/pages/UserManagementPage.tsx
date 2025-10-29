@@ -542,52 +542,56 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
     setLoading(true);
     setError('');
 
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        data: {
-          full_name: formData.full_name
+    try {
+      // Call the edge function to create the user with admin privileges
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-admin-user`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+            full_name: formData.full_name || formData.email,
+            role: formData.role
+          })
         }
-      }
-    });
+      );
 
-    if (authError) {
-      setError(authError.message);
-      setLoading(false);
-      return;
-    }
+      const result = await response.json();
 
-    if (authData.user) {
-      // Wait a moment for the trigger to create the profile
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Use upsert to handle both insert and update cases
-      const { error: profileError } = await supabase
-        .from('user_profiles')
-        .upsert({
-          id: authData.user.id,
-          email: formData.email,
-          full_name: formData.full_name || formData.email,
-          role: formData.role,
-          phone: formData.phone,
-          department: formData.department,
-          job_title: formData.job_title,
-          status: 'active'
-        }, {
-          onConflict: 'id'
-        });
-
-      if (profileError) {
-        setError(profileError.message);
+      if (!response.ok || result.error) {
+        setError(result.error || 'Failed to create user');
         setLoading(false);
         return;
       }
 
-      onSuccess();
-    }
+      // Update additional profile fields
+      if (result.user) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-    setLoading(false);
+        const { error: profileError } = await supabase
+          .from('user_profiles')
+          .update({
+            phone: formData.phone,
+            department: formData.department,
+            job_title: formData.job_title
+          })
+          .eq('id', result.user.id);
+
+        if (profileError) {
+          console.error('Profile update error:', profileError);
+        }
+      }
+
+      onSuccess();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Database error saving new user');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
