@@ -23,7 +23,6 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Verify the requesting user is an admin
     const token = authHeader.replace('Bearer ', '');
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -39,16 +38,24 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Check if user is admin
     const { data: profile, error: profileError } = await supabase
       .from('user_profiles')
       .select('role')
       .eq('id', user.id)
       .single();
 
-    if (profileError || profile?.role !== 'admin') {
+    console.log('Profile check:', { profile, profileError, userId: user.id });
+
+    if (profileError) {
       return new Response(
-        JSON.stringify({ error: 'Unauthorized - Admin access required' }),
+        JSON.stringify({ error: `Profile error: ${profileError.message}` }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (profile?.role !== 'admin') {
+      return new Response(
+        JSON.stringify({ error: `Unauthorized - Admin access required. Your role: ${profile?.role}` }),
         { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -62,14 +69,12 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Create admin client with service role key
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       { auth: { autoRefreshToken: false, persistSession: false } }
     );
 
-    // Create user
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -84,10 +89,8 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Wait for trigger to create profile
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Update user profile with role
     if (authData.user && role) {
       const { error: profileError } = await supabaseAdmin
         .from('user_profiles')
