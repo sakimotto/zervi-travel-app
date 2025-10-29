@@ -559,15 +559,24 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
     }
 
     if (authData.user) {
+      // Wait a moment for the trigger to create the profile
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Use upsert to handle both insert and update cases
       const { error: profileError } = await supabase
         .from('user_profiles')
-        .update({
+        .upsert({
+          id: authData.user.id,
+          email: formData.email,
+          full_name: formData.full_name || formData.email,
           role: formData.role,
           phone: formData.phone,
           department: formData.department,
-          job_title: formData.job_title
-        })
-        .eq('id', authData.user.id);
+          job_title: formData.job_title,
+          status: 'active'
+        }, {
+          onConflict: 'id'
+        });
 
       if (profileError) {
         setError(profileError.message);
