@@ -44,9 +44,10 @@ Deno.serve(async (req) => {
       .from("user_profiles")
       .select("role")
       .eq("id", requestingUser.id)
-      .single();
+      .maybeSingle();
 
     if (profileError || profile?.role !== "admin") {
+      console.error("Profile check failed:", profileError, profile);
       return new Response(
         JSON.stringify({ error: "Forbidden - Admin access required" }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 403 }
@@ -70,6 +71,27 @@ Deno.serve(async (req) => {
       );
     }
 
+    console.log("Attempting to reset password for user:", userId);
+
+    // First, verify the user exists
+    const { data: targetUserData, error: getUserError } = await supabaseAdmin.auth.admin.getUserById(userId);
+    
+    if (getUserError) {
+      console.error("Failed to get user:", getUserError);
+      return new Response(
+        JSON.stringify({ error: `Database error loading user: ${getUserError.message}` }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+      );
+    }
+
+    if (!targetUserData || !targetUserData.user) {
+      return new Response(
+        JSON.stringify({ error: "User not found" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 404 }
+      );
+    }
+
+    // Now update the password
     const { data: updatedUser, error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
       userId,
       { password: newPassword }
@@ -82,6 +104,8 @@ Deno.serve(async (req) => {
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
       );
     }
+
+    console.log("Password reset successfully for user:", userId);
 
     return new Response(
       JSON.stringify({ success: true, message: "Password reset successfully" }),
