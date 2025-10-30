@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plane, Calendar, Clock, MapPin, DollarSign, CreditCard, User } from 'lucide-react';
 import { useTrips } from '../hooks/useSupabase';
 
@@ -56,6 +56,54 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight, onSubmit, onCancel, sel
     notes: flight?.notes || '',
     trip_id: flight?.trip_id || selectedTripId || null,
   });
+
+  useEffect(() => {
+    if (flight) {
+      setFormData({
+        traveler_name: flight.traveler_name || '',
+        airline: flight.airline || '',
+        flight_number: flight.flight_number || '',
+        confirmation_number: flight.confirmation_number || '',
+        departure_airport: flight.departure_airport || '',
+        departure_city: flight.departure_city || '',
+        arrival_airport: flight.arrival_airport || '',
+        arrival_city: flight.arrival_city || '',
+        departure_date: flight.departure_date || '',
+        departure_time: flight.departure_time || '',
+        arrival_date: flight.arrival_date || '',
+        arrival_time: flight.arrival_time || '',
+        seat_number: flight.seat_number || '',
+        class: flight.class || 'Economy',
+        cost: flight.cost || 0,
+        booking_reference: flight.booking_reference || '',
+        status: flight.status || 'Confirmed',
+        notes: flight.notes || '',
+        trip_id: flight.trip_id || null,
+      });
+    } else {
+      setFormData({
+        traveler_name: '',
+        airline: '',
+        flight_number: '',
+        confirmation_number: '',
+        departure_airport: '',
+        departure_city: '',
+        arrival_airport: '',
+        arrival_city: '',
+        departure_date: '',
+        departure_time: '',
+        arrival_date: '',
+        arrival_time: '',
+        seat_number: '',
+        class: 'Economy',
+        cost: 0,
+        booking_reference: '',
+        status: 'Confirmed',
+        notes: '',
+        trip_id: selectedTripId || null,
+      });
+    }
+  }, [flight, selectedTripId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
