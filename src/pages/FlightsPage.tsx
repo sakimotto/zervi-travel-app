@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { useFlights } from '../hooks/useSupabase';
 import { useAuth } from '../hooks/useAuth';
-import {
-  Plane, Plus, Search, Edit, Trash2, Calendar, Clock, MapPin,
-  DollarSign, CreditCard, ArrowRight, Filter
-} from 'lucide-react';
+import { Plane, Plus, Search, CreditCard as Edit, Trash2, Calendar, Clock, MapPin, DollarSign, CreditCard, ArrowRight, Filter } from 'lucide-react';
 import Drawer from '../components/Drawer';
 import FlightForm from '../components/FlightForm';
 import { format } from 'date-fns';
