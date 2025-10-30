@@ -162,3 +162,6 @@ export const useTrips = () => useSupabaseTable('trips');
 
 // Unified Entities hook (replaces customers/suppliers/contacts)
 export const useEntities = () => useSupabaseTable('entities');
+
+// Item Types for dynamic itinerary types
+export const useItemTypes = () => useSupabaseTable('item_types');
