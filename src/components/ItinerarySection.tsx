@@ -134,12 +134,7 @@ const ItinerarySection: React.FC = () => {
       setEditingItem(null);
     } else {
       try {
-        // Add the currently selected trip if filtering by a specific trip
-        const itemWithTrip = {
-          ...newItem,
-          trip_id: filterTrip !== 'All' ? filterTrip : null
-        };
-        await insert(itemWithTrip);
+        await insert(newItem);
       } catch (error) {
         logger.error('Error creating itinerary item:', error);
         alert('Failed to create itinerary item. Please try again.');
@@ -310,6 +305,12 @@ const ItinerarySection: React.FC = () => {
     if (filterTrip === 'All') return 'All Trips';
     const trip = trips.find((t: any) => t.id === filterTrip);
     return trip ? trip.trip_name : 'All Trips';
+  };
+
+  const getTripName = (tripId: string | null | undefined) => {
+    if (!tripId) return null;
+    const trip = trips.find((t: any) => t.id === tripId);
+    return trip ? trip.trip_name : null;
   };
 
   const filteredItinerary = displayItinerary.filter(item => {
@@ -609,7 +610,17 @@ const ItinerarySection: React.FC = () => {
                       <span className={`px-3 py-1 rounded-full text-xs ${getAssigneeColor(item.assigned_to)}`}>
                         {item.assigned_to}
                       </span>
-                      
+
+                      {getTripName(item.trip_id) ? (
+                        <span className="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-800 border border-blue-300">
+                          ✈️ {getTripName(item.trip_id)}
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1 rounded-full text-xs bg-gray-100 text-gray-600 border border-gray-300">
+                          📋 No Trip
+                        </span>
+                      )}
+
                       <button 
                         onClick={() => toggleConfirmation(item.id)}
                         className="p-1 rounded-full hover:bg-gray-200"
@@ -932,13 +943,14 @@ const ItinerarySection: React.FC = () => {
       </div>
       
       {showAddModal && (
-        <AddItineraryItem 
+        <AddItineraryItem
           onClose={() => {
             setShowAddModal(false);
             setEditingItem(null);
           }}
           onSave={handleAddItem}
           editItem={editingItem}
+          selectedTripId={filterTrip !== 'All' ? filterTrip : null}
         />
       )}
 

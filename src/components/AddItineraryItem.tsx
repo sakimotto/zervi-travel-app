@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ItineraryItem, ItineraryItemType, Traveler } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import TravelerSelector from './TravelerSelector';
-import { 
+import { useTrips } from '../hooks/useSupabase';
+import {
   X, Plane, Hotel, Car, Briefcase, Building, Calendar, Clock,
   LandPlot, Map, Clock3, Train, Bus
 } from 'lucide-react';
@@ -11,9 +12,11 @@ interface AddItineraryItemProps {
   onClose: () => void;
   onSave: (item: ItineraryItem) => void;
   editItem: ItineraryItem | null;
+  selectedTripId?: string | null;
 }
 
-const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, editItem }) => {
+const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, editItem, selectedTripId }) => {
+  const { data: trips } = useTrips();
   const [formData, setFormData] = useState<ItineraryItem>({
     id: '',
     type: 'Flight',
@@ -23,6 +26,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
     location: '',
     assigned_to: 'Both',
     confirmed: false,
+    trip_id: selectedTripId || null,
   });
 
   useEffect(() => {
@@ -80,11 +84,13 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
       location: formData.location,
       assigned_to: formData.assigned_to,
       confirmed: formData.confirmed,
-      notes: formData.notes || null
+      notes: formData.notes || null,
+      trip_id: formData.trip_id || null
     };
 
     // Add time fields - use null for empty values
     itemData.start_time = formData.start_time || null;
+    itemData.end_time = formData.end_time || null;
 
     // Collect type-specific data
     const typeSpecificData: any = {};
@@ -158,7 +164,7 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Type of Item
@@ -191,6 +197,28 @@ const AddItineraryItem: React.FC<AddItineraryItemProps> = ({ onClose, onSave, ed
                 onChange={(value) => setFormData(prev => ({ ...prev, assigned_to: value }))}
                 required
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Assign to Trip
+              </label>
+              <select
+                name="trip_id"
+                value={formData.trip_id || ''}
+                onChange={(e) => setFormData(prev => ({ ...prev, trip_id: e.target.value || null }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              >
+                <option value="">No Trip (Unassigned)</option>
+                {trips.map((trip: any) => (
+                  <option key={trip.id} value={trip.id}>
+                    {trip.trip_name}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Link this item to a specific trip
+              </p>
             </div>
           </div>
 
