@@ -1,6 +1,7 @@
 import { ItineraryItem } from '../types';
 import { Destination } from '../types';
 import { TodoItem, Appointment, Supplier, BusinessContact, Expense } from '../types';
+import { logger } from './logger';
 
 // Local storage keys
 const ITINERARY_STORAGE_KEY = 'china-explorer-itinerary';
@@ -41,7 +42,7 @@ export const saveItineraryToLocalStorage = (items: ItineraryItem[]): void => {
   try {
     localStorage.setItem(ITINERARY_STORAGE_KEY, JSON.stringify(items));
   } catch (error) {
-    console.error('Error saving itinerary to local storage:', error);
+    logger.error('Error saving itinerary to local storage:', error);
   }
 };
 
@@ -56,7 +57,7 @@ export const getItineraryFromLocalStorage = (): ItineraryItem[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving itinerary from local storage:', error);
+    logger.error('Error retrieving itinerary from local storage:', error);
     return null;
   }
 };
@@ -68,7 +69,7 @@ export const clearItineraryFromLocalStorage = (): void => {
   try {
     localStorage.removeItem(ITINERARY_STORAGE_KEY);
   } catch (error) {
-    console.error('Error clearing itinerary from local storage:', error);
+    logger.error('Error clearing itinerary from local storage:', error);
   }
 };
 
@@ -79,7 +80,7 @@ export const saveDestinationsToLocalStorage = (destinations: Destination[]): voi
   try {
     localStorage.setItem(DESTINATIONS_STORAGE_KEY, JSON.stringify(destinations));
   } catch (error) {
-    console.error('Error saving destinations to local storage:', error);
+    logger.error('Error saving destinations to local storage:', error);
   }
 };
 
@@ -94,7 +95,7 @@ export const getDestinationsFromLocalStorage = (): Destination[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving destinations from local storage:', error);
+    logger.error('Error retrieving destinations from local storage:', error);
     return null;
   }
 };
@@ -106,7 +107,7 @@ export const clearDestinationsFromLocalStorage = (): void => {
   try {
     localStorage.removeItem(DESTINATIONS_STORAGE_KEY);
   } catch (error) {
-    console.error('Error clearing destinations from local storage:', error);
+    logger.error('Error clearing destinations from local storage:', error);
   }
 };
 
@@ -122,7 +123,7 @@ export const saveAsDefaultSampleData = (destinations: Destination[], itinerary: 
     
     alert('Your data has been saved as the default sample data. To see these changes on other devices, please refresh those browser windows.');
   } catch (error) {
-    console.error('Error saving as default sample data:', error);
+    logger.error('Error saving as default sample data:', error);
     alert('There was an error saving your data as default. Please try again.');
   }
 };
@@ -152,7 +153,7 @@ export const getCustomSampleDestinations = (): Destination[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving custom sample destinations:', error);
+    logger.error('Error retrieving custom sample destinations:', error);
     return null;
   }
 };
@@ -168,7 +169,7 @@ export const getCustomSampleItinerary = (): ItineraryItem[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving custom sample itinerary:', error);
+    logger.error('Error retrieving custom sample itinerary:', error);
     return null;
   }
 };
@@ -182,7 +183,7 @@ export const clearCustomSampleData = (): void => {
     localStorage.removeItem(CUSTOM_SAMPLE_ITINERARY_KEY);
     localStorage.removeItem(CUSTOM_SAMPLE_EXISTS_KEY);
   } catch (error) {
-    console.error('Error clearing custom sample data:', error);
+    logger.error('Error clearing custom sample data:', error);
   }
 };
 
@@ -193,7 +194,7 @@ export const saveTodosToLocalStorage = (todos: TodoItem[]): void => {
   try {
     localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos));
   } catch (error) {
-    console.error('Error saving todos to local storage:', error);
+    logger.error('Error saving todos to local storage:', error);
   }
 };
 
@@ -205,7 +206,7 @@ export const getTodosFromLocalStorage = (): TodoItem[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving todos from local storage:', error);
+    logger.error('Error retrieving todos from local storage:', error);
     return null;
   }
 };
@@ -217,7 +218,7 @@ export const saveAppointmentsToLocalStorage = (appointments: Appointment[]): voi
   try {
     localStorage.setItem(APPOINTMENTS_STORAGE_KEY, JSON.stringify(appointments));
   } catch (error) {
-    console.error('Error saving appointments to local storage:', error);
+    logger.error('Error saving appointments to local storage:', error);
   }
 };
 
@@ -229,7 +230,7 @@ export const getAppointmentsFromLocalStorage = (): Appointment[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving appointments from local storage:', error);
+    logger.error('Error retrieving appointments from local storage:', error);
     return null;
   }
 };
@@ -241,7 +242,7 @@ export const saveSuppliersToLocalStorage = (suppliers: Supplier[]): void => {
   try {
     localStorage.setItem(SUPPLIERS_STORAGE_KEY, JSON.stringify(suppliers));
   } catch (error) {
-    console.error('Error saving suppliers to local storage:', error);
+    logger.error('Error saving suppliers to local storage:', error);
   }
 };
 
@@ -253,7 +254,7 @@ export const getSuppliersFromLocalStorage = (): Supplier[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving suppliers from local storage:', error);
+    logger.error('Error retrieving suppliers from local storage:', error);
     return null;
   }
 };
@@ -265,7 +266,7 @@ export const saveContactsToLocalStorage = (contacts: BusinessContact[]): void =>
   try {
     localStorage.setItem(CONTACTS_STORAGE_KEY, JSON.stringify(contacts));
   } catch (error) {
-    console.error('Error saving contacts to local storage:', error);
+    logger.error('Error saving contacts to local storage:', error);
   }
 };
 
@@ -277,7 +278,7 @@ export const getContactsFromLocalStorage = (): BusinessContact[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving contacts from local storage:', error);
+    logger.error('Error retrieving contacts from local storage:', error);
     return null;
   }
 };
@@ -289,7 +290,7 @@ export const saveExpensesToLocalStorage = (expenses: Expense[]): void => {
   try {
     localStorage.setItem(EXPENSES_STORAGE_KEY, JSON.stringify(expenses));
   } catch (error) {
-    console.error('Error saving expenses to local storage:', error);
+    logger.error('Error saving expenses to local storage:', error);
   }
 };
 
@@ -301,7 +302,7 @@ export const getExpensesFromLocalStorage = (): Expense[] | null => {
     }
     return null;
   } catch (error) {
-    console.error('Error retrieving expenses from local storage:', error);
+    logger.error('Error retrieving expenses from local storage:', error);
     return null;
   }
 };

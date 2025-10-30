@@ -1,11 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
+import { logger } from '../utils/logger';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Log environment variables for debugging (remove in production)
-console.log('Supabase URL:', supabaseUrl);
-console.log('Supabase Anon Key:', supabaseAnonKey ? 'Present' : 'Missing');
+logger.debug('Supabase URL:', supabaseUrl);
+logger.debug('Supabase Anon Key:', supabaseAnonKey ? 'Present' : 'Missing');
 
 // Create client even if env vars are missing (for development)
 const defaultUrl = 'https://placeholder.supabase.co';
@@ -223,7 +223,7 @@ export type Database = {
           assigned_to: string;
           confirmed: boolean;
           notes: string;
-          type_specific_data: any;
+          type_specific_data: Record<string, unknown> | null;
           created_at: string;
           updated_at: string;
         };

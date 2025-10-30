@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Database } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 type Tables = Database['public']['Tables'];
 
@@ -23,7 +24,7 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
       setData(result || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-      console.error(`Error fetching ${tableName}:`, err);
+      logger.error(`Error fetching ${tableName}:`, err);
     } finally {
       setLoading(false);
     }
@@ -59,7 +60,7 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
       return result;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-      console.error(`Error inserting into ${tableName}:`, err);
+      logger.error(`Error inserting into ${tableName}:`, err);
       throw err;
     }
   };
@@ -67,10 +68,10 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
   // Update record
   const update = async (id: string, updates: Tables[T]['Update']) => {
     try {
-      console.log(`Updating ${tableName} with ID ${id}:`, updates);
-      
+      logger.debug(`Updating ${tableName} with ID ${id}:`, updates);
+
       // Clean up the updates - convert undefined to null, remove empty strings
-      const cleanUpdates: any = {};
+      const cleanUpdates: Record<string, unknown> = {};
       Object.keys(updates).forEach(key => {
         const value = updates[key];
         if (value === undefined || value === '') {
@@ -86,7 +87,7 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
         delete cleanUpdates.end_time;
       }
 
-      console.log(`Cleaned updates for ${tableName}:`, cleanUpdates);
+      logger.debug(`Cleaned updates for ${tableName}:`, cleanUpdates);
 
       const { data: result, error } = await supabase
         .from(tableName)
@@ -96,16 +97,16 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
         .single();
 
       if (error) {
-        console.error(`Supabase update error for ${tableName}:`, error);
+        logger.error(`Supabase update error for ${tableName}:`, error);
         throw error;
       }
       
-      console.log(`Successfully updated ${tableName}:`, result);
+      logger.debug(`Successfully updated ${tableName}:`, result);
       setData(prev => prev.map(item => item.id === id ? result : item));
       return result;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred';
-      console.error(`Error updating ${tableName}:`, err);
+      logger.error(`Error updating ${tableName}:`, err);
       setError(errorMessage);
       throw err;
     }
@@ -123,7 +124,7 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
       setData(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-      console.error(`Error deleting from ${tableName}:`, err);
+      logger.error(`Error deleting from ${tableName}:`, err);
       throw err;
     }
   };
