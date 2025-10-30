@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Plane, Calendar, Clock, MapPin, DollarSign, CreditCard, User } from 'lucide-react';
+import { useTrips } from '../hooks/useSupabase';
 
 interface Flight {
   id?: string;
   user_id?: string;
+  trip_id?: string | null;
   traveler_name: string;
   airline: string;
   flight_number: string;
@@ -28,9 +30,11 @@ interface FlightFormProps {
   flight?: Flight | null;
   onSubmit: (data: Partial<Flight>) => void | Promise<void>;
   onCancel: () => void;
+  selectedTripId?: string | null;
 }
 
-const FlightForm: React.FC<FlightFormProps> = ({ flight, onSubmit, onCancel }) => {
+const FlightForm: React.FC<FlightFormProps> = ({ flight, onSubmit, onCancel, selectedTripId }) => {
+  const { data: trips } = useTrips();
   const [formData, setFormData] = useState<Partial<Flight>>({
     traveler_name: flight?.traveler_name || '',
     airline: flight?.airline || '',
@@ -50,6 +54,7 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight, onSubmit, onCancel }) =
     booking_reference: flight?.booking_reference || '',
     status: flight?.status || 'Confirmed',
     notes: flight?.notes || '',
+    trip_id: flight?.trip_id || selectedTripId || null,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,7 +69,7 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight, onSubmit, onCancel }) =
           <User size={20} />
           Traveler Information
         </h3>
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Traveler Name *
@@ -77,6 +82,25 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight, onSubmit, onCancel }) =
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               placeholder="John Doe"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Assign to Trip
+            </label>
+            <select
+              value={formData.trip_id || ''}
+              onChange={(e) => setFormData({ ...formData, trip_id: e.target.value || null })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+            >
+              <option value="">No Trip (Unassigned)</option>
+              {trips.map((trip: any) => (
+                <option key={trip.id} value={trip.id}>
+                  {trip.trip_name}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-gray-500 mt-1">Link this flight to a specific trip</p>
           </div>
         </div>
       </div>
