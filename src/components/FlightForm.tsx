@@ -138,7 +138,10 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight, onSubmit, onCancel, sel
             </label>
             <select
               value={formData.trip_id || ''}
-              onChange={(e) => setFormData({ ...formData, trip_id: e.target.value || null })}
+              onChange={(e) => {
+                const value = e.target.value === '' ? null : e.target.value;
+                setFormData({ ...formData, trip_id: value });
+              }}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
             >
               <option value="">No Trip (Unassigned)</option>
