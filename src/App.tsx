@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import TravelChatbot from './components/TravelChatbot';
 import AuthGuard from './components/AuthGuard';
+import ErrorBoundary from './components/ErrorBoundary';
 import { useState, useEffect } from 'react';
 import {
   useItineraryItems,
@@ -58,13 +59,14 @@ function App() {
   const { data: appointments } = useAppointments();
 
   return (
-    <Router>
-      <AuthGuard>
-        <div className="min-h-screen bg-background">
-          <Sidebar />
-          <div className="lg:ml-64">
-            <React.Suspense fallback={<LoadingSpinner />}>
-              <Routes>
+    <ErrorBoundary>
+      <Router>
+        <AuthGuard>
+          <div className="min-h-screen bg-background">
+            <Sidebar />
+            <div className="lg:ml-64">
+              <React.Suspense fallback={<LoadingSpinner />}>
+                <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/trips" element={<TripsPage />} />
@@ -103,6 +105,7 @@ function App() {
         </div>
       </AuthGuard>
     </Router>
+    </ErrorBoundary>
   );
 }
 
