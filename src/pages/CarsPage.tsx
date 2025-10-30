@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
-import { useCars } from '../hooks/useSupabase';
+import { useCars, useTrips } from '../hooks/useSupabase';
 import { useAuth } from '../hooks/useAuth';
 import { Car, Plus, Search, Edit, Trash2, Calendar, MapPin, DollarSign, Filter } from 'lucide-react';
 import Drawer from '../components/Drawer';
 import { format } from 'date-fns';
+import { logger } from '../utils/logger';
 
 const CarsPage: React.FC = () => {
   const { user } = useAuth();
   const { data: cars, loading, insert, update, remove } = useCars();
+  const { data: trips } = useTrips();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingCar, setEditingCar] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [tripFilter, setTripFilter] = useState<string>('All');
+
+  const getTripName = (tripId: string | null | undefined) => {
+    if (!tripId) return null;
+    const trip = trips.find((t: any) => t.id === tripId);
+    return trip ? trip.trip_name : null;
+  };
   const [formData, setFormData] = useState({
     rental_company: '', confirmation_number: '', vehicle_type: '', vehicle_make_model: '',
     pickup_location: '', pickup_date: '', pickup_time: '', dropoff_location: '', dropoff_date: '',
@@ -21,7 +30,8 @@ const CarsPage: React.FC = () => {
 
   const filteredCars = cars.filter((c: any) => {
     const matchesSearch = c.rental_company.toLowerCase().includes(searchTerm.toLowerCase()) || c.vehicle_type?.toLowerCase().includes(searchTerm.toLowerCase()) || c.driver_name?.toLowerCase().includes(searchTerm.toLowerCase());
-    return (statusFilter === 'All' || c.status === statusFilter) && matchesSearch;
+    const matchesTrip = tripFilter === 'All' || c.trip_id === tripFilter;
+    return (statusFilter === 'All' || c.status === statusFilter) && matchesSearch && matchesTrip;
   }).sort((a, b) => new Date(a.pickup_date).getTime() - new Date(b.pickup_date).getTime());
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,7 +43,7 @@ const CarsPage: React.FC = () => {
     } catch (error) { logger.error('Error saving car:', error); }
   };
 
-  const openAddDrawer = () => { setEditingCar(null); setFormData({ rental_company: '', confirmation_number: '', vehicle_type: '', vehicle_make_model: '', pickup_location: '', pickup_date: '', pickup_time: '', dropoff_location: '', dropoff_date: '', dropoff_time: '', driver_name: '', cost_per_day: 0, total_cost: 0, insurance_included: false, gps_included: false, status: 'Confirmed', notes: '' }); setIsDrawerOpen(true); };
+  const openAddDrawer = () => { setEditingCar(null); setFormData({ rental_company: '', confirmation_number: '', vehicle_type: '', vehicle_make_model: '', pickup_location: '', pickup_date: '', pickup_time: '', dropoff_location: '', dropoff_date: '', dropoff_time: '', driver_name: '', cost_per_day: 0, total_cost: 0, insurance_included: false, gps_included: false, status: 'Confirmed', notes: '', trip_id: tripFilter !== 'All' ? tripFilter : null }); setIsDrawerOpen(true); };
   const openEditDrawer = (car: any) => { setEditingCar(car); setFormData({ rental_company: car.rental_company, confirmation_number: car.confirmation_number || '', vehicle_type: car.vehicle_type || '', vehicle_make_model: car.vehicle_make_model || '', pickup_location: car.pickup_location, pickup_date: car.pickup_date, pickup_time: car.pickup_time || '', dropoff_location: car.dropoff_location, dropoff_date: car.dropoff_date, dropoff_time: car.dropoff_time || '', driver_name: car.driver_name || '', cost_per_day: car.cost_per_day || 0, total_cost: car.total_cost || 0, insurance_included: car.insurance_included || false, gps_included: car.gps_included || false, status: car.status || 'Confirmed', notes: car.notes || '' }); setIsDrawerOpen(true); };
   const closeDrawer = () => { setIsDrawerOpen(false); setEditingCar(null); };
   const handleDeleteCar = async (id: string) => { if (window.confirm('Delete this car rental?')) { try { await remove(id); } catch (error) { logger.error('Error deleting car:', error); } } };

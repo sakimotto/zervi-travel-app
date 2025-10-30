@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
-import { useMeetings, useCustomers } from '../hooks/useSupabase';
+import { useMeetings, useCustomers, useTrips } from '../hooks/useSupabase';
 import { useAuth } from '../hooks/useAuth';
 import { Users, Plus, Search, Edit, Trash2, Calendar, Clock, MapPin, Filter, AlertCircle, CheckCircle2, User } from 'lucide-react';
 import Drawer from '../components/Drawer';
 import { format } from 'date-fns';
+import { logger } from '../utils/logger';
 
 const MeetingsPage: React.FC = () => {
   const { user } = useAuth();
   const { data: meetings, loading, insert, update, remove } = useMeetings();
   const { data: customers } = useCustomers();
+  const { data: trips } = useTrips();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingMeeting, setEditingMeeting] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [tripFilter, setTripFilter] = useState<string>('All');
+
+  const getTripName = (tripId: string | null | undefined) => {
+    if (!tripId) return null;
+    const trip = trips.find((t: any) => t.id === tripId);
+    return trip ? trip.trip_name : null;
+  };
   const [formData, setFormData] = useState({
     customer_id: '', title: '', meeting_type: 'Business Meeting', meeting_date: '', meeting_time: '',
     duration_minutes: 60, location: '', attendees: '', agenda: '', meeting_notes: '',
@@ -21,7 +30,8 @@ const MeetingsPage: React.FC = () => {
 
   const filteredMeetings = meetings.filter((m: any) => {
     const matchesSearch = m.title.toLowerCase().includes(searchTerm.toLowerCase()) || m.location?.toLowerCase().includes(searchTerm.toLowerCase()) || m.attendees?.toLowerCase().includes(searchTerm.toLowerCase());
-    return (statusFilter === 'All' || m.status === statusFilter) && matchesSearch;
+    const matchesTrip = tripFilter === 'All' || m.trip_id === tripFilter;
+    return (statusFilter === 'All' || m.status === statusFilter) && matchesSearch && matchesTrip;
   }).sort((a, b) => new Date(b.meeting_date).getTime() - new Date(a.meeting_date).getTime());
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,7 +45,7 @@ const MeetingsPage: React.FC = () => {
     } catch (error) { logger.error('Error saving meeting:', error); }
   };
 
-  const openAddDrawer = () => { setEditingMeeting(null); setFormData({ customer_id: '', title: '', meeting_type: 'Business Meeting', meeting_date: '', meeting_time: '', duration_minutes: 60, location: '', attendees: '', agenda: '', meeting_notes: '', action_items: '', follow_up_required: false, follow_up_date: '', status: 'Scheduled', priority: 'Medium' }); setIsDrawerOpen(true); };
+  const openAddDrawer = () => { setEditingMeeting(null); setFormData({ customer_id: '', title: '', meeting_type: 'Business Meeting', meeting_date: '', meeting_time: '', duration_minutes: 60, location: '', attendees: '', agenda: '', meeting_notes: '', action_items: '', follow_up_required: false, follow_up_date: '', status: 'Scheduled', priority: 'Medium', trip_id: tripFilter !== 'All' ? tripFilter : null }); setIsDrawerOpen(true); };
   const openEditDrawer = (meeting: any) => { setEditingMeeting(meeting); setFormData({ customer_id: meeting.customer_id || '', title: meeting.title, meeting_type: meeting.meeting_type || 'Business Meeting', meeting_date: meeting.meeting_date, meeting_time: meeting.meeting_time, duration_minutes: meeting.duration_minutes || 60, location: meeting.location || '', attendees: meeting.attendees || '', agenda: meeting.agenda || '', meeting_notes: meeting.meeting_notes || '', action_items: meeting.action_items || '', follow_up_required: meeting.follow_up_required || false, follow_up_date: meeting.follow_up_date || '', status: meeting.status || 'Scheduled', priority: meeting.priority || 'Medium' }); setIsDrawerOpen(true); };
   const closeDrawer = () => { setIsDrawerOpen(false); setEditingMeeting(null); };
   const handleDelete = async (id: string) => { if (window.confirm('Delete this meeting?')) { try { await remove(id); } catch (error) { logger.error('Error deleting meeting:', error); } } };

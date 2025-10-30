@@ -1,28 +1,38 @@
 import React, { useState } from 'react';
-import { useHotels } from '../hooks/useSupabase';
+import { useHotels, useTrips } from '../hooks/useSupabase';
 import { useAuth } from '../hooks/useAuth';
 import { Hotel, Plus, Search, Edit, Trash2, Calendar, Clock, MapPin, DollarSign, CreditCard, User, Filter, Wifi, Coffee } from 'lucide-react';
 import Drawer from '../components/Drawer';
 import { format } from 'date-fns';
+import { logger } from '../utils/logger';
 
 const HotelsPage: React.FC = () => {
   const { user } = useAuth();
   const { data: hotels, loading, insert, update, remove } = useHotels();
+  const { data: trips } = useTrips();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingHotel, setEditingHotel] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [tripFilter, setTripFilter] = useState<string>('All');
+
+  const getTripName = (tripId: string | null | undefined) => {
+    if (!tripId) return null;
+    const trip = trips.find((t: any) => t.id === tripId);
+    return trip ? trip.trip_name : null;
+  };
   const [formData, setFormData] = useState({
     hotel_name: '', confirmation_number: '', address: '', city: '', country: '', phone: '', email: '',
     check_in_date: '', check_in_time: '', check_out_date: '', check_out_time: '', room_type: '', room_number: '',
     guest_name: '', number_of_guests: 1, cost_per_night: 0, total_nights: 0, total_cost: 0,
-    breakfast_included: false, wifi_included: true, status: 'Confirmed', notes: ''
+    breakfast_included: false, wifi_included: true, status: 'Confirmed', notes: '', trip_id: tripFilter !== 'All' ? tripFilter : null
   });
 
   const filteredHotels = hotels.filter((h: any) => {
     const matchesSearch = h.hotel_name.toLowerCase().includes(searchTerm.toLowerCase()) || h.city?.toLowerCase().includes(searchTerm.toLowerCase()) || h.guest_name?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'All' || h.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesTrip = tripFilter === 'All' || h.trip_id === tripFilter;
+    return matchesSearch && matchesStatus && matchesTrip;
   }).sort((a, b) => new Date(a.check_in_date).getTime() - new Date(b.check_in_date).getTime());
 
   const handleSubmit = async (e: React.FormEvent) => {
