@@ -138,7 +138,12 @@ const ItinerarySection: React.FC = () => {
       setEditingItem(null);
     } else {
       try {
-        await insert(newItem);
+        // Add the currently selected trip if filtering by a specific trip
+        const itemWithTrip = {
+          ...newItem,
+          trip_id: filterTrip !== 'All' ? filterTrip : null
+        };
+        await insert(itemWithTrip);
       } catch (error) {
         logger.error('Error creating itinerary item:', error);
         alert('Failed to create itinerary item. Please try again.');

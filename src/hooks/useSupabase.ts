@@ -35,19 +35,19 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
     try {
       // Clean up the record to match database schema
       const cleanRecord = { ...record };
-      
-      // Remove any undefined or null values that might cause issues
+
+      // Get current user and add user_id if not present
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && !cleanRecord.user_id) {
+        cleanRecord.user_id = user.id;
+      }
+
+      // Remove any undefined values that might cause issues, but keep null and empty strings
       Object.keys(cleanRecord).forEach(key => {
-        if (cleanRecord[key] === undefined || cleanRecord[key] === null || cleanRecord[key] === '') {
+        if (cleanRecord[key] === undefined) {
           delete cleanRecord[key];
         }
       });
-
-      // For itinerary_items, filter out time fields that don't exist in database yet
-      if (tableName === 'itinerary_items') {
-        delete cleanRecord.start_time;
-        delete cleanRecord.end_time;
-      }
 
       const { data: result, error } = await supabase
         .from(tableName)
@@ -81,12 +81,6 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
         }
       });
 
-      // For itinerary_items, filter out time fields that don't exist in database yet
-      if (tableName === 'itinerary_items') {
-        delete cleanUpdates.start_time;
-        delete cleanUpdates.end_time;
-      }
-
       logger.debug(`Cleaned updates for ${tableName}:`, cleanUpdates);
 
       const { data: result, error } = await supabase
@@ -100,7 +94,7 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
         logger.error(`Supabase update error for ${tableName}:`, error);
         throw error;
       }
-      
+
       logger.debug(`Successfully updated ${tableName}:`, result);
       setData(prev => prev.map(item => item.id === id ? result : item));
       return result;
