@@ -16,12 +16,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabaseAdmin = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-      { auth: { autoRefreshToken: false, persistSession: false } }
-    );
-
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
       return new Response(
@@ -31,28 +25,16 @@ Deno.serve(async (req) => {
     }
 
     const token = authHeader.replace("Bearer ", "");
-    const { data: { user: requestingUser }, error: userError } = await supabaseAdmin.auth.getUser(token);
-
-    if (userError || !requestingUser) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized: " + (userError?.message || "Invalid token") }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401 }
-      );
-    }
-
-    const { data: profile, error: profileError } = await supabaseAdmin
-      .from("user_profiles")
-      .select("role")
-      .eq("id", requestingUser.id)
-      .maybeSingle();
-
-    if (profileError || profile?.role !== "admin") {
-      console.error("Profile check failed:", profileError, profile);
-      return new Response(
-        JSON.stringify({ error: "Forbidden - Admin access required" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 403 }
-      );
-    }
+    
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+      {
+        global: {
+          headers: { Authorization: authHeader },
+        },
+      }
+    );
 
     const body = await req.json();
     const { userId, newPassword } = body;
@@ -71,36 +53,26 @@ Deno.serve(async (req) => {
       );
     }
 
-    console.log("Attempting to reset password for user:", userId);
+    console.log("Calling admin_reset_user_password function for user:", userId);
 
-    // First, verify the user exists
-    const { data: targetUserData, error: getUserError } = await supabaseAdmin.auth.admin.getUserById(userId);
-    
-    if (getUserError) {
-      console.error("Failed to get user:", getUserError);
+    // Call the database function to reset password
+    const { data, error } = await supabase.rpc('admin_reset_user_password', {
+      target_user_id: userId,
+      new_password: newPassword
+    });
+
+    if (error) {
+      console.error("RPC error:", error);
       return new Response(
-        JSON.stringify({ error: `Database error loading user: ${getUserError.message}` }),
+        JSON.stringify({ error: error.message }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
       );
     }
 
-    if (!targetUserData || !targetUserData.user) {
+    if (data && !data.success) {
+      console.error("Function returned error:", data.error);
       return new Response(
-        JSON.stringify({ error: "User not found" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 404 }
-      );
-    }
-
-    // Now update the password
-    const { data: updatedUser, error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
-      userId,
-      { password: newPassword }
-    );
-
-    if (updateError) {
-      console.error("Password reset error:", updateError);
-      return new Response(
-        JSON.stringify({ error: `Failed to reset password: ${updateError.message}` }),
+        JSON.stringify({ error: data.error }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
       );
     }
