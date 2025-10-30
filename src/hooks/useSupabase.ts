@@ -81,6 +81,7 @@ export function useSupabaseTable<T extends keyof Tables>(tableName: T) {
         }
       });
 
+      console.log(`useSupabase: Cleaned updates for ${tableName}:`, cleanUpdates);
       logger.debug(`Cleaned updates for ${tableName}:`, cleanUpdates);
 
       const { data: result, error } = await supabase

@@ -77,10 +77,13 @@ const FlightsPage: React.FC = () => {
 
   const handleUpdateFlight = async (id: string, flightData: Partial<Flight>) => {
     try {
+      console.log('FlightsPage: Updating flight', id, 'with data:', flightData);
       await update(id, flightData as any);
+      console.log('FlightsPage: Flight updated successfully');
       setEditingFlight(null);
       setIsDrawerOpen(false);
     } catch (error) {
+      console.error('FlightsPage: Error updating flight:', error);
       logger.error('Error updating flight:', error);
     }
   };

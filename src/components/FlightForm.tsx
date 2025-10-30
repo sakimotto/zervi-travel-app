@@ -107,6 +107,7 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight, onSubmit, onCancel, sel
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('FlightForm: Submitting form data:', formData);
     await onSubmit(formData);
   };
 
