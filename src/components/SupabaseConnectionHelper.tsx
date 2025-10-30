@@ -15,7 +15,7 @@ const SupabaseConnectionHelper: React.FC = () => {
         setIsConnected(true);
       }
     } catch (err) {
-      console.log('Connection test:', err);
+      logger.debug('Connection test:', err);
     }
     setIsChecking(false);
   };

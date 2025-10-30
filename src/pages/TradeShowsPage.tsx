@@ -26,13 +26,13 @@ const TradeShowsPage: React.FC = () => {
     try {
       if (editingShow) { await update(editingShow.id, formData as any); } else { await insert({ ...formData, user_id: user.id } as any); }
       closeDrawer();
-    } catch (error) { console.error('Error saving trade show:', error); }
+    } catch (error) { logger.error('Error saving trade show:', error); }
   };
 
   const openAddDrawer = () => { setEditingShow(null); setFormData({ name: '', location: '', venue: '', start_date: '', end_date: '', booth_number: '', booth_size: '', booth_cost: 0, our_booth_details: '', show_website: '', notes: '' }); setIsDrawerOpen(true); };
   const openEditDrawer = (show: any) => { setEditingShow(show); setFormData({ name: show.name, location: show.location || '', venue: show.venue || '', start_date: show.start_date, end_date: show.end_date, booth_number: show.booth_number || '', booth_size: show.booth_size || '', booth_cost: show.booth_cost || 0, our_booth_details: show.our_booth_details || '', show_website: show.show_website || '', notes: show.notes || '' }); setIsDrawerOpen(true); };
   const closeDrawer = () => { setIsDrawerOpen(false); setEditingShow(null); };
-  const handleDelete = async (id: string) => { if (window.confirm('Delete this trade show?')) { try { await remove(id); } catch (error) { console.error('Error deleting trade show:', error); } } };
+  const handleDelete = async (id: string) => { if (window.confirm('Delete this trade show?')) { try { await remove(id); } catch (error) { logger.error('Error deleting trade show:', error); } } };
 
   const stats = { total: tradeShows.length, upcoming: tradeShows.filter((s: any) => new Date(s.start_date) > new Date()).length, totalCost: tradeShows.reduce((sum: number, s: any) => sum + (s.booth_cost || 0), 0) };
 

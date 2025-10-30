@@ -4,6 +4,7 @@ import { format, parseISO, isToday, isPast } from 'date-fns';
 import { Plus, Check, Clock, AlertTriangle, Edit, Trash2 } from 'lucide-react';
 import AddTodoModal from './AddTodoModal';
 import { useTodos } from '../hooks/useSupabase';
+import { logger } from '../utils/logger';
 
 interface TodoListProps {
   todos: TodoItem[];
@@ -34,7 +35,7 @@ const TodoList: React.FC<TodoListProps> = ({
         const updatedTodo = { ...todo, completed: !todo.completed };
         await update(id, updatedTodo);
       } catch (error) {
-        console.error('Error updating todo:', error);
+        logger.error('Error updating todo:', error);
         alert('Failed to update task. Please try again.');
       }
     }
@@ -45,7 +46,7 @@ const TodoList: React.FC<TodoListProps> = ({
       try {
         await remove(id);
       } catch (error) {
-        console.error('Error deleting todo:', error);
+        logger.error('Error deleting todo:', error);
         alert('Failed to delete task. Please try again.');
       }
     }
@@ -56,7 +57,7 @@ const TodoList: React.FC<TodoListProps> = ({
       try {
         await update(todo.id, todo);
       } catch (error) {
-        console.error('Error updating todo:', error);
+        logger.error('Error updating todo:', error);
         alert('Failed to update task. Please try again.');
       }
       setEditingTodo(null);
@@ -64,7 +65,7 @@ const TodoList: React.FC<TodoListProps> = ({
       try {
         await insert(todo);
       } catch (error) {
-        console.error('Error creating todo:', error);
+        logger.error('Error creating todo:', error);
         alert('Failed to create task. Please try again.');
       }
     }

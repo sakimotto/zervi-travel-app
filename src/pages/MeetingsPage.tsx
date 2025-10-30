@@ -32,13 +32,13 @@ const MeetingsPage: React.FC = () => {
       if (!submitData.customer_id) delete submitData.customer_id;
       if (editingMeeting) { await update(editingMeeting.id, submitData as any); } else { await insert({ ...submitData, user_id: user.id } as any); }
       closeDrawer();
-    } catch (error) { console.error('Error saving meeting:', error); }
+    } catch (error) { logger.error('Error saving meeting:', error); }
   };
 
   const openAddDrawer = () => { setEditingMeeting(null); setFormData({ customer_id: '', title: '', meeting_type: 'Business Meeting', meeting_date: '', meeting_time: '', duration_minutes: 60, location: '', attendees: '', agenda: '', meeting_notes: '', action_items: '', follow_up_required: false, follow_up_date: '', status: 'Scheduled', priority: 'Medium' }); setIsDrawerOpen(true); };
   const openEditDrawer = (meeting: any) => { setEditingMeeting(meeting); setFormData({ customer_id: meeting.customer_id || '', title: meeting.title, meeting_type: meeting.meeting_type || 'Business Meeting', meeting_date: meeting.meeting_date, meeting_time: meeting.meeting_time, duration_minutes: meeting.duration_minutes || 60, location: meeting.location || '', attendees: meeting.attendees || '', agenda: meeting.agenda || '', meeting_notes: meeting.meeting_notes || '', action_items: meeting.action_items || '', follow_up_required: meeting.follow_up_required || false, follow_up_date: meeting.follow_up_date || '', status: meeting.status || 'Scheduled', priority: meeting.priority || 'Medium' }); setIsDrawerOpen(true); };
   const closeDrawer = () => { setIsDrawerOpen(false); setEditingMeeting(null); };
-  const handleDelete = async (id: string) => { if (window.confirm('Delete this meeting?')) { try { await remove(id); } catch (error) { console.error('Error deleting meeting:', error); } } };
+  const handleDelete = async (id: string) => { if (window.confirm('Delete this meeting?')) { try { await remove(id); } catch (error) { logger.error('Error deleting meeting:', error); } } };
   
   const getStatusColor = (status: string) => { switch (status) { case 'Scheduled': return 'bg-blue-100 text-blue-800'; case 'Completed': return 'bg-green-100 text-green-800'; case 'Cancelled': return 'bg-red-100 text-red-800'; case 'Rescheduled': return 'bg-yellow-100 text-yellow-800'; default: return 'bg-gray-100 text-gray-800'; } };
   const getPriorityColor = (priority: string) => { switch (priority) { case 'High': return 'bg-red-100 text-red-800'; case 'Medium': return 'bg-yellow-100 text-yellow-800'; case 'Low': return 'bg-green-100 text-green-800'; default: return 'bg-gray-100 text-gray-800'; } };

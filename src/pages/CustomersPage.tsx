@@ -47,7 +47,7 @@ const CustomersPage: React.FC = () => {
 
       setIsModalOpen(false);
     } catch (error) {
-      console.error('Error adding customer:', error);
+      logger.error('Error adding customer:', error);
     }
   };
 
@@ -63,7 +63,7 @@ const CustomersPage: React.FC = () => {
       setEditingCustomer(null);
       setIsModalOpen(false);
     } catch (error) {
-      console.error('Error updating customer:', error);
+      logger.error('Error updating customer:', error);
     }
   };
 
@@ -72,7 +72,7 @@ const CustomersPage: React.FC = () => {
       try {
         await remove(id);
       } catch (error) {
-        console.error('Error deleting customer:', error);
+        logger.error('Error deleting customer:', error);
       }
     }
   };

@@ -83,7 +83,7 @@ const TripsPage: React.FC = () => {
       }
       closeDrawer();
     } catch (error) {
-      console.error('Error saving trip:', error);
+      logger.error('Error saving trip:', error);
     }
   };
 
@@ -129,7 +129,7 @@ const TripsPage: React.FC = () => {
       try {
         await remove(id);
       } catch (error) {
-        console.error('Error deleting trip:', error);
+        logger.error('Error deleting trip:', error);
       }
     }
   };

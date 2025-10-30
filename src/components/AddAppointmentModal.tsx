@@ -146,7 +146,7 @@ const AddAppointmentModal: React.FC<AddAppointmentModalProps> = ({
       end_date: formData.end_date || formData.start_date,
     };
     
-    console.log('Submitting appointment data:', appointmentData);
+    logger.debug('Submitting appointment data:', appointmentData);
     onSave(appointmentData);
   };
 

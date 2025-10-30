@@ -70,7 +70,7 @@ const FlightsPage: React.FC = () => {
 
       setIsDrawerOpen(false);
     } catch (error) {
-      console.error('Error adding flight:', error);
+      logger.error('Error adding flight:', error);
     }
   };
 
@@ -80,7 +80,7 @@ const FlightsPage: React.FC = () => {
       setEditingFlight(null);
       setIsDrawerOpen(false);
     } catch (error) {
-      console.error('Error updating flight:', error);
+      logger.error('Error updating flight:', error);
     }
   };
 
@@ -89,7 +89,7 @@ const FlightsPage: React.FC = () => {
       try {
         await remove(id);
       } catch (error) {
-        console.error('Error deleting flight:', error);
+        logger.error('Error deleting flight:', error);
       }
     }
   };

@@ -5,6 +5,7 @@ import { Search, Plus, Download, Upload, Database, AlertCircle, X, Save } from '
 import AddDestinationModal from './AddDestinationModal';
 import { Destination } from '../types';
 import { useDestinations } from '../hooks/useSupabase';
+import { logger } from '../utils/logger';
 import { 
   saveDestinationsToLocalStorage, 
   getDestinationsFromLocalStorage,
@@ -57,7 +58,7 @@ const DestinationsSection: React.FC = () => {
           setDestinations(prev => prev.filter(dest => dest.id !== id));
         }
       } catch (error) {
-        console.error('Error deleting destination:', error);
+        logger.error('Error deleting destination:', error);
         alert('Failed to delete destination. Please try again.');
       }
     }
@@ -74,7 +75,7 @@ const DestinationsSection: React.FC = () => {
           );
         }
       } catch (error) {
-        console.error('Error updating destination:', error);
+        logger.error('Error updating destination:', error);
         alert('Failed to update destination. Please try again.');
       }
       setEditingDestination(null);
@@ -86,7 +87,7 @@ const DestinationsSection: React.FC = () => {
           setDestinations(prev => [...prev, destination]);
         }
       } catch (error) {
-        console.error('Error creating destination:', error);
+        logger.error('Error creating destination:', error);
         alert('Failed to create destination. Please try again.');
       }
     }
@@ -127,7 +128,7 @@ const DestinationsSection: React.FC = () => {
           setDestinations(parsedData);
         }
       } catch (error) {
-        console.error('Error importing destinations:', error);
+        logger.error('Error importing destinations:', error);
         setImportError('The selected file is not a valid destinations export. Please select a correctly formatted JSON file.');
       }
     };

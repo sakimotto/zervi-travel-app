@@ -13,6 +13,7 @@ import ItineraryExportButton from './ItineraryExportButton';
 import ItinerarySummary from './ItinerarySummary';
 import { useItineraryItems, useTrips } from '../hooks/useSupabase';
 import { useAuth } from '../hooks/useAuth';
+import { logger } from '../utils/logger';
 import { 
   saveItineraryToLocalStorage, 
   getItineraryFromLocalStorage, 
@@ -68,13 +69,13 @@ const ItinerarySection: React.FC = () => {
     const loadSampleDataIfEmpty = async () => {
       if (!loading && itinerary.length === 0) {
         try {
-          console.log('Loading sample itinerary data into Supabase...');
+          logger.debug('Loading sample itinerary data into Supabase...');
           for (const item of sampleItinerary) {
             await insert(item);
           }
           await refetch();
         } catch (error) {
-          console.error('Error loading sample data:', error);
+          logger.error('Error loading sample data:', error);
           // If Supabase fails, use local data
           setLocalItinerary(sampleItinerary);
         }
@@ -131,7 +132,7 @@ const ItinerarySection: React.FC = () => {
       try {
         await update(newItem.id, newItem);
       } catch (error) {
-        console.error('Error updating itinerary item:', error);
+        logger.error('Error updating itinerary item:', error);
         alert('Failed to update itinerary item. Please try again.');
       }
       setEditingItem(null);
@@ -139,7 +140,7 @@ const ItinerarySection: React.FC = () => {
       try {
         await insert(newItem);
       } catch (error) {
-        console.error('Error creating itinerary item:', error);
+        logger.error('Error creating itinerary item:', error);
         alert('Failed to create itinerary item. Please try again.');
       }
     }
@@ -156,7 +157,7 @@ const ItinerarySection: React.FC = () => {
       try {
         await remove(id);
       } catch (error) {
-        console.error('Error deleting itinerary item:', error);
+        logger.error('Error deleting itinerary item:', error);
         alert('Failed to delete itinerary item. Please try again.');
       }
     }
@@ -169,7 +170,7 @@ const ItinerarySection: React.FC = () => {
         const updatedItem = { ...item, confirmed: !item.confirmed };
         await update(id, updatedItem);
       } catch (error) {
-        console.error('Error updating confirmation status:', error);
+        logger.error('Error updating confirmation status:', error);
         alert('Failed to update confirmation status. Please try again.');
       }
     }
@@ -225,7 +226,7 @@ const ItinerarySection: React.FC = () => {
           await refetch();
         }
       } catch (error) {
-        console.error('Error importing itinerary:', error);
+        logger.error('Error importing itinerary:', error);
         setImportError('The selected file is not a valid itinerary export. Please select a correctly formatted JSON file.');
       }
     };
@@ -243,7 +244,7 @@ const ItinerarySection: React.FC = () => {
     ]).then(() => {
       refetch();
     }).catch(error => {
-      console.error('Error resetting to sample data:', error);
+      logger.error('Error resetting to sample data:', error);
       alert('Failed to reset data. Please try again.');
     });
     setShowConfirmReset(false);
@@ -299,7 +300,7 @@ const ItinerarySection: React.FC = () => {
 
       alert(`Trip "${quickTripName}" created successfully! You can now add items to this trip.`);
     } catch (error) {
-      console.error('Error creating trip:', error);
+      logger.error('Error creating trip:', error);
       alert('Failed to create trip. Please try again.');
     }
   };

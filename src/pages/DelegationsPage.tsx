@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, Plus, Trash2, Shield, Eye, Edit, UserCheck } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 interface UserProfile {
   id: string;
@@ -50,7 +51,7 @@ const DelegationsPage: React.FC = () => {
       if (error) throw error;
       setDelegations(data || []);
     } catch (error: any) {
-      console.error('Error loading delegations:', error.message);
+      logger.error('Error loading delegations:', error.message);
     } finally {
       setLoading(false);
     }
@@ -67,7 +68,7 @@ const DelegationsPage: React.FC = () => {
       if (error) throw error;
       setAllUsers(data || []);
     } catch (error: any) {
-      console.error('Error loading users:', error.message);
+      logger.error('Error loading users:', error.message);
     }
   };
 
@@ -94,7 +95,7 @@ const DelegationsPage: React.FC = () => {
       setNotes('');
       loadDelegations();
     } catch (error: any) {
-      console.error('Error adding delegation:', error.message);
+      logger.error('Error adding delegation:', error.message);
       alert('Failed to add delegation: ' + error.message);
     }
   };
@@ -111,7 +112,7 @@ const DelegationsPage: React.FC = () => {
       if (error) throw error;
       loadDelegations();
     } catch (error: any) {
-      console.error('Error removing delegation:', error.message);
+      logger.error('Error removing delegation:', error.message);
       alert('Failed to remove delegation: ' + error.message);
     }
   };

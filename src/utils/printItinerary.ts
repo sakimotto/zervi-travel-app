@@ -1,5 +1,6 @@
 import { ItineraryItem } from '../types';
 import { format, parseISO } from 'date-fns';
+import { logger } from './logger';
 
 /**
  * Generate a printer-friendly HTML representation of the itinerary
@@ -400,7 +401,7 @@ export const printItinerary = (itinerary: ItineraryItem[]): void => {
       printWindow.print();
     };
   } else {
-    console.error('Could not open print window. Please check if pop-ups are blocked.');
+    logger.error('Could not open print window. Please check if pop-ups are blocked.');
     alert('Could not open print window. Please check if pop-ups are blocked.');
   }
 };

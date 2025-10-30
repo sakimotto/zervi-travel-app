@@ -31,7 +31,7 @@ const HotelsPage: React.FC = () => {
     try {
       if (editingHotel) { await update(editingHotel.id, formData as any); } else { await insert({ ...formData, user_id: user.id } as any); }
       closeDrawer();
-    } catch (error) { console.error('Error saving hotel:', error); }
+    } catch (error) { logger.error('Error saving hotel:', error); }
   };
 
   const openAddDrawer = () => {
@@ -47,7 +47,7 @@ const HotelsPage: React.FC = () => {
   };
 
   const closeDrawer = () => { setIsDrawerOpen(false); setEditingHotel(null); };
-  const handleDeleteHotel = async (id: string) => { if (window.confirm('Delete this hotel booking?')) { try { await remove(id); } catch (error) { console.error('Error deleting hotel:', error); } } };
+  const handleDeleteHotel = async (id: string) => { if (window.confirm('Delete this hotel booking?')) { try { await remove(id); } catch (error) { logger.error('Error deleting hotel:', error); } } };
   const getStatusColor = (status: string) => { switch (status) { case 'Confirmed': return 'bg-green-100 text-green-800'; case 'Pending': return 'bg-yellow-100 text-yellow-800'; case 'Cancelled': return 'bg-red-100 text-red-800'; case 'Completed': return 'bg-gray-100 text-gray-800'; default: return 'bg-gray-100 text-gray-800'; } };
   const stats = { total: hotels.length, upcoming: hotels.filter((h: any) => new Date(h.check_in_date) > new Date() && h.status === 'Confirmed').length, totalCost: hotels.reduce((sum: number, h: any) => sum + (h.total_cost || 0), 0) };
 

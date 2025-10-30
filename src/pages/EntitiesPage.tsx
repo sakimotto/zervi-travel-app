@@ -47,7 +47,7 @@ const EntitiesPage: React.FC = () => {
 
       setIsDrawerOpen(false);
     } catch (error) {
-      console.error('Error adding entity:', error);
+      logger.error('Error adding entity:', error);
     }
   };
 
@@ -57,7 +57,7 @@ const EntitiesPage: React.FC = () => {
       setEditingEntity(null);
       setIsDrawerOpen(false);
     } catch (error) {
-      console.error('Error updating entity:', error);
+      logger.error('Error updating entity:', error);
     }
   };
 
@@ -66,7 +66,7 @@ const EntitiesPage: React.FC = () => {
       try {
         await remove(id);
       } catch (error) {
-        console.error('Error deleting entity:', error);
+        logger.error('Error deleting entity:', error);
       }
     }
   };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, Plus, Search, Shield, Mail, Phone, Briefcase, Clock, Edit2, Trash2, Ban, CheckCircle, User as UserIcon, Settings, Save } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
+import { logger } from '../utils/logger';
 
 interface UserProfile {
   id: string;
@@ -555,7 +556,7 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
         return;
       }
 
-      console.log('Calling edge function...');
+      logger.debug('Calling edge function...');
 
       // Call the edge function to create the user with admin privileges
       const response = await fetch(
@@ -575,11 +576,11 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
         }
       );
 
-      console.log('Response status:', response.status);
+      logger.debug('Response status:', response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Error response:', errorText);
+        logger.error('Error response:', errorText);
         let errorMessage = 'Failed to create user';
         try {
           const errorJson = JSON.parse(errorText);
@@ -593,7 +594,7 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
       }
 
       const result = await response.json();
-      console.log('Success result:', result);
+      logger.debug('Success result:', result);
 
       if (result.error) {
         setError(result.error);
@@ -615,13 +616,13 @@ function AddUserModal({ onClose, onSuccess }: AddUserModalProps) {
           .eq('id', result.user.id);
 
         if (profileError) {
-          console.error('Profile update error:', profileError);
+          logger.error('Profile update error:', profileError);
         }
       }
 
       onSuccess();
     } catch (err) {
-      console.error('Caught error:', err);
+      logger.error('Caught error:', err);
       setError(err instanceof Error ? err.message : 'Database error saving new user');
     } finally {
       setLoading(false);

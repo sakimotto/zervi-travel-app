@@ -6,6 +6,7 @@ import AddBusinessContactModal from './AddBusinessContactModal';
 import { saveAs } from 'file-saver';
 import { exportToWord } from '../utils/wordExport';
 import { useBusinessContacts, useSuppliers } from '../hooks/useSupabase';
+import { logger } from '../utils/logger';
 
 const BusinessContactsSection: React.FC = () => {
   // Use Supabase backend for all data operations
@@ -37,13 +38,13 @@ const BusinessContactsSection: React.FC = () => {
     const loadSampleDataIfEmpty = async () => {
       if (!loading && contacts.length === 0) {
         try {
-          console.log('Loading sample contacts data into Supabase...');
+          logger.debug('Loading sample contacts data into Supabase...');
           for (const contact of sampleBusinessContacts) {
             await insert(contact);
           }
           await refetch();
         } catch (error) {
-          console.error('Error loading sample data:', error);
+          logger.error('Error loading sample data:', error);
           setLocalContacts(sampleBusinessContacts);
         }
       }
@@ -54,7 +55,7 @@ const BusinessContactsSection: React.FC = () => {
 
   // Force re-render when suppliers data changes to update linked supplier display
   useEffect(() => {
-    console.log('Suppliers data updated, contacts will re-render with updated supplier links');
+    logger.debug('Suppliers data updated, contacts will re-render with updated supplier links');
   }, [displaySuppliers]);
 
   const filteredContacts = displayContacts.filter(contact => {
@@ -85,7 +86,7 @@ const BusinessContactsSection: React.FC = () => {
         await remove(id);
         await refetch(); // Refresh data after delete
       } catch (error) {
-        console.error('Error deleting contact:', error);
+        logger.error('Error deleting contact:', error);
         alert('Failed to delete contact. Please try again.');
       }
     }
@@ -97,9 +98,9 @@ const BusinessContactsSection: React.FC = () => {
         await update(contact.id, contact);
         // Force refresh both contacts and suppliers data
         await Promise.all([refetch(), refetchSuppliers()]);
-        console.log('Contact updated and data refreshed');
+        logger.debug('Contact updated and data refreshed');
       } catch (error) {
-        console.error('Error updating contact:', error);
+        logger.error('Error updating contact:', error);
         alert('Failed to update contact. Please try again.');
       }
       setEditingContact(null);
@@ -108,9 +109,9 @@ const BusinessContactsSection: React.FC = () => {
         await insert(contact);
         // Force refresh both contacts and suppliers data
         await Promise.all([refetch(), refetchSuppliers()]);
-        console.log('Contact created and data refreshed');
+        logger.debug('Contact created and data refreshed');
       } catch (error) {
-        console.error('Error creating contact:', error);
+        logger.error('Error creating contact:', error);
         alert('Failed to create contact. Please try again.');
       }
     }
@@ -164,7 +165,7 @@ const BusinessContactsSection: React.FC = () => {
           await refetch();
         }
       } catch (error) {
-        console.error('Error importing contacts:', error);
+        logger.error('Error importing contacts:', error);
         setImportError('The selected file is not a valid contacts export. Please select a correctly formatted JSON file.');
       }
     };

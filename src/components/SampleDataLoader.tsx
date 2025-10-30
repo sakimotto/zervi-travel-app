@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Database, Upload, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { logger } from '../utils/logger';
 import { useSuppliers } from '../hooks/useSupabase';
 import { useBusinessContacts } from '../hooks/useSupabase';
 import { useDestinations } from '../hooks/useSupabase';
@@ -66,7 +67,7 @@ const SampleDataLoader: React.FC = () => {
       updateStatus(name, { status: 'loading' });
       
       try {
-        console.log(`Loading ${name} sample data into Supabase...`);
+        logger.info(`Loading ${name} sample data into Supabase...`);
         
         let successCount = 0;
         let errorCount = 0;
@@ -75,13 +76,13 @@ const SampleDataLoader: React.FC = () => {
         for (let i = 0; i < data.length; i++) {
           const item = data[i];
           try {
-            console.log(`Inserting ${name} item ${i + 1}/${data.length}:`, item);
+            logger.debug(`Inserting ${name} item ${i + 1}/${data.length}:`, item);
             await hook.insert(item);
             successCount++;
           } catch (itemError) {
             errorCount++;
-            console.error(`❌ Error inserting ${name} item ${i + 1}:`, itemError);
-            console.error('Item data:', item);
+            logger.error(`Error inserting ${name} item ${i + 1}:`, itemError);
+            logger.error('Item data:', item);
           }
         }
         
@@ -93,7 +94,7 @@ const SampleDataLoader: React.FC = () => {
             status: 'success', 
             count: successCount 
           });
-          console.log(`✅ Successfully loaded ${successCount} ${name} records`);
+          logger.info(`Successfully loaded ${successCount} ${name} records`);
         } else {
           updateStatus(name, { 
             status: 'error', 
@@ -102,7 +103,7 @@ const SampleDataLoader: React.FC = () => {
         }
         
       } catch (error) {
-        console.error(`❌ Error loading ${name}:`, error);
+        logger.error(`Error loading ${name}:`, error);
         updateStatus(name, { 
           status: 'error', 
           error: error instanceof Error ? error.message : 'Unknown error'
@@ -111,7 +112,7 @@ const SampleDataLoader: React.FC = () => {
     }
 
     setIsLoading(false);
-    console.log('🎉 Sample data loading complete!');
+    logger.info('Sample data loading complete');
   };
 
   const getStatusIcon = (status: LoadStatus['status']) => {

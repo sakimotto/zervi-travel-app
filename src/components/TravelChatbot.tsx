@@ -191,7 +191,7 @@ const TravelChatbot: React.FC<TravelChatbotProps> = ({
       setMessages(prev => [...prev, botMessage]);
 
     } catch (error) {
-      console.error('Chat API Error:', error);
+      logger.error('Chat API Error:', error);
       
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),

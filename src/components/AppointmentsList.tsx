@@ -4,6 +4,7 @@ import { format, parseISO, isToday, isTomorrow } from 'date-fns';
 import { Plus, Clock, MapPin, Users, Edit, Trash2, Bell, Plane, Hotel, Car, Building2 } from 'lucide-react';
 import AddAppointmentModal from './AddAppointmentModal';
 import { useAppointments } from '../hooks/useSupabase';
+import { logger } from '../utils/logger';
 
 interface AppointmentsListProps {
   appointments: Appointment[];
@@ -53,7 +54,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
         await remove(id);
         onAppointmentsChange(appointments.filter(apt => apt.id !== id));
       } catch (error) {
-        console.error('Error deleting appointment:', error);
+        logger.error('Error deleting appointment:', error);
         alert('Failed to delete appointment. Please try again.');
       }
     }
@@ -69,8 +70,8 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
         );
         onAppointmentsChange(updatedAppointments);
       } catch (error) {
-        console.error('Error updating appointment:', error);
-        console.error('Error details:', error.message || error);
+        logger.error('Error updating appointment:', error);
+        logger.error('Error details:', error.message || error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         alert(`Failed to update appointment: ${errorMessage}`);
         return; // Don't close modal on error
@@ -82,7 +83,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
         // Add the new appointment to the local list
         onAppointmentsChange([...appointments, newAppointment]);
       } catch (error) {
-        console.error('Error creating appointment:', error);
+        logger.error('Error creating appointment:', error);
         alert('Failed to create appointment. Please try again.');
         return; // Don't close modal on error
       }

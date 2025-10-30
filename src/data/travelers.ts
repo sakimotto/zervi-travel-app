@@ -1,5 +1,6 @@
 import { TravelerOption } from '../types';
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '../utils/logger';
 
 export const defaultTravelers: TravelerOption[] = [
   {
@@ -79,7 +80,7 @@ export const getTravelers = (): TravelerOption[] => {
     }
     return defaultTravelers;
   } catch (error) {
-    console.error('Error loading travelers:', error);
+    logger.error('Error loading travelers:', error);
     return defaultTravelers;
   }
 };
@@ -89,7 +90,7 @@ export const saveTravelers = (travelers: TravelerOption[]): void => {
   try {
     localStorage.setItem('zervi-travelers', JSON.stringify(travelers));
   } catch (error) {
-    console.error('Error saving travelers:', error);
+    logger.error('Error saving travelers:', error);
   }
 };
 

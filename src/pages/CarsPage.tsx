@@ -30,13 +30,13 @@ const CarsPage: React.FC = () => {
     try {
       if (editingCar) { await update(editingCar.id, formData as any); } else { await insert({ ...formData, user_id: user.id } as any); }
       closeDrawer();
-    } catch (error) { console.error('Error saving car:', error); }
+    } catch (error) { logger.error('Error saving car:', error); }
   };
 
   const openAddDrawer = () => { setEditingCar(null); setFormData({ rental_company: '', confirmation_number: '', vehicle_type: '', vehicle_make_model: '', pickup_location: '', pickup_date: '', pickup_time: '', dropoff_location: '', dropoff_date: '', dropoff_time: '', driver_name: '', cost_per_day: 0, total_cost: 0, insurance_included: false, gps_included: false, status: 'Confirmed', notes: '' }); setIsDrawerOpen(true); };
   const openEditDrawer = (car: any) => { setEditingCar(car); setFormData({ rental_company: car.rental_company, confirmation_number: car.confirmation_number || '', vehicle_type: car.vehicle_type || '', vehicle_make_model: car.vehicle_make_model || '', pickup_location: car.pickup_location, pickup_date: car.pickup_date, pickup_time: car.pickup_time || '', dropoff_location: car.dropoff_location, dropoff_date: car.dropoff_date, dropoff_time: car.dropoff_time || '', driver_name: car.driver_name || '', cost_per_day: car.cost_per_day || 0, total_cost: car.total_cost || 0, insurance_included: car.insurance_included || false, gps_included: car.gps_included || false, status: car.status || 'Confirmed', notes: car.notes || '' }); setIsDrawerOpen(true); };
   const closeDrawer = () => { setIsDrawerOpen(false); setEditingCar(null); };
-  const handleDeleteCar = async (id: string) => { if (window.confirm('Delete this car rental?')) { try { await remove(id); } catch (error) { console.error('Error deleting car:', error); } } };
+  const handleDeleteCar = async (id: string) => { if (window.confirm('Delete this car rental?')) { try { await remove(id); } catch (error) { logger.error('Error deleting car:', error); } } };
   const getStatusColor = (status: string) => { switch (status) { case 'Confirmed': return 'bg-green-100 text-green-800'; case 'Pending': return 'bg-yellow-100 text-yellow-800'; case 'Cancelled': return 'bg-red-100 text-red-800'; case 'Completed': return 'bg-gray-100 text-gray-800'; default: return 'bg-gray-100 text-gray-800'; } };
   const stats = { total: cars.length, upcoming: cars.filter((c: any) => new Date(c.pickup_date) > new Date() && c.status === 'Confirmed').length, totalCost: cars.reduce((sum: number, c: any) => sum + (c.total_cost || 0), 0) };
 

@@ -9,6 +9,7 @@ import { saveAs } from 'file-saver';
 import { exportToWord } from '../utils/wordExport';
 import { useExpenses } from '../hooks/useSupabase';
 import { saveExpensesToLocalStorage, getExpensesFromLocalStorage } from '../utils/localStorage';
+import { logger } from '../utils/logger';
 
 const ExpensesSection: React.FC = () => {
   // Use Supabase backend for all data operations
@@ -44,13 +45,13 @@ const ExpensesSection: React.FC = () => {
     const loadSampleDataIfEmpty = async () => {
       if (!loading && expenses.length === 0) {
         try {
-          console.log('Loading sample expenses data into Supabase...');
+          logger.debug('Loading sample expenses data into Supabase...');
           for (const expense of sampleExpenses) {
             await insert(expense);
           }
           await refetch();
         } catch (error) {
-          console.error('Error loading sample data:', error);
+          logger.error('Error loading sample data:', error);
           setLocalExpenses(sampleExpenses);
         }
       }
@@ -98,7 +99,7 @@ const ExpensesSection: React.FC = () => {
       try {
         await remove(id);
       } catch (error) {
-        console.error('Error deleting expense:', error);
+        logger.error('Error deleting expense:', error);
         alert('Failed to delete expense. Please try again.');
       }
     }
@@ -109,7 +110,7 @@ const ExpensesSection: React.FC = () => {
       try {
         await update(expense.id, expense);
       } catch (error) {
-        console.error('Error updating expense:', error);
+        logger.error('Error updating expense:', error);
         alert('Failed to update expense. Please try again.');
       }
       setEditingExpense(null);
@@ -117,7 +118,7 @@ const ExpensesSection: React.FC = () => {
       try {
         await insert(expense);
       } catch (error) {
-        console.error('Error creating expense:', error);
+        logger.error('Error creating expense:', error);
         alert('Failed to create expense. Please try again.');
       }
     }
@@ -131,7 +132,7 @@ const ExpensesSection: React.FC = () => {
         const updatedExpense = { ...expense, approved: !expense.approved };
         await update(id, updatedExpense);
       } catch (error) {
-        console.error('Error updating expense approval:', error);
+        logger.error('Error updating expense approval:', error);
         alert('Failed to update expense approval. Please try again.');
       }
     }
@@ -184,7 +185,7 @@ const ExpensesSection: React.FC = () => {
           await refetch();
         }
       } catch (error) {
-        console.error('Error importing expenses:', error);
+        logger.error('Error importing expenses:', error);
         setImportError('The selected file is not a valid expenses export. Please select a correctly formatted JSON file.');
       }
     };
@@ -200,7 +201,7 @@ const ExpensesSection: React.FC = () => {
     ]).then(() => {
       refetch();
     }).catch(error => {
-      console.error('Error resetting to sample data:', error);
+      logger.error('Error resetting to sample data:', error);
       alert('Failed to reset data. Please try again.');
     });
     setShowConfirmReset(false);

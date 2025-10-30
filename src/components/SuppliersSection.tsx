@@ -6,6 +6,7 @@ import AddSupplierModal from './AddSupplierModal';
 import { saveAs } from 'file-saver';
 import { exportToWord } from '../utils/wordExport';
 import { useSuppliers } from '../hooks/useSupabase';
+import { logger } from '../utils/logger';
 
 const SuppliersSection: React.FC = () => {
   // Use Supabase backend for all data operations
@@ -35,13 +36,13 @@ const SuppliersSection: React.FC = () => {
     const loadSampleDataIfEmpty = async () => {
       if (!loading && suppliers.length === 0) {
         try {
-          console.log('Loading sample suppliers data into Supabase...');
+          logger.debug('Loading sample suppliers data into Supabase...');
           for (const supplier of sampleSuppliers) {
             await insert(supplier);
           }
           await refetch();
         } catch (error) {
-          console.error('Error loading sample data:', error);
+          logger.error('Error loading sample data:', error);
           setLocalSuppliers(sampleSuppliers);
         }
       }
@@ -77,7 +78,7 @@ const SuppliersSection: React.FC = () => {
       try {
         await remove(id);
       } catch (error) {
-        console.error('Error deleting supplier:', error);
+        logger.error('Error deleting supplier:', error);
         alert('Failed to delete supplier. Please try again.');
       }
     }
@@ -88,7 +89,7 @@ const SuppliersSection: React.FC = () => {
       try {
         await update(supplier.id, supplier);
       } catch (error) {
-        console.error('Error updating supplier:', error);
+        logger.error('Error updating supplier:', error);
         alert('Failed to update supplier. Please try again.');
       }
       setEditingSupplier(null);
@@ -96,7 +97,7 @@ const SuppliersSection: React.FC = () => {
       try {
         await insert(supplier);
       } catch (error) {
-        console.error('Error creating supplier:', error);
+        logger.error('Error creating supplier:', error);
         alert('Failed to create supplier. Please try again.');
       }
     }
@@ -151,7 +152,7 @@ const SuppliersSection: React.FC = () => {
           await refetch();
         }
       } catch (error) {
-        console.error('Error importing suppliers:', error);
+        logger.error('Error importing suppliers:', error);
         setImportError('The selected file is not a valid suppliers export. Please select a correctly formatted JSON file.');
       }
     };
@@ -167,7 +168,7 @@ const SuppliersSection: React.FC = () => {
     ]).then(() => {
       refetch();
     }).catch(error => {
-      console.error('Error resetting to sample data:', error);
+      logger.error('Error resetting to sample data:', error);
       alert('Failed to reset data. Please try again.');
     });
     setShowConfirmReset(false);
