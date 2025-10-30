@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useFlights } from '../hooks/useSupabase';
+import { useFlights, useTrips } from '../hooks/useSupabase';
 import { useAuth } from '../hooks/useAuth';
 import { Plane, Plus, Search, CreditCard as Edit, Trash2, Calendar, Clock, MapPin, DollarSign, CreditCard, ArrowRight, Filter } from 'lucide-react';
 import Drawer from '../components/Drawer';
 import FlightForm from '../components/FlightForm';
 import { format } from 'date-fns';
+import { logger } from '../utils/logger';
 
 interface Flight {
   id: string;
@@ -33,11 +34,13 @@ interface Flight {
 const FlightsPage: React.FC = () => {
   const { user } = useAuth();
   const { data: flights, loading, insert, update, remove } = useFlights();
+  const { data: trips } = useTrips();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingFlight, setEditingFlight] = useState<Flight | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [tripFilter, setTripFilter] = useState<string>('All');
 
   const filteredFlights = flights.filter((flight: Flight) => {
     const matchesSearch =
@@ -48,8 +51,9 @@ const FlightsPage: React.FC = () => {
       flight.arrival_airport.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus = statusFilter === 'All' || flight.status === statusFilter;
+    const matchesTrip = tripFilter === 'All' || (flight as any).trip_id === tripFilter;
 
-    return matchesSearch && matchesStatus;
+    return matchesSearch && matchesStatus && matchesTrip;
   });
 
   const sortedFlights = [...filteredFlights].sort((a, b) =>
@@ -188,7 +192,7 @@ const FlightsPage: React.FC = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -212,6 +216,20 @@ const FlightsPage: React.FC = () => {
                 <option value="Pending">Pending</option>
                 <option value="Cancelled">Cancelled</option>
                 <option value="Completed">Completed</option>
+              </select>
+            </div>
+
+            <div className="relative">
+              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <select
+                value={tripFilter}
+                onChange={(e) => setTripFilter(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary appearance-none"
+              >
+                <option value="All">All Trips</option>
+                {trips.map((trip: any) => (
+                  <option key={trip.id} value={trip.id}>{trip.trip_name}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -369,6 +387,7 @@ const FlightsPage: React.FC = () => {
               : handleAddFlight(data)
           }
           onCancel={closeDrawer}
+          selectedTripId={tripFilter !== 'All' ? tripFilter : null}
         />
       </Drawer>
     </div>
