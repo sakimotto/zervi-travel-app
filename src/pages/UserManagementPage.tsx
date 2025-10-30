@@ -31,6 +31,7 @@ export default function UserManagementPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
+  const [resetPasswordUser, setResetPasswordUser] = useState<UserProfile | null>(null);
 
   const [profileData, setProfileData] = useState({
     full_name: '',
@@ -157,6 +158,10 @@ export default function UserManagementPage() {
   const handleToggleStatus = async (userId: string, currentStatus: string) => {
     const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
     await handleUpdateUser(userId, { status: newStatus });
+  };
+
+  const handleResetUserPassword = (user: UserProfile) => {
+    setResetPasswordUser(user);
   };
 
   const getRoleBadgeColor = (role: string) => {
@@ -472,6 +477,13 @@ export default function UserManagementPage() {
                                 {u.status === 'active' ? <Ban className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
                               </button>
                               <button
+                                onClick={() => handleResetUserPassword(u)}
+                                className="text-purple-600 hover:text-purple-900"
+                                title="Reset password"
+                              >
+                                <Shield className="w-4 h-4" />
+                              </button>
+                              <button
                                 onClick={() => handleDeleteUser(u.id)}
                                 className="text-red-600 hover:text-red-900"
                                 title="Delete user"
@@ -516,6 +528,16 @@ export default function UserManagementPage() {
           onSuccess={() => {
             fetchUsers();
             setEditingUser(null);
+          }}
+        />
+      )}
+
+      {resetPasswordUser && (
+        <ResetPasswordModal
+          user={resetPasswordUser}
+          onClose={() => setResetPasswordUser(null)}
+          onSuccess={() => {
+            setResetPasswordUser(null);
           }}
         />
       )}
@@ -914,6 +936,162 @@ function EditUserModal({ user, onClose, onSuccess }: EditUserModalProps) {
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
               {loading ? 'Saving...' : 'Save Changes'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+interface ResetPasswordModalProps {
+  user: UserProfile;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+function ResetPasswordModal({ user, onClose, onSuccess }: ResetPasswordModalProps) {
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setError('Password must be at least 6 characters');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        setError('You must be logged in');
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-reset-password`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            userId: user.id,
+            newPassword: newPassword
+          })
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = 'Failed to reset password';
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.error || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        setError(errorMessage);
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Password reset successfully!');
+      setTimeout(() => {
+        onSuccess();
+      }, 1500);
+    } catch (err) {
+      logger.error('Password reset error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to reset password');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-md w-full p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Reset Password</h2>
+
+        <p className="text-gray-600 mb-6">
+          Reset password for <strong>{user.email}</strong>
+        </p>
+
+        {error && (
+          <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
+            {success}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              New Password *
+            </label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter new password"
+              required
+              minLength={6}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Confirm Password *
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Confirm new password"
+              required
+              minLength={6}
+            />
+          </div>
+
+          <div className="flex justify-end gap-3 mt-6">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+            >
+              <Shield size={18} />
+              {loading ? 'Resetting...' : 'Reset Password'}
             </button>
           </div>
         </form>

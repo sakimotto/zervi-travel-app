@@ -5,8 +5,8 @@ import { useAuth } from '../hooks/useAuth';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  mode: 'login' | 'signup';
-  onModeChange: (mode: 'login' | 'signup') => void;
+  mode: 'login' | 'signup' | 'reset';
+  onModeChange: (mode: 'login' | 'signup' | 'reset') => void;
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChange }) => {
@@ -18,7 +18,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, resetPassword } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +31,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
         const { error } = await signIn(email, password);
         if (error) throw error;
         onClose();
+      } else if (mode === 'reset') {
+        const { error } = await resetPassword(email);
+        if (error) throw error;
+        setSuccess('Password reset email sent! Check your inbox for instructions.');
+        setTimeout(() => {
+          handleModeChange('login');
+          setSuccess(null);
+        }, 3000);
       } else {
         const { error } = await signUp(email, password, name, role);
         if (error) throw error;
@@ -56,7 +64,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
     setSuccess(null);
   };
 
-  const handleModeChange = (newMode: 'login' | 'signup') => {
+  const handleModeChange = (newMode: 'login' | 'signup' | 'reset') => {
     resetForm();
     onModeChange(newMode);
   };
@@ -68,8 +76,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
         <div className="flex justify-between items-center p-6 border-b">
           <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-            {mode === 'login' ? <LogIn className="mr-2" size={20} /> : <UserPlus className="mr-2" size={20} />}
-            {mode === 'login' ? 'Sign In to Travel Hub' : 'Join Travel Hub Team'}
+            {mode === 'login' ? <LogIn className="mr-2" size={20} /> : mode === 'reset' ? <Lock className="mr-2" size={20} /> : <UserPlus className="mr-2" size={20} />}
+            {mode === 'login' ? 'Sign In to Travel Hub' : mode === 'reset' ? 'Reset Password' : 'Join Travel Hub Team'}
           </h3>
           <button
             onClick={onClose}
@@ -80,7 +88,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
-          {mode === 'signup' && (
+          {mode === 'signup' && mode !== 'reset' && (
             <>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -134,23 +142,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
             </div>
           </div>
 
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password *
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Enter your password"
-                minLength={6}
-                required
-              />
+          {mode !== 'reset' && (
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password *
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Enter your password"
+                  minLength={6}
+                  required
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded-md text-sm">
@@ -173,20 +183,31 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
             ) : (
               <>
-                {mode === 'login' ? <LogIn className="mr-2" size={18} /> : <UserPlus className="mr-2" size={18} />}
-                {mode === 'login' ? 'Sign In' : 'Create Account'}
+                {mode === 'login' ? <LogIn className="mr-2" size={18} /> : mode === 'reset' ? <Lock className="mr-2" size={18} /> : <UserPlus className="mr-2" size={18} />}
+                {mode === 'login' ? 'Sign In' : mode === 'reset' ? 'Send Reset Email' : 'Create Account'}
               </>
             )}
           </button>
 
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center space-y-2">
+            {mode === 'login' && (
+              <button
+                type="button"
+                onClick={() => handleModeChange('reset')}
+                className="text-primary hover:text-primary/80 text-sm block w-full"
+              >
+                Forgot password?
+              </button>
+            )}
             <button
               type="button"
               onClick={() => handleModeChange(mode === 'login' ? 'signup' : 'login')}
-              className="text-primary hover:text-primary/80 text-sm"
+              className="text-primary hover:text-primary/80 text-sm block w-full"
             >
-              {mode === 'login' 
-                ? "Don't have an account? Sign up" 
+              {mode === 'login'
+                ? "Don't have an account? Sign up"
+                : mode === 'reset'
+                ? "Back to sign in"
                 : "Already have an account? Sign in"
               }
             </button>
