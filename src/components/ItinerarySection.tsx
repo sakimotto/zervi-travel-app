@@ -3,11 +3,7 @@ import { ItineraryItem, ItineraryItemType, Traveler } from '../types';
 import { sampleItinerary } from '../data/itinerary';
 import { getActiveTravelerNames } from '../data/travelers';
 import { format, parseISO, isAfter, addHours, startOfDay } from 'date-fns';
-import { 
-  Plane, Hotel, Car, Briefcase, Building, Plus, Calendar, MapPin, 
-  Clock, CheckCircle, XCircle, Edit, Trash2, User, Filter, Download, Upload, Database, AlertCircle,
-  LandPlot, Train, Bus, List, LayoutList, Calendar as CalendarIcon, Save, X, Users
-} from 'lucide-react';
+import { Plane, Hotel, Car, Briefcase, Building, Plus, Calendar, MapPin, Clock, CheckCircle, XCircle, CreditCard as Edit, Trash2, User, Filter, Download, Upload, Database, AlertCircle, LandPlot, Brain as Train, Bus, List, LayoutList, Calendar as CalendarIcon, Save, X, Users } from 'lucide-react';
 import AddItineraryItem from './AddItineraryItem';
 import ItineraryExportButton from './ItineraryExportButton';
 import ItinerarySummary from './ItinerarySummary';
